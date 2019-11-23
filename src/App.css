@@ -23,6 +23,11 @@ td {
   border: 1px solid black;
 }
 
+th,
+td {
+  width: 4rem;
+}
+
 tr {
   height: 1rem;
 }
