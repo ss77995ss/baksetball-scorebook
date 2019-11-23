@@ -47,6 +47,18 @@ export const boxReducer = (state: BoxStateType, action: BoxRowActionType): BoxSt
         },
       };
     }
+    case 'UPDATE_TARGET_NUMBER': {
+      const currentRowData = state.box[action.key];
+      //@ts-ignore
+      currentRowData[action.variant] = action.value;
+
+      return {
+        ...state,
+        box: {
+          [action.key]: currentRowData,
+        },
+      };
+    }
     default:
       return state;
   }

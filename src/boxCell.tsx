@@ -23,8 +23,21 @@ const BoxCell: React.SFC<propsType> = ({ variant, value, rowNumber }) => {
     boxDispatch({ type: 'UPDATE_NUMBER', key: rowNumber, number: parseInt(playerNumber, 10) });
   };
 
+  const handleAdd = () => {
+    boxDispatch({ type: 'UPDATE_TARGET_NUMBER', key: rowNumber, value: currentValue + 1, variant });
+  };
+  const handleReduce = () => {
+    boxDispatch({ type: 'UPDATE_TARGET_NUMBER', key: rowNumber, value: currentValue - 1, variant });
+  };
+
   if (variant === 'number') return <td onClick={handleClick}>{currentValue}</td>;
-  return <td>{currentValue}</td>;
+  return (
+    <td>
+      {currentValue}
+      <button onClick={handleAdd}>+</button>
+      <button onClick={handleReduce}>-</button>
+    </td>
+  );
 };
 
 export default BoxCell;

@@ -24,4 +24,5 @@ export type BoxStateType = {
 export type BoxRowActionType =
   | { type: 'ADD_NUMBER' }
   | { type: 'REDUCE_NUMBER' }
-  | { type: 'UPDATE_NUMBER'; key: number; number: number };
+  | { type: 'UPDATE_NUMBER'; key: number; number: number }
+  | { type: 'UPDATE_TARGET_NUMBER'; key: number; value: number; variant: string };
