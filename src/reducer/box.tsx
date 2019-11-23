@@ -2,7 +2,7 @@ import { omit } from 'lodash';
 import { BoxStateType, BoxRowActionType } from '../type/box';
 
 export const boxReducer = (state: BoxStateType, action: BoxRowActionType): BoxStateType => {
-  const currentRowNumber = Object.keys(state).length;
+  const currentRowNumber = Object.keys(state.box).length;
   const defaultRowData = {
     number: 0,
     twoPointMade: 0,
@@ -26,12 +26,26 @@ export const boxReducer = (state: BoxStateType, action: BoxRowActionType): BoxSt
     case 'ADD_NUMBER':
       return {
         ...state,
-        [currentRowNumber + 1]: defaultRowData,
+        box: {
+          [currentRowNumber + 1]: defaultRowData,
+          ...state.box,
+        },
       };
     case 'REDUCE_NUMBER': {
       const currentRow = currentRowNumber + 1;
       // @ts-ignore
       return omit(state, currentRow);
+    }
+    case 'UPDATE_NUMBER': {
+      const currentRowData = state.box[action.key];
+      currentRowData.number = action.number;
+
+      return {
+        ...state,
+        box: {
+          [action.key]: currentRowData,
+        },
+      };
     }
     default:
       return state;
