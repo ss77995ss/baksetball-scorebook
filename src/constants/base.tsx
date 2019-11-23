@@ -1,4 +1,4 @@
-export const tableTitiles = {
+export const BOX_TITLES = {
   NUMBER: '#',
   TWP_POINT_MADE: '2PT-M',
   TWO_POINT_ATTEMPT: '2PT-A',
