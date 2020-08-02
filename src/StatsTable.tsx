@@ -2,7 +2,7 @@
 import React from 'react';
 import { useTable, Column } from 'react-table';
 import styled from 'styled-components';
-import TableCell from './TableCells';
+import StatCell from './StatCells';
 
 const columns: Array<Column> = [
   {
@@ -42,9 +42,7 @@ const data: Array<object> = [
   },
 ];
 
-const defaultColumn = {
-  Cell: TableCell,
-};
+const defaultColumn = {};
 
 const TableStyled = styled.div`
   table {
@@ -62,7 +60,6 @@ const TableStyled = styled.div`
     th,
     td {
       margin: 0;
-      padding: 0.5rem;
       border-bottom: 1px solid black;
       border-right: 1px solid black;
 
@@ -120,7 +117,7 @@ const StatsTable: React.FC = () => {
                   return (
                     <td {...cell.getCellProps()}>
                       {// Render the cell contents
-                      cell.render('Cell')}
+                      cell.column.Header !== '項目' ? <StatCell value={cell.value} /> : cell.render('Cell')}
                     </td>
                   );
                 })}
