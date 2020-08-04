@@ -4,7 +4,6 @@ import StatsTable from './StatsTable';
 const App: React.FC = () => {
   return (
     <div>
-      Hello World
       <StatsTable />
     </div>
   );

@@ -7,15 +7,16 @@ interface Props {
   value: number;
   row: Row;
   column: Column;
+  count: number;
   updateData: (rowIndex: number, columnId: string, value: number) => void;
 }
 
-const StatCell: React.FC<Props> = ({ value, row: { index }, column: { id = '' }, updateData }: Props) => {
+const StatCell: React.FC<Props> = ({ value, row: { index }, column: { id = '' }, count, updateData }: Props) => {
   const handlers = useSwipeable({
     onSwipedLeft: () => {
-      if (value > 0) updateData(index, id, value - 1);
+      if (value - count >= 0) updateData(index, id, value - count);
     },
-    onSwipedRight: () => updateData(index, id, value + 1),
+    onSwipedRight: () => updateData(index, id, value + count),
     preventDefaultTouchmoveEvent: true,
     trackMouse: true,
   });

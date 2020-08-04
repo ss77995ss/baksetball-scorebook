@@ -45,10 +45,14 @@ const initialData: Array<object> = [
 
 const defaultColumn = {};
 
-const TableStyled = styled.div`
+const StyledTable = styled.div`
+  h3 {
+    text-align: center;
+  }
   table {
     border-spacing: 0;
     border: 1px solid black;
+    margin: 16px auto;
 
     tr {
       :last-child {
@@ -78,27 +82,36 @@ const TableStyled = styled.div`
   }
 `;
 
+const StyledRadioInput = styled.div`
+  text-align: center;
+`;
+
 const renderCell: (
   cell: Cell,
+  count: number,
   updateData: (rowIndex: number, columnId: string, value: number) => void,
-) => {} | null | undefined = (cell, updateData) => {
+) => {} | null | undefined = (cell, count, updateData) => {
   switch (cell.column.Header) {
     case '項目':
       return cell.render('Cell');
     case '總計':
       return <TotalCell row={cell.row} />;
     default:
-      return <StatCell row={cell.row} column={cell.column} value={cell.value} updateData={updateData} />;
+      return <StatCell row={cell.row} column={cell.column} value={cell.value} count={count} updateData={updateData} />;
   }
 };
 
 const StatsTable: React.FC = () => {
   const [data, setData] = useState(initialData);
+  const [count, setcount] = useState(1);
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({
     columns,
     data,
     defaultColumn,
   });
+
+  const handleCheck: (event: { target: HTMLInputElement }) => void = event =>
+    setcount(parseInt(event.target.value, 10));
 
   const updateData: (rowIndex: number, columnId: string, value: number) => void = (rowIndex, columnId, value) => {
     setData(prev =>
@@ -115,7 +128,17 @@ const StatsTable: React.FC = () => {
   };
 
   return (
-    <TableStyled>
+    <StyledTable>
+      <h3>+/- by selected count</h3>
+      <StyledRadioInput>
+        <input type="radio" id="one" name="count" value="1" checked={count === 1} onChange={handleCheck} />
+        <label htmlFor="one">1</label>
+        <input type="radio" id="two" name="count" value="2" checked={count === 2} onChange={handleCheck} />
+        <label htmlFor="two">2</label>
+        <input type="radio" id="three" name="count" value="3" checked={count === 3} onChange={handleCheck} />
+        <label htmlFor="three">3</label>
+        <p>{`Current: ${count}`}</p>
+      </StyledRadioInput>
       <table {...getTableProps()}>
         <thead>
           {// Loop over the header rows
@@ -148,7 +171,7 @@ const StatsTable: React.FC = () => {
                   return (
                     <td {...cell.getCellProps()}>
                       {// Render the cell contents
-                      renderCell(cell, updateData)}
+                      renderCell(cell, count, updateData)}
                     </td>
                   );
                 })}
@@ -157,7 +180,7 @@ const StatsTable: React.FC = () => {
           })}
         </tbody>
       </table>
-    </TableStyled>
+    </StyledTable>
   );
 };
 
