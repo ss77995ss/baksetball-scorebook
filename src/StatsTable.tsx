@@ -1,13 +1,14 @@
 /* eslint-disable react/jsx-key */
-import React from 'react';
-import { useTable, Column } from 'react-table';
+import React, { useState } from 'react';
+import { useTable, Column, Cell } from 'react-table';
 import styled from 'styled-components';
-import StatCell from './StatCells';
+import StatCell from './StatCell';
+import TotalCell from './TotalCell';
 
 const columns: Array<Column> = [
   {
     Header: '項目',
-    accessor: 'stats',
+    accessor: 'statName',
   },
   {
     Header: 'Q1',
@@ -31,9 +32,9 @@ const columns: Array<Column> = [
   },
 ];
 
-const data: Array<object> = [
+const initialData: Array<object> = [
   {
-    stats: '失誤',
+    statName: '失誤',
     q1: 0,
     q2: 0,
     q3: 0,
@@ -77,12 +78,42 @@ const TableStyled = styled.div`
   }
 `;
 
+const renderCell: (
+  cell: Cell,
+  updateData: (rowIndex: number, columnId: string, value: number) => void,
+) => {} | null | undefined = (cell, updateData) => {
+  switch (cell.column.Header) {
+    case '項目':
+      return cell.render('Cell');
+    case '總計':
+      return <TotalCell row={cell.row} />;
+    default:
+      return <StatCell row={cell.row} column={cell.column} value={cell.value} updateData={updateData} />;
+  }
+};
+
 const StatsTable: React.FC = () => {
+  const [data, setData] = useState(initialData);
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({
     columns,
     data,
     defaultColumn,
   });
+
+  const updateData: (rowIndex: number, columnId: string, value: number) => void = (rowIndex, columnId, value) => {
+    setData(prev =>
+      prev.map((row, index) => {
+        if (index === rowIndex) {
+          return {
+            ...prev[rowIndex],
+            [columnId]: value,
+          };
+        }
+        return row;
+      }),
+    );
+  };
+
   return (
     <TableStyled>
       <table {...getTableProps()}>
@@ -117,7 +148,7 @@ const StatsTable: React.FC = () => {
                   return (
                     <td {...cell.getCellProps()}>
                       {// Render the cell contents
-                      cell.column.Header !== '項目' ? <StatCell value={cell.value} /> : cell.render('Cell')}
+                      renderCell(cell, updateData)}
                     </td>
                   );
                 })}
