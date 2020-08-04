@@ -3,6 +3,7 @@ import styled from 'styled-components';
 export const StyledCell = styled.div`
   font-weight: bold;
   padding: 4rem;
+  user-select: none;
 
   @media (min-width: 600px) and (max-width: 900px) {
     padding: 2.5rem;
