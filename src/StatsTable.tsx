@@ -129,7 +129,7 @@ const StatsTable: React.FC = () => {
 
   return (
     <StyledTable>
-      <h3>+/- by selected count</h3>
+      <h3>+/- by selected count with direction Right: +, Left: -</h3>
       <StyledRadioInput>
         <input type="radio" id="one" name="count" value="1" checked={count === 1} onChange={handleCheck} />
         <label htmlFor="one">1</label>

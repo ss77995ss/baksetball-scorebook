@@ -120,10 +120,7 @@ const HyperCellTable: React.FC = () => {
 
   return (
     <StyledTable>
-      <h3>
-        +/- by direction Up: +3, Down: -3, Left: -2, Right: +2, Click: +1, ContextMenu(PC: RightClick, Mobile:
-        LongPress): -1
-      </h3>
+      <h3>+/- by direction Up: +3, Down: -3, Left: -2, Right: +2, Click: +1, DoubleClick: -1</h3>
       <table {...getTableProps()}>
         <thead>
           {// Loop over the header rows
