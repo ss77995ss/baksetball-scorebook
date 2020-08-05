@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useRef } from 'react';
 import { Row, Column } from 'react-table';
 import { useSwipeable } from 'react-swipeable';
 import { StyledCell } from './styles';
@@ -11,6 +11,8 @@ interface Props {
 }
 
 const StatCell: React.FC<Props> = ({ value, row: { index }, column: { id = '' }, updateData }: Props) => {
+  const timeout = useRef<number>();
+  const clickCount = useRef<number>(0);
   const handlers = useSwipeable({
     onSwipedDown: () => {
       if (value - 3 >= 0) updateData(index, id, value - 3);
@@ -24,24 +26,19 @@ const StatCell: React.FC<Props> = ({ value, row: { index }, column: { id = '' },
     trackMouse: true,
   });
 
-  const handleContextMenu: (event: MouseEvent) => void = useCallback(
-    event => {
-      event.preventDefault();
-      if (value - 1 >= 0) updateData(index, id, value - 1);
-    },
-    [index, id, value, updateData],
-  );
-
-  useEffect(() => {
-    window.addEventListener('contextmenu', handleContextMenu);
-    return (): void => {
-      window.removeEventListener('contextmenu', handleContextMenu);
-    };
-  }, [handleContextMenu]);
-
   const handleClick: (event: React.MouseEvent<HTMLDivElement>) => void = event => {
     event.preventDefault();
-    updateData(index, id, value + 1);
+    if (clickCount.current < 1) {
+      clickCount.current += 1;
+      timeout.current = setTimeout(() => {
+        updateData(index, id, value + 1);
+        clickCount.current = 0;
+      }, 200);
+    } else {
+      clearTimeout(timeout.current);
+      if (value - 1 >= 0) updateData(index, id, value - 1);
+      clickCount.current = 0;
+    }
   };
 
   return (
