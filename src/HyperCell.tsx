@@ -15,8 +15,10 @@ interface Props {
 
 const StatCell: React.FC<Props> = ({ value, row: { index }, column: { id = '' }, updateData }: Props) => {
   const { count, points } = value;
-  const timeout = useRef<number>();
-  const clickCount = useRef<number>(0);
+  const pointsClickTimeout = useRef<number>();
+  const countClickTimeout = useRef<number>();
+  const pointsClickCount = useRef<number>(0);
+  const countClickCount = useRef<number>(0);
   const handlers = useSwipeable({
     onSwipedDown: ({ event }) => {
       event.stopPropagation();
@@ -31,23 +33,39 @@ const StatCell: React.FC<Props> = ({ value, row: { index }, column: { id = '' },
     trackMouse: true,
   });
 
-  const handleClick: (event: React.MouseEvent<HTMLDivElement>) => void = () => {
-    if (clickCount.current < 1) {
-      clickCount.current += 1;
-      timeout.current = setTimeout(() => {
+  const handlePointsClick: (event: React.MouseEvent<HTMLDivElement>) => void = () => {
+    if (pointsClickCount.current < 1) {
+      pointsClickCount.current += 1;
+      pointsClickTimeout.current = setTimeout(() => {
         updateData(index, id, { points: points + 1, count: count + 1 });
-        clickCount.current = 0;
+        pointsClickCount.current = 0;
       }, 200);
     } else {
-      clearTimeout(timeout.current);
+      clearTimeout(pointsClickTimeout.current);
       if (points - 1 >= 0) updateData(index, id, { points: points - 1, count: count - 1 });
-      clickCount.current = 0;
+      pointsClickCount.current = 0;
+    }
+  };
+
+  const handleCointClick: (event: React.MouseEvent<HTMLDivElement>) => void = () => {
+    if (countClickCount.current < 1) {
+      countClickCount.current += 1;
+      countClickTimeout.current = setTimeout(() => {
+        updateData(index, id, { points, count: count + 1 });
+        countClickCount.current = 0;
+      }, 200);
+    } else {
+      clearTimeout(countClickTimeout.current);
+      if (count - 1 >= 0) updateData(index, id, { points, count: count - 1 });
+      countClickCount.current = 0;
     }
   };
 
   return (
     <StyledCell {...handlers}>
-      <span onClick={handleClick}>{`${points}/${count}`}</span>
+      <span onClick={handlePointsClick}>{points}</span>
+      <span>/</span>
+      <span onClick={handleCointClick}>{count}</span>
     </StyledCell>
   );
 };
