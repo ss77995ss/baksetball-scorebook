@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useTable, Column, Cell } from 'react-table';
 import styled from 'styled-components';
 import HyperCell from './HyperCell';
-import TotalCell from './TotalCell';
+import TotalCellWithCount from './TotalCellWithCount';
 
 const columns: Array<Column> = [
   {
@@ -34,12 +34,27 @@ const columns: Array<Column> = [
 
 const initialData: Array<object> = [
   {
-    statName: '快攻',
-    q1: 0,
-    q2: 0,
-    q3: 0,
-    q4: 0,
-    total: 0,
+    statName: '快攻 / 次數',
+    q1: {
+      count: 0,
+      points: 0,
+    },
+    q2: {
+      count: 0,
+      points: 0,
+    },
+    q3: {
+      count: 0,
+      points: 0,
+    },
+    q4: {
+      count: 0,
+      points: 0,
+    },
+    total: {
+      count: 0,
+      points: 0,
+    },
   },
 ];
 
@@ -84,13 +99,13 @@ const StyledTable = styled.div`
 
 const renderCell: (
   cell: Cell,
-  updateData: (rowIndex: number, columnId: string, value: number) => void,
+  updateData: (rowIndex: number, columnId: string, value: { count: number; points: number }) => void,
 ) => {} | null | undefined = (cell, updateData) => {
   switch (cell.column.Header) {
     case '項目':
       return cell.render('Cell');
     case '總計':
-      return <TotalCell row={cell.row} />;
+      return <TotalCellWithCount row={cell.row} />;
     default:
       return <HyperCell row={cell.row} column={cell.column} value={cell.value} updateData={updateData} />;
   }
@@ -104,7 +119,11 @@ const HyperCellTable: React.FC = () => {
     defaultColumn,
   });
 
-  const updateData: (rowIndex: number, columnId: string, value: number) => void = (rowIndex, columnId, value) => {
+  const updateData: (rowIndex: number, columnId: string, value: { count: number; points: number }) => void = (
+    rowIndex,
+    columnId,
+    value,
+  ) => {
     setData(prev =>
       prev.map((row, index) => {
         if (index === rowIndex) {
