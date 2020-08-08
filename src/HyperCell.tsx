@@ -37,17 +37,17 @@ const StatCell: React.FC<Props> = ({ value, row: { index }, column: { id = '' },
     if (pointsClickCount.current < 1) {
       pointsClickCount.current += 1;
       pointsClickTimeout.current = setTimeout(() => {
-        updateData(index, id, { points: points + 1, count: count + 1 });
+        updateData(index, id, { points: points + 1, count });
         pointsClickCount.current = 0;
       }, 200);
     } else {
       clearTimeout(pointsClickTimeout.current);
-      if (points - 1 >= 0) updateData(index, id, { points: points - 1, count: count - 1 });
+      if (points - 1 >= 0) updateData(index, id, { points: points - 1, count });
       pointsClickCount.current = 0;
     }
   };
 
-  const handleCointClick: (event: React.MouseEvent<HTMLDivElement>) => void = () => {
+  const handleCountClick: (event: React.MouseEvent<HTMLDivElement>) => void = () => {
     if (countClickCount.current < 1) {
       countClickCount.current += 1;
       countClickTimeout.current = setTimeout(() => {
@@ -64,8 +64,8 @@ const StatCell: React.FC<Props> = ({ value, row: { index }, column: { id = '' },
   return (
     <StyledCell {...handlers}>
       <span onClick={handlePointsClick}>{points}</span>
-      <span>/</span>
-      <span onClick={handleCointClick}>{count}</span>
+      <hr />
+      <span onClick={handleCountClick}>{count}</span>
     </StyledCell>
   );
 };
