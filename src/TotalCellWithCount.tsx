@@ -13,7 +13,7 @@ type StatWithCountType = {
 };
 
 const getTotal: (rowData: object) => string = rowData => {
-  const quarterStats: Array<StatWithCountType> = Object.values(omit(['statName', 'total'], rowData));
+  const quarterStats: Array<StatWithCountType> = Object.values(omit(['statInfo', 'total'], rowData));
 
   const sum = quarterStats.reduce(
     ({ count: accCount, points: accPoints }, { count: currentCount, points: currentPoints }) => {

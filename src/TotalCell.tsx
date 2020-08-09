@@ -8,7 +8,7 @@ interface Props {
 }
 
 const getTotal: (rowData: object) => number = rowData => {
-  const quarterStats: Array<string> = Object.values(omit(['statName', 'total'], rowData));
+  const quarterStats: Array<string> = Object.values(omit(['statInfo', 'total'], rowData));
   const sum = quarterStats.reduce((acc, current) => acc + parseInt(current, 10), 0);
 
   return sum;

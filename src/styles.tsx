@@ -4,6 +4,7 @@ export const StyledCell = styled.div`
   font-weight: bold;
   padding: 4rem;
   user-select: none;
+  text-align: center;
 
   @media (min-width: 600px) and (max-width: 900px) {
     padding: 2.5rem;

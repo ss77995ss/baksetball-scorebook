@@ -1,27 +1,41 @@
-import React from 'react';
-import { Row, Column } from 'react-table';
-import { useSwipeable } from 'react-swipeable';
+import React, { useRef } from 'react';
+import { Cell } from 'react-table';
 import { StyledCell } from './styles';
 
 interface Props {
-  value: number;
-  row: Row;
-  column: Column;
-  count: number;
+  cell: Cell;
   updateData: (rowIndex: number, columnId: string, value: number) => void;
 }
 
-const StatCell: React.FC<Props> = ({ value, row: { index }, column: { id = '' }, count, updateData }: Props) => {
-  const handlers = useSwipeable({
-    onSwipedLeft: () => {
-      if (value - count >= 0) updateData(index, id, value - count);
-    },
-    onSwipedRight: () => updateData(index, id, value + count),
-    preventDefaultTouchmoveEvent: true,
-    trackMouse: true,
-  });
+const StatCell: React.FC<Props> = ({ cell, updateData }: Props) => {
+  const {
+    value,
+    row: { index },
+    column: { id = '' },
+  } = cell;
 
-  return <StyledCell {...handlers}>{value}</StyledCell>;
+  const countClickTimeout = useRef<number>();
+  const countClickCount = useRef<number>(0);
+
+  const handleCountClick: (event: React.MouseEvent<HTMLDivElement>) => void = () => {
+    if (countClickCount.current < 1) {
+      countClickCount.current += 1;
+      countClickTimeout.current = setTimeout(() => {
+        updateData(index, id, value + 1);
+        countClickCount.current = 0;
+      }, 200);
+    } else {
+      clearTimeout(countClickTimeout.current);
+      if (value - 1 >= 0) updateData(index, id, value - 1);
+      countClickCount.current = 0;
+    }
+  };
+
+  return (
+    <StyledCell>
+      <span onClick={handleCountClick}>{value}</span>
+    </StyledCell>
+  );
 };
 
 export default StatCell;

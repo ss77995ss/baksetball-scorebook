@@ -3,12 +3,16 @@ import React, { useState } from 'react';
 import { useTable, Column, Cell } from 'react-table';
 import styled from 'styled-components';
 import StatCell from './StatCell';
+import StatCellWithCount from './StatCellWithCount';
+import StatTitleCell from './StatTitleCell';
 import TotalCell from './TotalCell';
+import TotalCellWithCount from './TotalCellWithCount';
+import { STAT_TYPE, DEFAULT_TITLE } from './constants';
 
 const columns: Array<Column> = [
   {
     Header: '項目',
-    accessor: 'statName',
+    accessor: 'statInfo',
   },
   {
     Header: 'Q1',
@@ -34,7 +38,41 @@ const columns: Array<Column> = [
 
 const initialData: Array<object> = [
   {
-    statName: '失誤',
+    statInfo: {
+      type: STAT_TYPE.POINTS_AND_COUNT,
+      name: '快攻',
+      title: {
+        points: DEFAULT_TITLE.POINTS,
+        count: DEFAULT_TITLE.COUNT,
+      },
+    },
+    q1: {
+      count: 0,
+      points: 0,
+    },
+    q2: {
+      count: 0,
+      points: 0,
+    },
+    q3: {
+      count: 0,
+      points: 0,
+    },
+    q4: {
+      count: 0,
+      points: 0,
+    },
+    total: {
+      count: 0,
+      points: 0,
+    },
+  },
+  {
+    statInfo: {
+      type: STAT_TYPE.COUNT_ONLY,
+      name: '失誤',
+      title: DEFAULT_TITLE.COUNT,
+    },
     q1: 0,
     q2: 0,
     q3: 0,
@@ -82,38 +120,41 @@ const StyledTable = styled.div`
   }
 `;
 
-const StyledRadioInput = styled.div`
-  text-align: center;
-`;
-
 const renderCell: (
   cell: Cell,
-  count: number,
-  updateData: (rowIndex: number, columnId: string, value: number) => void,
-) => {} | null | undefined = (cell, count, updateData) => {
+  updateData: (rowIndex: number, columnId: string, value: { count: number; points: number } | number) => void,
+) => {} | null | undefined = (cell, updateData) => {
   switch (cell.column.Header) {
     case '項目':
-      return cell.render('Cell');
+      return <StatTitleCell value={cell.value} />;
     case '總計':
-      return <TotalCell row={cell.row} />;
+      return cell.row.cells[0].value.type === STAT_TYPE.POINTS_AND_COUNT ? (
+        <TotalCellWithCount row={cell.row} />
+      ) : (
+        <TotalCell row={cell.row} />
+      );
     default:
-      return <StatCell row={cell.row} column={cell.column} value={cell.value} count={count} updateData={updateData} />;
+      return cell.row.cells[0].value.type === STAT_TYPE.POINTS_AND_COUNT ? (
+        <StatCellWithCount cell={cell} updateData={updateData} />
+      ) : (
+        <StatCell cell={cell} updateData={updateData} />
+      );
   }
 };
 
-const StatsTable: React.FC = () => {
+const StatTable: React.FC = () => {
   const [data, setData] = useState(initialData);
-  const [count, setcount] = useState(1);
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({
     columns,
     data,
     defaultColumn,
   });
 
-  const handleCheck: (event: { target: HTMLInputElement }) => void = event =>
-    setcount(parseInt(event.target.value, 10));
-
-  const updateData: (rowIndex: number, columnId: string, value: number) => void = (rowIndex, columnId, value) => {
+  const updateData: (rowIndex: number, columnId: string, value: { count: number; points: number } | number) => void = (
+    rowIndex,
+    columnId,
+    value,
+  ) => {
     setData(prev =>
       prev.map((row, index) => {
         if (index === rowIndex) {
@@ -129,16 +170,7 @@ const StatsTable: React.FC = () => {
 
   return (
     <StyledTable>
-      <h3>+/- by selected count with direction Right: +, Left: -</h3>
-      <StyledRadioInput>
-        <input type="radio" id="one" name="count" value="1" checked={count === 1} onChange={handleCheck} />
-        <label htmlFor="one">1</label>
-        <input type="radio" id="two" name="count" value="2" checked={count === 2} onChange={handleCheck} />
-        <label htmlFor="two">2</label>
-        <input type="radio" id="three" name="count" value="3" checked={count === 3} onChange={handleCheck} />
-        <label htmlFor="three">3</label>
-        <p>{`Current: ${count}`}</p>
-      </StyledRadioInput>
+      <h3>+/- by direction Up: +3, Down: -3, Left: -2, Right: +2, Click: +1, DoubleClick: -1</h3>
       <table {...getTableProps()}>
         <thead>
           {// Loop over the header rows
@@ -171,7 +203,7 @@ const StatsTable: React.FC = () => {
                   return (
                     <td {...cell.getCellProps()}>
                       {// Render the cell contents
-                      renderCell(cell, count, updateData)}
+                      renderCell(cell, updateData)}
                     </td>
                   );
                 })}
@@ -184,4 +216,4 @@ const StatsTable: React.FC = () => {
   );
 };
 
-export default StatsTable;
+export default StatTable;

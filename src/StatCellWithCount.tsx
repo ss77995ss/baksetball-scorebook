@@ -1,24 +1,26 @@
 import React, { useRef } from 'react';
-import { Row, Column } from 'react-table';
+import { Cell } from 'react-table';
 import { useSwipeable } from 'react-swipeable';
 import { StyledCell } from './styles';
 
 interface Props {
-  value: {
-    count: number;
-    points: number;
-  };
-  row: Row;
-  column: Column;
+  cell: Cell;
   updateData: (rowIndex: number, columnId: string, value: { count: number; points: number }) => void;
 }
 
-const StatCell: React.FC<Props> = ({ value, row: { index }, column: { id = '' }, updateData }: Props) => {
+const StatCellWithCount: React.FC<Props> = ({ cell, updateData }: Props) => {
+  const {
+    value,
+    row: { index },
+    column: { id = '' },
+  } = cell;
   const { count, points } = value;
+
   const pointsClickTimeout = useRef<number>();
   const countClickTimeout = useRef<number>();
   const pointsClickCount = useRef<number>(0);
   const countClickCount = useRef<number>(0);
+
   const handlers = useSwipeable({
     onSwipedDown: ({ event }) => {
       event.stopPropagation();
@@ -70,4 +72,4 @@ const StatCell: React.FC<Props> = ({ value, row: { index }, column: { id = '' },
   );
 };
 
-export default StatCell;
+export default StatCellWithCount;
