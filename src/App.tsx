@@ -63,6 +63,96 @@ const initialData: Array<object> = [
   },
   {
     statInfo: {
+      type: STAT_TYPE.POINTS_AND_COUNT,
+      name: '禁區',
+      title: {
+        points: DEFAULT_TITLE.POINTS,
+        count: '接球次數',
+      },
+    },
+    q1: {
+      count: 0,
+      points: 0,
+    },
+    q2: {
+      count: 0,
+      points: 0,
+    },
+    q3: {
+      count: 0,
+      points: 0,
+    },
+    q4: {
+      count: 0,
+      points: 0,
+    },
+    total: {
+      count: 0,
+      points: 0,
+    },
+  },
+  {
+    statInfo: {
+      type: STAT_TYPE.POINTS_AND_COUNT,
+      name: '二波',
+      title: {
+        points: DEFAULT_TITLE.POINTS,
+        count: DEFAULT_TITLE.COUNT,
+      },
+    },
+    q1: {
+      count: 0,
+      points: 0,
+    },
+    q2: {
+      count: 0,
+      points: 0,
+    },
+    q3: {
+      count: 0,
+      points: 0,
+    },
+    q4: {
+      count: 0,
+      points: 0,
+    },
+    total: {
+      count: 0,
+      points: 0,
+    },
+  },
+  {
+    statInfo: {
+      type: STAT_TYPE.POINTS_AND_COUNT,
+      name: '三分',
+      title: {
+        points: '進',
+        count: '出手',
+      },
+    },
+    q1: {
+      count: 0,
+      points: 0,
+    },
+    q2: {
+      count: 0,
+      points: 0,
+    },
+    q3: {
+      count: 0,
+      points: 0,
+    },
+    q4: {
+      count: 0,
+      points: 0,
+    },
+    total: {
+      count: 0,
+      points: 0,
+    },
+  },
+  {
+    statInfo: {
       type: STAT_TYPE.COUNT_ONLY,
       name: '失誤',
       title: DEFAULT_TITLE.COUNT,
