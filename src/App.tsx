@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Column } from 'react-table';
 import StatsTable from './StatsTable';
 import { STAT_TYPE, DEFAULT_TITLE } from './constants';
@@ -166,9 +166,25 @@ const initialData: Array<object> = [
 ];
 
 const App: React.FC = () => {
+  const [team, setTeam] = useState('台大');
+
+  const handleCheck: (event: { target: HTMLInputElement }) => void = event => setTeam(event.target.value);
+
   return (
     <div>
-      <StatsTable columns={columns} initialData={initialData} />
+      <div>
+        <input type="radio" id="ntu" name="team" value="台大" onChange={handleCheck} defaultChecked />
+        <label htmlFor="ntu">台大</label>
+        <input type="radio" id="two" name="team" value="對手" onChange={handleCheck} />
+        <label htmlFor="opponent">對手</label>
+        <p>{`Current: ${team}`}</p>
+      </div>
+      <div style={{ display: team === '台大' ? 'block' : 'none' }}>
+        <StatsTable columns={columns} initialData={initialData} />
+      </div>
+      <div style={{ display: team === '台大' ? 'none' : 'block' }}>
+        <StatsTable columns={columns} initialData={initialData} />
+      </div>
     </div>
   );
 };
