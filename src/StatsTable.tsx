@@ -1,132 +1,28 @@
 /* eslint-disable react/jsx-key */
 import React, { useState } from 'react';
 import { useTable, Column, Cell } from 'react-table';
-import styled from 'styled-components';
+import { StyledTable } from './styles';
 import StatCell from './StatCell';
 import StatCellWithCount from './StatCellWithCount';
 import StatTitleCell from './StatTitleCell';
 import TotalCell from './TotalCell';
 import TotalCellWithCount from './TotalCellWithCount';
-import { STAT_TYPE, DEFAULT_TITLE } from './constants';
-
-const columns: Array<Column> = [
-  {
-    Header: '項目',
-    accessor: 'statInfo',
-  },
-  {
-    Header: 'Q1',
-    accessor: 'q1',
-  },
-  {
-    Header: 'Q2',
-    accessor: 'q2',
-  },
-  {
-    Header: 'Q3',
-    accessor: 'q3',
-  },
-  {
-    Header: 'Q4',
-    accessor: 'q4',
-  },
-  {
-    Header: '總計',
-    accessor: 'total',
-  },
-];
-
-const initialData: Array<object> = [
-  {
-    statInfo: {
-      type: STAT_TYPE.POINTS_AND_COUNT,
-      name: '快攻',
-      title: {
-        points: DEFAULT_TITLE.POINTS,
-        count: DEFAULT_TITLE.COUNT,
-      },
-    },
-    q1: {
-      count: 0,
-      points: 0,
-    },
-    q2: {
-      count: 0,
-      points: 0,
-    },
-    q3: {
-      count: 0,
-      points: 0,
-    },
-    q4: {
-      count: 0,
-      points: 0,
-    },
-    total: {
-      count: 0,
-      points: 0,
-    },
-  },
-  {
-    statInfo: {
-      type: STAT_TYPE.COUNT_ONLY,
-      name: '失誤',
-      title: DEFAULT_TITLE.COUNT,
-    },
-    q1: 0,
-    q2: 0,
-    q3: 0,
-    q4: 0,
-    total: 0,
-  },
-];
-
-const defaultColumn = {};
-
-const StyledTable = styled.div`
-  h3 {
-    text-align: center;
-  }
-  table {
-    border-spacing: 0;
-    border: 1px solid black;
-    margin: 16px auto;
-
-    tr {
-      :last-child {
-        td {
-          border-bottom: 0;
-        }
-      }
-    }
-
-    th,
-    td {
-      margin: 0;
-      border-bottom: 1px solid black;
-      border-right: 1px solid black;
-
-      :last-child {
-        border-right: 0;
-      }
-
-      input {
-        font-size: 1rem;
-        padding: 0;
-        margin: 0;
-        border: 0;
-      }
-    }
-  }
-`;
+import { STAT_TYPE } from './constants';
 
 const renderCell: (
   cell: Cell,
-  updateData: (rowIndex: number, columnId: string, value: { count: number; points: number } | number) => void,
+  updateData: (
+    rowIndex: number,
+    columnId: string,
+    value:
+      | { count: number; points: number }
+      | number
+      | { name: string; title: string | { points: string; count: string } },
+  ) => void,
 ) => {} | null | undefined = (cell, updateData) => {
   switch (cell.column.Header) {
     case '項目':
-      return <StatTitleCell value={cell.value} />;
+      return <StatTitleCell cell={cell} updateData={updateData} />;
     case '總計':
       return cell.row.cells[0].value.type === STAT_TYPE.POINTS_AND_COUNT ? (
         <TotalCellWithCount row={cell.row} />
@@ -142,19 +38,26 @@ const renderCell: (
   }
 };
 
-const StatTable: React.FC = () => {
+interface Props {
+  columns: Array<Column>;
+  initialData: Array<object>;
+}
+
+const StatTable: React.FC<Props> = ({ columns, initialData }: Props) => {
   const [data, setData] = useState(initialData);
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({
     columns,
     data,
-    defaultColumn,
   });
 
-  const updateData: (rowIndex: number, columnId: string, value: { count: number; points: number } | number) => void = (
-    rowIndex,
-    columnId,
-    value,
-  ) => {
+  const updateData: (
+    rowIndex: number,
+    columnId: string,
+    value:
+      | { count: number; points: number }
+      | number
+      | { name: string; title: string | { points: string; count: string } },
+  ) => void = (rowIndex, columnId, value) => {
     setData(prev =>
       prev.map((row, index) => {
         if (index === rowIndex) {
