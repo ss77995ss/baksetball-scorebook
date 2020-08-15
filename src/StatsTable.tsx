@@ -1,7 +1,8 @@
 /* eslint-disable react/jsx-key */
-import React, { useState } from 'react';
-import { useTable, Column, Cell } from 'react-table';
+import React from 'react';
+import { useTable, Cell } from 'react-table';
 import { StyledTable } from './styles';
+import { useStatsState, useStatsDispatch } from './hooks/statData';
 import StatCell from './StatCell';
 import StatCellWithCount from './StatCellWithCount';
 import StatTitleCell from './StatTitleCell';
@@ -39,12 +40,13 @@ const renderCell: (
 };
 
 interface Props {
-  columns: Array<Column>;
-  initialData: Array<object>;
+  team: string;
 }
 
-const StatTable: React.FC<Props> = ({ columns, initialData }: Props) => {
-  const [data, setData] = useState(initialData);
+const StatTable: React.FC<Props> = ({ team }: Props) => {
+  const { columns, ntu, opponent } = useStatsState();
+  const statsDispatch = useStatsDispatch();
+  const data = team === 'ntu' ? ntu : opponent;
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({
     columns,
     data,
@@ -58,17 +60,15 @@ const StatTable: React.FC<Props> = ({ columns, initialData }: Props) => {
       | number
       | { name: string; title: string | { points: string; count: string } },
   ) => void = (rowIndex, columnId, value) => {
-    setData(prev =>
-      prev.map((row, index) => {
-        if (index === rowIndex) {
-          return {
-            ...prev[rowIndex],
-            [columnId]: value,
-          };
-        }
-        return row;
-      }),
-    );
+    statsDispatch({
+      type: 'UPDATE_CELL',
+      params: {
+        team,
+        rowIndex,
+        columnId,
+        value,
+      },
+    });
   };
 
   return (
