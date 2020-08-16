@@ -10,6 +10,11 @@ export const DEFAULT_TITLE = {
   COUNT: '次數',
 };
 
+export const DEFAULT_TEAM_NAME = {
+  HOME: '台大',
+  AWAY: '對手',
+};
+
 export const columns: Array<Column> = [
   {
     Header: '項目',

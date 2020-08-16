@@ -16,7 +16,7 @@ type Action =
   | { type: 'UPDATE_CELL'; params: UpdateParamsType }
   | { type: 'UPDATE_STATS_NAME'; params: UpdateParamsType };
 type Dispatch = (action: Action) => void;
-type State = { columns: Array<Column>; ntu: Array<object>; opponent: Array<object> };
+type State = { columns: Array<Column>; home: Array<object>; away: Array<object> };
 type StatsProviderProps = { children: ReactNode };
 
 const StatsStateContext = createContext<State | undefined>(undefined);
@@ -27,7 +27,7 @@ function statsReducer(state: State, action: Action): State {
 
   switch (action.type) {
     case 'UPDATE_CELL': {
-      const prev = action.params.team === 'ntu' ? state.ntu : state.opponent;
+      const prev = action.params.team === 'home' ? state.home : state.away;
 
       return {
         ...state,
@@ -45,19 +45,19 @@ function statsReducer(state: State, action: Action): State {
     case 'UPDATE_STATS_NAME': {
       return {
         ...state,
-        ntu: state.ntu.map((row, index) => {
+        home: state.home.map((row, index) => {
           if (index === rowIndex) {
             return {
-              ...state.ntu[rowIndex],
+              ...state.home[rowIndex],
               [columnId]: value,
             };
           }
           return row;
         }),
-        opponent: state.opponent.map((row, index) => {
+        away: state.away.map((row, index) => {
           if (index === rowIndex) {
             return {
-              ...state.opponent[rowIndex],
+              ...state.away[rowIndex],
               [columnId]: value,
             };
           }
@@ -72,7 +72,7 @@ function statsReducer(state: State, action: Action): State {
 }
 
 function StatsProvider({ children }: StatsProviderProps): ReactComponentElement<React.FC> {
-  const [state, dispatch] = useReducer(statsReducer, { columns: columns, ntu: initialData, opponent: initialData });
+  const [state, dispatch] = useReducer(statsReducer, { columns: columns, home: initialData, away: initialData });
   return (
     <StatsStateContext.Provider value={state}>
       <StatsDispatchContext.Provider value={dispatch}>{children}</StatsDispatchContext.Provider>

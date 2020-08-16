@@ -34,8 +34,8 @@ interface Props {
 }
 
 const StatTable: React.FC<Props> = ({ team }: Props) => {
-  const { columns, ntu, opponent } = useStatsState();
-  const data = team === 'ntu' ? ntu : opponent;
+  const { columns, home, away } = useStatsState();
+  const data = team === 'home' ? home : away;
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({
     columns,
     data,
