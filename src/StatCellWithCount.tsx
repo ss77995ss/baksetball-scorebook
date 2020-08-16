@@ -2,13 +2,14 @@ import React, { useRef } from 'react';
 import { Cell } from 'react-table';
 import { useSwipeable } from 'react-swipeable';
 import { StyledCell } from './styles';
+import { useStatsDispatch } from './hooks/statData';
 
 interface Props {
   cell: Cell;
-  updateData: (rowIndex: number, columnId: string, value: { count: number; points: number }) => void;
+  team: string;
 }
 
-const StatCellWithCount: React.FC<Props> = ({ cell, updateData }: Props) => {
+const StatCellWithCount: React.FC<Props> = ({ cell, team }: Props) => {
   const {
     value,
     row: { index },
@@ -21,16 +22,35 @@ const StatCellWithCount: React.FC<Props> = ({ cell, updateData }: Props) => {
   const pointsClickCount = useRef<number>(0);
   const countClickCount = useRef<number>(0);
 
+  const statsDispatch = useStatsDispatch();
+
+  const updateStats: (
+    value:
+      | { count: number; points: number }
+      | number
+      | { name: string; title: string | { points: string; count: string } },
+  ) => void = value => {
+    statsDispatch({
+      type: 'UPDATE_CELL',
+      params: {
+        team,
+        rowIndex: index,
+        columnId: id,
+        value,
+      },
+    });
+  };
+
   const handlers = useSwipeable({
     onSwipedDown: ({ event }) => {
       event.stopPropagation();
-      if (points - 3 >= 0) updateData(index, id, { points: points - 3, count: count - 1 });
+      if (points - 3 >= 0) updateStats({ points: points - 3, count: count - 1 });
     },
-    onSwipedUp: () => updateData(index, id, { points: points + 3, count: count + 1 }),
+    onSwipedUp: () => updateStats({ points: points + 3, count: count + 1 }),
     onSwipedLeft: () => {
-      if (points - 2 >= 0) updateData(index, id, { points: points - 2, count: count - 1 });
+      if (points - 2 >= 0) updateStats({ points: points - 2, count: count - 1 });
     },
-    onSwipedRight: () => updateData(index, id, { points: points + 2, count: count + 1 }),
+    onSwipedRight: () => updateStats({ points: points + 2, count: count + 1 }),
     preventDefaultTouchmoveEvent: true,
     trackMouse: true,
   });
@@ -39,12 +59,12 @@ const StatCellWithCount: React.FC<Props> = ({ cell, updateData }: Props) => {
     if (pointsClickCount.current < 1) {
       pointsClickCount.current += 1;
       pointsClickTimeout.current = setTimeout(() => {
-        updateData(index, id, { points: points + 1, count });
+        updateStats({ points: points + 1, count });
         pointsClickCount.current = 0;
       }, 200);
     } else {
       clearTimeout(pointsClickTimeout.current);
-      if (points - 1 >= 0) updateData(index, id, { points: points - 1, count });
+      if (points - 1 >= 0) updateStats({ points: points - 1, count });
       pointsClickCount.current = 0;
     }
   };
@@ -53,12 +73,12 @@ const StatCellWithCount: React.FC<Props> = ({ cell, updateData }: Props) => {
     if (countClickCount.current < 1) {
       countClickCount.current += 1;
       countClickTimeout.current = setTimeout(() => {
-        updateData(index, id, { points, count: count + 1 });
+        updateStats({ points, count: count + 1 });
         countClickCount.current = 0;
       }, 200);
     } else {
       clearTimeout(countClickTimeout.current);
-      if (count - 1 >= 0) updateData(index, id, { points, count: count - 1 });
+      if (count - 1 >= 0) updateStats({ points, count: count - 1 });
       countClickCount.current = 0;
     }
   };

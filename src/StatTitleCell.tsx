@@ -2,17 +2,13 @@ import React from 'react';
 import { Cell } from 'react-table';
 import { lensProp, pick, set } from 'ramda';
 import { StyledTitleCell } from './styles';
+import { useStatsDispatch } from './hooks/statData';
 
 interface Props {
   cell: Cell;
-  updateData: (
-    rowIndex: number,
-    columnId: string,
-    value: { name: string; title: string | { points: string; count: string } },
-  ) => void;
 }
 
-const StatTitleCell: React.FC<Props> = ({ cell, updateData }: Props) => {
+const StatTitleCell: React.FC<Props> = ({ cell }: Props) => {
   const {
     value,
     row: { index },
@@ -20,14 +16,33 @@ const StatTitleCell: React.FC<Props> = ({ cell, updateData }: Props) => {
   } = cell;
   const { name, title } = value;
 
+  const statsDispatch = useStatsDispatch();
+
+  const updateStatsName: (
+    value:
+      | { count: number; points: number }
+      | number
+      | { name: string; title: string | { points: string; count: string } },
+  ) => void = value => {
+    statsDispatch({
+      type: 'UPDATE_STATS_NAME',
+      params: {
+        team: '',
+        rowIndex: index,
+        columnId: id,
+        value,
+      },
+    });
+  };
+
   const handleOnClick = (key: string) => (): void => {
     const targetValue = typeof title === 'object' && key !== 'name' ? pick([key], title)[key] : pick([key], value)[key];
     const newKeyName = prompt('輸入新的名稱', targetValue) || targetValue;
     const targetLen = lensProp(key);
 
     typeof title === 'object' && key !== 'name'
-      ? updateData(index, id, { ...value, title: set(targetLen, newKeyName, title) })
-      : updateData(index, id, set(targetLen, newKeyName, value));
+      ? updateStatsName({ ...value, title: set(targetLen, newKeyName, title) })
+      : updateStatsName(set(targetLen, newKeyName, value));
   };
 
   return (

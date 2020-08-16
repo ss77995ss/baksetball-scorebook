@@ -2,7 +2,7 @@
 import React from 'react';
 import { useTable, Cell } from 'react-table';
 import { StyledTable } from './styles';
-import { useStatsState, useStatsDispatch } from './hooks/statData';
+import { useStatsState } from './hooks/statData';
 import StatCell from './StatCell';
 import StatCellWithCount from './StatCellWithCount';
 import StatTitleCell from './StatTitleCell';
@@ -10,20 +10,10 @@ import TotalCell from './TotalCell';
 import TotalCellWithCount from './TotalCellWithCount';
 import { STAT_TYPE } from './constants';
 
-const renderCell: (
-  cell: Cell,
-  updateData: (
-    rowIndex: number,
-    columnId: string,
-    value:
-      | { count: number; points: number }
-      | number
-      | { name: string; title: string | { points: string; count: string } },
-  ) => void,
-) => {} | null | undefined = (cell, updateData) => {
+const renderCell: (team: string, cell: Cell) => {} | null | undefined = (team, cell) => {
   switch (cell.column.Header) {
     case '項目':
-      return <StatTitleCell cell={cell} updateData={updateData} />;
+      return <StatTitleCell cell={cell} />;
     case '總計':
       return cell.row.cells[0].value.type === STAT_TYPE.POINTS_AND_COUNT ? (
         <TotalCellWithCount row={cell.row} />
@@ -32,9 +22,9 @@ const renderCell: (
       );
     default:
       return cell.row.cells[0].value.type === STAT_TYPE.POINTS_AND_COUNT ? (
-        <StatCellWithCount cell={cell} updateData={updateData} />
+        <StatCellWithCount cell={cell} team={team} />
       ) : (
-        <StatCell cell={cell} updateData={updateData} />
+        <StatCell cell={cell} team={team} />
       );
   }
 };
@@ -45,31 +35,11 @@ interface Props {
 
 const StatTable: React.FC<Props> = ({ team }: Props) => {
   const { columns, ntu, opponent } = useStatsState();
-  const statsDispatch = useStatsDispatch();
   const data = team === 'ntu' ? ntu : opponent;
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({
     columns,
     data,
   });
-
-  const updateData: (
-    rowIndex: number,
-    columnId: string,
-    value:
-      | { count: number; points: number }
-      | number
-      | { name: string; title: string | { points: string; count: string } },
-  ) => void = (rowIndex, columnId, value) => {
-    statsDispatch({
-      type: 'UPDATE_CELL',
-      params: {
-        team,
-        rowIndex,
-        columnId,
-        value,
-      },
-    });
-  };
 
   return (
     <StyledTable>
@@ -106,7 +76,7 @@ const StatTable: React.FC<Props> = ({ team }: Props) => {
                   return (
                     <td {...cell.getCellProps()}>
                       {// Render the cell contents
-                      renderCell(cell, updateData)}
+                      renderCell(team, cell)}
                     </td>
                   );
                 })}

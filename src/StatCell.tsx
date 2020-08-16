@@ -1,13 +1,14 @@
 import React, { useRef } from 'react';
 import { Cell } from 'react-table';
 import { StyledCell } from './styles';
+import { useStatsDispatch } from './hooks/statData';
 
 interface Props {
   cell: Cell;
-  updateData: (rowIndex: number, columnId: string, value: number) => void;
+  team: string;
 }
 
-const StatCell: React.FC<Props> = ({ cell, updateData }: Props) => {
+const StatCell: React.FC<Props> = ({ cell, team }: Props) => {
   const {
     value,
     row: { index },
@@ -16,17 +17,35 @@ const StatCell: React.FC<Props> = ({ cell, updateData }: Props) => {
 
   const countClickTimeout = useRef<number>();
   const countClickCount = useRef<number>(0);
+  const statsDispatch = useStatsDispatch();
+
+  const updateStats: (
+    value:
+      | { count: number; points: number }
+      | number
+      | { name: string; title: string | { points: string; count: string } },
+  ) => void = value => {
+    statsDispatch({
+      type: 'UPDATE_CELL',
+      params: {
+        team,
+        rowIndex: index,
+        columnId: id,
+        value,
+      },
+    });
+  };
 
   const handleCountClick: (event: React.MouseEvent<HTMLDivElement>) => void = () => {
     if (countClickCount.current < 1) {
       countClickCount.current += 1;
       countClickTimeout.current = setTimeout(() => {
-        updateData(index, id, value + 1);
+        updateStats(value + 1);
         countClickCount.current = 0;
       }, 200);
     } else {
       clearTimeout(countClickTimeout.current);
-      if (value - 1 >= 0) updateData(index, id, value - 1);
+      if (value - 1 >= 0) updateStats(value - 1);
       countClickCount.current = 0;
     }
   };
