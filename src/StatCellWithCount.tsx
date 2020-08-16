@@ -55,7 +55,7 @@ const StatCellWithCount: React.FC<Props> = ({ cell, team }: Props) => {
     trackMouse: true,
   });
 
-  const handlePointsClick: (event: React.MouseEvent<HTMLDivElement>) => void = () => {
+  const handlePointsClick = (): void => {
     if (pointsClickCount.current < 1) {
       pointsClickCount.current += 1;
       pointsClickTimeout.current = setTimeout(() => {
@@ -69,7 +69,7 @@ const StatCellWithCount: React.FC<Props> = ({ cell, team }: Props) => {
     }
   };
 
-  const handleCountClick: (event: React.MouseEvent<HTMLDivElement>) => void = () => {
+  const handleCountClick = (): void => {
     if (countClickCount.current < 1) {
       countClickCount.current += 1;
       countClickTimeout.current = setTimeout(() => {

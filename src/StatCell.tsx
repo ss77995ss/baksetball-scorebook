@@ -36,7 +36,7 @@ const StatCell: React.FC<Props> = ({ cell, team }: Props) => {
     });
   };
 
-  const handleCountClick: (event: React.MouseEvent<HTMLDivElement>) => void = () => {
+  const handleCountClick = (): void => {
     if (countClickCount.current < 1) {
       countClickCount.current += 1;
       countClickTimeout.current = setTimeout(() => {

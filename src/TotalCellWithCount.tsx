@@ -1,6 +1,6 @@
 import React from 'react';
 import { Row } from 'react-table';
-import { omit } from 'ramda';
+import { getTotalWithCount } from './utils';
 import { StyledCell } from './styles';
 
 interface Props {
@@ -12,23 +12,8 @@ type StatWithCountType = {
   points: number;
 };
 
-const getTotal: (rowData: object) => string = rowData => {
-  const quarterStats: Array<StatWithCountType> = Object.values(omit(['statInfo', 'total'], rowData));
-
-  const sum = quarterStats.reduce(
-    ({ count: accCount, points: accPoints }, { count: currentCount, points: currentPoints }) => {
-      return {
-        count: accCount + currentCount,
-        points: accPoints + currentPoints,
-      };
-    },
-  );
-
-  return `${sum.points}/${sum.count}`;
-};
-
 const TotalCellWithCount: React.FC<Props> = ({ row }: Props) => {
-  return <StyledCell>{getTotal(row.values)}</StyledCell>;
+  return <StyledCell>{getTotalWithCount(row.values)}</StyledCell>;
 };
 
 export default TotalCellWithCount;

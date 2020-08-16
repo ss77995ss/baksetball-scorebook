@@ -1,40 +1,27 @@
 import React, { useState } from 'react';
-import StatsTable from './StatsTable';
 import { StatsProvider } from './hooks/statData';
 import { DEFAULT_TEAM_NAME } from './constants';
+import EditMode from './EditMode';
+import ViewMode from './ViewMode';
 
 const App: React.FC = () => {
   const [teamName, setTeamName] = useState(DEFAULT_TEAM_NAME);
-  const [team, setTeam] = useState<keyof typeof teamName>('HOME');
-  const { HOME, AWAY } = teamName;
+  const [mode, setMode] = useState('編輯');
 
-  const handleCheck: (event: { target: HTMLInputElement }) => void = event => {
-    if (event.target.value === 'HOME' || event.target.value === 'AWAY') {
-      setTeam(event.target.value);
-    } else {
-      throw new Error('Something went wrong');
-    }
-  };
-  const handleClick = (): void => {
-    const newTeamName = prompt('請輸入新的隊伍名稱', teamName[team]) || teamName[team];
-    setTeamName(prev => ({
-      ...prev,
-      [team]: newTeamName,
-    }));
-  };
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void =>
+    setMode(event.currentTarget.value);
 
   return (
     <StatsProvider>
       <div style={{ textAlign: 'center' }}>
-        <input type="radio" id="home" name="team" value="HOME" onChange={handleCheck} defaultChecked />
-        <label htmlFor="home">{HOME}</label>
-        <input type="radio" id="away" name="team" value="AWAY" onChange={handleCheck} />
-        <label htmlFor="away">{AWAY}</label>
-        <p onClick={handleClick}>{`Current: ${teamName[team]}`}</p>
+        <button type="button" value="編輯" onClick={handleClick}>
+          編輯
+        </button>
+        <button type="button" value="檢視" onClick={handleClick}>
+          檢視
+        </button>
       </div>
-      <div>
-        <StatsTable team={team === 'HOME' ? 'home' : 'away'} />
-      </div>
+      {mode === '編輯' ? <EditMode teamName={teamName} setTeamName={setTeamName} /> : <ViewMode teamName={teamName} />}
     </StatsProvider>
   );
 };
