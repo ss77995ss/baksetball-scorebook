@@ -6,8 +6,9 @@ import { useStatsState } from './hooks/statData';
 import { STAT_TYPE } from './constants';
 import { getTotal, getTotalWithCount } from './utils';
 import { StyledDisplayCell } from './styles';
+import { StatType } from './types';
 
-const renderCell: (cell: Cell) => {} | null | undefined = cell => {
+const renderCell: (cell: Cell<StatType>) => {} | null | undefined = cell => {
   switch (cell.column.Header) {
     case '項目':
       return (
@@ -32,19 +33,21 @@ const renderCell: (cell: Cell) => {} | null | undefined = cell => {
 interface Props {
   team: string;
   teamName: string;
+  filterValue: string;
 }
 
-const DisplayTable: React.FC<Props> = ({ team, teamName }: Props) => {
+const DisplayTable: React.FC<Props> = ({ team, teamName, filterValue }: Props) => {
   const { columns, home, away } = useStatsState();
   const data = team === 'home' ? home : away;
+  const resolvedData = data.filter(stat => stat.statInfo.name === filterValue);
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({
     columns,
-    data,
+    data: filterValue ? resolvedData : data,
   });
 
   return (
     <StyledTable>
-      <h3>{teamName}</h3>
+      <p>{`紀錄球隊：${teamName}`}</p>
       <table {...getTableProps()}>
         <thead>
           {// Loop over the header rows

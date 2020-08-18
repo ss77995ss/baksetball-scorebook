@@ -1,11 +1,12 @@
 import React from 'react';
 import { Cell } from 'react-table';
+import { StatType } from './types';
 import { lensProp, pick, set } from 'ramda';
 import { StyledTitleCell } from './styles';
 import { useStatsDispatch } from './hooks/statData';
 
 interface Props {
-  cell: Cell;
+  cell: Cell<StatType>;
 }
 
 const StatTitleCell: React.FC<Props> = ({ cell }: Props) => {

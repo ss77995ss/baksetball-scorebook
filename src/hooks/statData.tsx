@@ -1,6 +1,7 @@
 import React, { createContext, ReactNode, useContext, useReducer, ReactComponentElement } from 'react';
 import { Column } from 'react-table';
 import { columns, initialData } from '../constants';
+import { StatType } from '../types';
 
 type UpdateParamsType = {
   team: string;
@@ -16,7 +17,7 @@ type Action =
   | { type: 'UPDATE_CELL'; params: UpdateParamsType }
   | { type: 'UPDATE_STATS_NAME'; params: UpdateParamsType };
 type Dispatch = (action: Action) => void;
-type State = { columns: Array<Column>; home: Array<object>; away: Array<object> };
+type State = { columns: Array<Column<StatType>>; home: Array<StatType>; away: Array<StatType> };
 type StatsProviderProps = { children: ReactNode };
 
 const StatsStateContext = createContext<State | undefined>(undefined);

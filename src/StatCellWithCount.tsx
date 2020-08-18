@@ -3,9 +3,10 @@ import { Cell } from 'react-table';
 import { useSwipeable } from 'react-swipeable';
 import { StyledCell } from './styles';
 import { useStatsDispatch } from './hooks/statData';
+import { StatType } from './types';
 
 interface Props {
-  cell: Cell;
+  cell: Cell<StatType>;
   team: string;
 }
 

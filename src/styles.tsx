@@ -4,10 +4,15 @@ export const StyledTable = styled.div`
   h3 {
     text-align: center;
   }
+
+  p {
+    text-align: left;
+  }
+
   table {
     border-spacing: 0;
     border: 1px solid black;
-    margin: 16px auto;
+    margin: auto;
 
     tr {
       :last-child {

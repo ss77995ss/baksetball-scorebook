@@ -3,6 +3,7 @@ import React from 'react';
 import { useTable, Cell } from 'react-table';
 import { StyledTable } from './styles';
 import { useStatsState } from './hooks/statData';
+import { StatType } from './types';
 import { STAT_TYPE } from './constants';
 import StatCell from './StatCell';
 import StatCellWithCount from './StatCellWithCount';
@@ -10,7 +11,7 @@ import StatTitleCell from './StatTitleCell';
 import TotalCell from './TotalCell';
 import TotalCellWithCount from './TotalCellWithCount';
 
-const renderCell: (team: string, cell: Cell) => {} | null | undefined = (team, cell) => {
+const renderCell: (team: string, cell: Cell<StatType>) => {} | null | undefined = (team, cell) => {
   switch (cell.column.Header) {
     case '項目':
       return <StatTitleCell cell={cell} />;

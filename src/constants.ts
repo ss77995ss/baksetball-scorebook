@@ -1,4 +1,5 @@
 import { Column } from 'react-table';
+import { StatType } from './types';
 
 export const STAT_TYPE = {
   COUNT_ONLY: 'COUNT_ONLY',
@@ -15,7 +16,7 @@ export const DEFAULT_TEAM_NAME = {
   AWAY: '對手',
 };
 
-export const columns: Array<Column> = [
+export const columns: Array<Column<StatType>> = [
   {
     Header: '項目',
     accessor: 'statInfo',
@@ -42,7 +43,7 @@ export const columns: Array<Column> = [
   },
 ];
 
-export const initialData: Array<object> = [
+export const initialData: Array<StatType> = [
   {
     statInfo: {
       type: STAT_TYPE.POINTS_AND_COUNT,
