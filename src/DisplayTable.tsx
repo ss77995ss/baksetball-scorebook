@@ -3,48 +3,51 @@ import React from 'react';
 import { useTable, Cell } from 'react-table';
 import { StyledTable } from './styles';
 import { useStatsState } from './hooks/statData';
-import { StatType } from './types';
 import { STAT_TYPE } from './constants';
-import StatCell from './StatCell';
-import StatCellWithCount from './StatCellWithCount';
-import StatTitleCell from './StatTitleCell';
-import TotalCell from './TotalCell';
-import TotalCellWithCount from './TotalCellWithCount';
+import { getTotal, getTotalWithCount } from './utils';
+import { StyledDisplayCell } from './styles';
+import { StatType } from './types';
 
-const renderCell: (team: string, cell: Cell<StatType>) => {} | null | undefined = (team, cell) => {
+const renderCell: (cell: Cell<StatType>) => {} | null | undefined = cell => {
   switch (cell.column.Header) {
     case '項目':
-      return <StatTitleCell cell={cell} />;
+      return (
+        <>
+          <div>{cell.value.name}</div>
+          <div>
+            {typeof cell.value.title === 'object'
+              ? `${cell.value.title.points}/${cell.value.title.count}`
+              : cell.value.title}
+          </div>
+        </>
+      );
     case '總計':
-      return cell.row.cells[0].value.type === STAT_TYPE.POINTS_AND_COUNT ? (
-        <TotalCellWithCount row={cell.row} />
-      ) : (
-        <TotalCell row={cell.row} />
-      );
+      return cell.row.cells[0].value.type === STAT_TYPE.POINTS_AND_COUNT
+        ? getTotalWithCount(cell.row.values)
+        : getTotal(cell.row.values);
     default:
-      return cell.row.cells[0].value.type === STAT_TYPE.POINTS_AND_COUNT ? (
-        <StatCellWithCount cell={cell} team={team} />
-      ) : (
-        <StatCell cell={cell} team={team} />
-      );
+      return typeof cell.value === 'object' ? `${cell.value.points} / ${cell.value.count}` : cell.value;
   }
 };
 
 interface Props {
   team: string;
+  teamName: string;
+  filterValue: string;
 }
 
-const StatTable: React.FC<Props> = ({ team }: Props) => {
+const DisplayTable: React.FC<Props> = ({ team, teamName, filterValue }: Props) => {
   const { columns, home, away } = useStatsState();
   const data = team === 'home' ? home : away;
+  const resolvedData = data.filter(stat => stat.statInfo.name === filterValue);
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({
     columns,
-    data,
+    data: filterValue ? resolvedData : data,
   });
 
   return (
     <StyledTable>
-      <h3>+/- by direction Up: +3, Down: -3, Left: -2, Right: +2, Click: +1, DoubleClick: -1</h3>
+      <p>{`紀錄球隊：${teamName}`}</p>
       <table {...getTableProps()}>
         <thead>
           {// Loop over the header rows
@@ -76,8 +79,10 @@ const StatTable: React.FC<Props> = ({ team }: Props) => {
                   // Apply the cell props
                   return (
                     <td {...cell.getCellProps()}>
-                      {// Render the cell contents
-                      renderCell(team, cell)}
+                      {
+                        // Render the cell contents
+                        <StyledDisplayCell>{renderCell(cell)}</StyledDisplayCell>
+                      }
                     </td>
                   );
                 })}
@@ -90,4 +95,4 @@ const StatTable: React.FC<Props> = ({ team }: Props) => {
   );
 };
 
-export default StatTable;
+export default DisplayTable;
