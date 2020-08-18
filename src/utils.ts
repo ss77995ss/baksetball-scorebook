@@ -22,5 +22,5 @@ export const getTotalWithCount: (rowData: object) => string = rowData => {
     },
   );
 
-  return `${sum.points}/${sum.count}`;
+  return `${sum.points} / ${sum.count}`;
 };

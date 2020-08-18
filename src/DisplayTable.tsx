@@ -5,7 +5,7 @@ import { StyledTable } from './styles';
 import { useStatsState } from './hooks/statData';
 import { STAT_TYPE } from './constants';
 import { getTotal, getTotalWithCount } from './utils';
-import { StyledTitleCell } from './styles';
+import { StyledDisplayCell } from './styles';
 
 const renderCell: (cell: Cell) => {} | null | undefined = cell => {
   switch (cell.column.Header) {
@@ -25,7 +25,7 @@ const renderCell: (cell: Cell) => {} | null | undefined = cell => {
         ? getTotalWithCount(cell.row.values)
         : getTotal(cell.row.values);
     default:
-      return typeof cell.value === 'object' ? `${cell.value.points}/${cell.value.count}` : cell.value;
+      return typeof cell.value === 'object' ? `${cell.value.points} / ${cell.value.count}` : cell.value;
   }
 };
 
@@ -78,7 +78,7 @@ const DisplayTable: React.FC<Props> = ({ team, teamName }: Props) => {
                     <td {...cell.getCellProps()}>
                       {
                         // Render the cell contents
-                        <StyledTitleCell>{renderCell(cell)}</StyledTitleCell>
+                        <StyledDisplayCell>{renderCell(cell)}</StyledDisplayCell>
                       }
                     </td>
                   );

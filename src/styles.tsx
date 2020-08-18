@@ -48,7 +48,7 @@ export const StyledCell = styled.div`
   }
 
   @media (max-width: 600px) {
-    padding: 1.2rem;
+    padding: 0.75rem;
   }
 `;
 
@@ -59,4 +59,17 @@ export const StyledTitleCell = styled.div`
 export const TitleNameInput = styled.button`
   text-align: center;
   width: 50%;
+`;
+
+export const StyledDisplayCell = styled.div`
+  text-align: center;
+  padding: 2rem;
+
+  @media (min-width: 600px) and (max-width: 900px) {
+    padding: 1.5rem;
+  }
+
+  @media (max-width: 600px) {
+    padding: 0.15rem;
+  }
 `;

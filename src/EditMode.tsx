@@ -1,5 +1,16 @@
 import React, { useState } from 'react';
+import styled from 'styled-components';
 import StatsTable from './StatsTable';
+
+const StyledEditModeRoot = styled.div`
+  text-align: center;
+
+  p {
+    span {
+      cursor: pointer;
+    }
+  }
+`;
 
 interface Props {
   teamName: {
@@ -35,14 +46,16 @@ const EditMode: React.FC<Props> = ({ teamName, setTeamName }: Props) => {
   };
 
   return (
-    <div style={{ textAlign: 'center' }}>
+    <StyledEditModeRoot>
       <input type="radio" id="home" name="team" value="HOME" onChange={handleCheck} defaultChecked />
       <label htmlFor="home">{HOME}</label>
       <input type="radio" id="away" name="team" value="AWAY" onChange={handleCheck} />
       <label htmlFor="away">{AWAY}</label>
-      <p onClick={handleClick}>{`Current: ${teamName[team]}`}</p>
+      <p onClick={handleClick}>
+        <span>{`Current: ${teamName[team]}`}</span>
+      </p>
       <StatsTable team={team === 'HOME' ? 'home' : 'away'} />
-    </div>
+    </StyledEditModeRoot>
   );
 };
 
