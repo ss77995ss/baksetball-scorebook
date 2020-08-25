@@ -86,9 +86,13 @@ const StatCellWithCount: React.FC<Props> = ({ cell, team }: Props) => {
 
   return (
     <StyledCell {...handlers}>
-      <span onClick={handlePointsClick}>{points}</span>
+      <div style={{ paddingBottom: '0.5rem' }} onClick={handlePointsClick}>
+        {points}
+      </div>
       <hr />
-      <span onClick={handleCountClick}>{count}</span>
+      <div style={{ paddingTop: '0.5rem' }} onClick={handleCountClick}>
+        {count}
+      </div>
     </StyledCell>
   );
 };

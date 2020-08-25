@@ -45,20 +45,28 @@ export const StyledTable = styled.div`
 
 export const StyledCell = styled.div`
   font-weight: bold;
-  padding: 4rem;
   user-select: none;
   text-align: center;
 
-  @media (min-width: 600px) and (max-width: 900px) {
-    padding: 2.5rem;
+  div {
+    padding: 4rem;
+
+    @media (min-width: 600px) and (max-width: 900px) {
+      padding: 2.5rem;
+    }
+
+    @media (min-width: 400px) and (max-width: 599px) {
+      padding: 1.2rem;
+    }
+
+    @media (max-width: 399px) {
+      padding: 0.75rem;
+    }
   }
 
-  @media (min-width: 400px) and (max-width: 599px) {
-    padding: 1.2rem;
-  }
-
-  @media (max-width: 399px) {
-    padding: 0.75rem;
+  hr {
+    width: 1rem;
+    margin: 0 auto;
   }
 `;
 

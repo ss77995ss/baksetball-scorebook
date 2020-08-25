@@ -9,7 +9,11 @@ interface Props {
 }
 
 const TotalCell: React.FC<Props> = ({ row }: Props) => {
-  return <StyledCell>{getTotal(row.values)}</StyledCell>;
+  return (
+    <StyledCell>
+      <div>{getTotal(row.values)}</div>
+    </StyledCell>
+  );
 };
 
 export default TotalCell;
