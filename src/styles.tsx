@@ -27,6 +27,7 @@ export const StyledTable = styled.div`
       margin: 0;
       border-bottom: 1px solid black;
       border-right: 1px solid black;
+      touch-action: manipulation;
 
       :last-child {
         border-right: 0;
@@ -52,7 +53,11 @@ export const StyledCell = styled.div`
     padding: 2.5rem;
   }
 
-  @media (max-width: 600px) {
+  @media (min-width: 400px) and (max-width: 599px) {
+    padding: 1.2rem;
+  }
+
+  @media (max-width: 399px) {
     padding: 0.75rem;
   }
 `;
