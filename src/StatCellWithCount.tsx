@@ -45,11 +45,11 @@ const StatCellWithCount: React.FC<Props> = ({ cell, team }: Props) => {
   const handlers = useSwipeable({
     onSwipedDown: ({ event }) => {
       event.stopPropagation();
-      if (points - 3 >= 0) updateStats({ points: points - 3, count: count - 1 });
+      if (points - 3 >= 0) updateStats({ points: points - 3, count: count - 1 >= 0 ? count - 1 : count });
     },
     onSwipedUp: () => updateStats({ points: points + 3, count: count + 1 }),
     onSwipedLeft: () => {
-      if (points - 2 >= 0) updateStats({ points: points - 2, count: count - 1 });
+      if (points - 2 >= 0) updateStats({ points: points - 2, count: count - 1 >= 0 ? count - 1 : count });
     },
     onSwipedRight: () => updateStats({ points: points + 2, count: count + 1 }),
     preventDefaultTouchmoveEvent: true,
