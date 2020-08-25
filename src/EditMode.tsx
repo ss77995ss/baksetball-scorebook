@@ -4,6 +4,7 @@ import StatsTable from './StatsTable';
 
 const StyledEditModeRoot = styled.div`
   text-align: center;
+  padding-bottom: 28px;
 
   p {
     span {

@@ -5,6 +5,7 @@ import { useStatsState } from './hooks/statData';
 
 const StyledViewModeRoot = styled.div`
   text-align: center;
+  padding-bottom: 28px;
 `;
 
 const StyledDisplayTable = styled.div`
