@@ -52,6 +52,7 @@ export const initialData: Array<StatType> = [
         points: DEFAULT_TITLE.POINTS,
         count: DEFAULT_TITLE.COUNT,
       },
+      isSwipeable: true,
     },
     q1: {
       count: 0,
@@ -82,6 +83,7 @@ export const initialData: Array<StatType> = [
         points: DEFAULT_TITLE.POINTS,
         count: '接球次數',
       },
+      isSwipeable: true,
     },
     q1: {
       count: 0,
@@ -112,6 +114,7 @@ export const initialData: Array<StatType> = [
         points: DEFAULT_TITLE.POINTS,
         count: DEFAULT_TITLE.COUNT,
       },
+      isSwipeable: true,
     },
     q1: {
       count: 0,
@@ -142,6 +145,7 @@ export const initialData: Array<StatType> = [
         points: '進',
         count: '出手',
       },
+      isSwipeable: false,
     },
     q1: {
       count: 0,
@@ -169,6 +173,7 @@ export const initialData: Array<StatType> = [
       type: STAT_TYPE.COUNT_ONLY,
       name: '失誤',
       title: DEFAULT_TITLE.COUNT,
+      isSwipeable: false,
     },
     q1: 0,
     q2: 0,

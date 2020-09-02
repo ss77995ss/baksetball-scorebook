@@ -23,7 +23,7 @@ const renderCell: (team: string, cell: Cell<StatType>) => {} | null | undefined 
       );
     default:
       return cell.row.cells[0].value.type === STAT_TYPE.POINTS_AND_COUNT ? (
-        <StatCellWithCount cell={cell} team={team} />
+        <StatCellWithCount cell={cell} team={team} isSwipeable={cell.row.cells[0].value.isSwipeable} />
       ) : (
         <StatCell cell={cell} team={team} />
       );

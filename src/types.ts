@@ -2,6 +2,7 @@ export type StatType = {
   statInfo: {
     type: string;
     name: string;
+    isSwipeable: boolean;
     title:
       | {
           points: string;
