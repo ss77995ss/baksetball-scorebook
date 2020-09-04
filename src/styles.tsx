@@ -43,30 +43,27 @@ export const StyledTable = styled.div`
   }
 `;
 
-export const StyledCell = styled.div`
+export const StyledCell = styled.div<{ readOnly: boolean }>`
   font-weight: bold;
   user-select: none;
   text-align: center;
+  padding: 4rem;
+  background-color: ${(props): string => (props.readOnly ? 'white' : '#ddddff')};
 
-  div {
-    padding: 4rem;
+  @media (min-width: 600px) and (max-width: 900px) {
+    padding: 2.5rem;
+  }
 
-    @media (min-width: 600px) and (max-width: 900px) {
-      padding: 2.5rem;
-    }
+  @media (min-width: 400px) and (max-width: 599px) {
+    padding: 1.2rem;
+  }
 
-    @media (min-width: 400px) and (max-width: 599px) {
-      padding: 1.2rem;
-    }
-
-    @media (max-width: 399px) {
-      padding: 0.75rem;
-    }
+  @media (max-width: 399px) {
+    padding: 0.75rem;
   }
 
   hr {
     width: 1rem;
-    margin: 0 auto;
   }
 `;
 

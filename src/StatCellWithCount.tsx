@@ -86,14 +86,10 @@ const StatCellWithCount: React.FC<Props> = ({ cell, team, isSwipeable }: Props) 
   };
 
   return (
-    <StyledCell {...(isSwipeable && handlers)}>
-      <div style={{ paddingBottom: '0.5rem' }}>
-        <span onClick={handlePointsClick}>{points}</span>
-      </div>
+    <StyledCell {...(isSwipeable && handlers)} readOnly={false}>
+      <span onClick={handlePointsClick}>{points}</span>
       <hr />
-      <div style={{ paddingTop: '0.5rem' }}>
-        <span onClick={handleCountClick}>{count}</span>
-      </div>
+      <span onClick={handleCountClick}>{count}</span>
     </StyledCell>
   );
 };

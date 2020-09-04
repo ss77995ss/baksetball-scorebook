@@ -10,8 +10,8 @@ interface Props {
 
 const TotalCell: React.FC<Props> = ({ row }: Props) => {
   return (
-    <StyledCell>
-      <div>{getTotal(row.values)}</div>
+    <StyledCell readOnly>
+      <span>{getTotal(row.values)}</span>
     </StyledCell>
   );
 };

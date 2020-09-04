@@ -15,8 +15,8 @@ type StatWithCountType = {
 
 const TotalCellWithCount: React.FC<Props> = ({ row }: Props) => {
   return (
-    <StyledCell>
-      <div>{getTotalWithCount(row.values)}</div>
+    <StyledCell readOnly>
+      <span>{getTotalWithCount(row.values)}</span>
     </StyledCell>
   );
 };
