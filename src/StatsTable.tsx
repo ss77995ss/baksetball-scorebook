@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-key */
-import React from 'react';
+import React, { useState } from 'react';
 import { useTable, Cell } from 'react-table';
 import { StyledTable } from './styles';
 import { useStatsState } from './hooks/statData';
@@ -10,8 +10,13 @@ import StatCellWithCount from './StatCellWithCount';
 import StatTitleCell from './StatTitleCell';
 import TotalCell from './TotalCell';
 import TotalCellWithCount from './TotalCellWithCount';
+import ReadOnlyCell from './ReadOnlyCell';
 
-const renderCell: (team: string, cell: Cell<StatType>) => {} | null | undefined = (team, cell) => {
+const renderCell: (quarter: string, team: string, cell: Cell<StatType>) => {} | null | undefined = (
+  quarter,
+  team,
+  cell,
+) => {
   switch (cell.column.Header) {
     case '項目':
       return <StatTitleCell cell={cell} />;
@@ -21,12 +26,15 @@ const renderCell: (team: string, cell: Cell<StatType>) => {} | null | undefined 
       ) : (
         <TotalCell row={cell.row} />
       );
-    default:
+    default: {
+      if (cell.column.id !== quarter) return <ReadOnlyCell cell={cell} />;
+
       return cell.row.cells[0].value.type === STAT_TYPE.POINTS_AND_COUNT ? (
-        <StatCellWithCount cell={cell} team={team} />
+        <StatCellWithCount cell={cell} team={team} isSwipeable={cell.row.cells[0].value.isSwipeable} />
       ) : (
         <StatCell cell={cell} team={team} />
       );
+    }
   }
 };
 
@@ -35,6 +43,7 @@ interface Props {
 }
 
 const StatTable: React.FC<Props> = ({ team }: Props) => {
+  const [quarter, setQuarter] = useState('q1');
   const { columns, home, away } = useStatsState();
   const data = team === 'home' ? home : away;
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({
@@ -52,13 +61,23 @@ const StatTable: React.FC<Props> = ({ team }: Props) => {
             // Apply the header row props
             <tr {...headerGroup.getHeaderGroupProps()}>
               {// Loop over the headers in each row
-              headerGroup.headers.map(column => (
+              headerGroup.headers.map(column => {
+                const headerProps =
+                  column.Header !== '項目' && column.Header !== '總計'
+                    ? {
+                        ...column.getHeaderProps(),
+                        style: { cursor: 'pointer' },
+                        onClick: (): void => setQuarter(column.id),
+                      }
+                    : column.getHeaderProps();
                 // Apply the header cell props
-                <th {...column.getHeaderProps()}>
-                  {// Render the header
-                  column.render('Header')}
-                </th>
-              ))}
+                return (
+                  <th {...headerProps}>
+                    {// Render the header
+                    column.render('Header')}
+                  </th>
+                );
+              })}
             </tr>
           ))}
         </thead>
@@ -77,7 +96,7 @@ const StatTable: React.FC<Props> = ({ team }: Props) => {
                   return (
                     <td {...cell.getCellProps()}>
                       {// Render the cell contents
-                      renderCell(team, cell)}
+                      renderCell(quarter, team, cell)}
                     </td>
                   );
                 })}

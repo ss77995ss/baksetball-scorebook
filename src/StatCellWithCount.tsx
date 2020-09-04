@@ -8,9 +8,10 @@ import { StatType } from './types';
 interface Props {
   cell: Cell<StatType>;
   team: string;
+  isSwipeable: boolean;
 }
 
-const StatCellWithCount: React.FC<Props> = ({ cell, team }: Props) => {
+const StatCellWithCount: React.FC<Props> = ({ cell, team, isSwipeable }: Props) => {
   const {
     value,
     row: { index },
@@ -60,7 +61,7 @@ const StatCellWithCount: React.FC<Props> = ({ cell, team }: Props) => {
     if (pointsClickCount.current < 1) {
       pointsClickCount.current += 1;
       pointsClickTimeout.current = setTimeout(() => {
-        updateStats({ points: points + 1, count });
+        updateStats({ points: points + 1, count: count + 1 });
         pointsClickCount.current = 0;
       }, 200);
     } else {
@@ -85,14 +86,10 @@ const StatCellWithCount: React.FC<Props> = ({ cell, team }: Props) => {
   };
 
   return (
-    <StyledCell {...handlers}>
-      <div style={{ paddingBottom: '0.5rem' }} onClick={handlePointsClick}>
-        {points}
-      </div>
+    <StyledCell {...(isSwipeable && handlers)} readOnly={false}>
+      <span onClick={handlePointsClick}>{points}</span>
       <hr />
-      <div style={{ paddingTop: '0.5rem' }} onClick={handleCountClick}>
-        {count}
-      </div>
+      <span onClick={handleCountClick}>{count}</span>
     </StyledCell>
   );
 };

@@ -52,8 +52,8 @@ const StatCell: React.FC<Props> = ({ cell, team }: Props) => {
   };
 
   return (
-    <StyledCell>
-      <div onClick={handleCountClick}>{value}</div>
+    <StyledCell readOnly={false}>
+      <span onClick={handleCountClick}>{value}</span>
     </StyledCell>
   );
 };
