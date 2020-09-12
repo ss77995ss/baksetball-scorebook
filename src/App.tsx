@@ -1,38 +1,38 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { StatsProvider } from './hooks/statData';
-import { DEFAULT_TEAM_NAME } from './constants';
-import EditMode from './EditMode';
-import ViewMode from './ViewMode';
+import AdvancedStats from './AdvancedStats';
+import TurnoverSheet from './TurnoverSheet';
 
-const StyledButtonSection = styled.div`
+const StyledNav = styled.nav`
   text-align: center;
-  padding-top: 16px;
+  padding-top: 1rem;
 
-  button {
-    margin: 12px;
+  a {
+    margin: 4px;
   }
 `;
 
 const App: React.FC = () => {
-  const [teamName, setTeamName] = useState(DEFAULT_TEAM_NAME);
-  const [mode, setMode] = useState('編輯');
-
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void =>
-    setMode(event.currentTarget.value);
-
   return (
-    <StatsProvider>
-      <StyledButtonSection>
-        <button type="button" value="編輯" onClick={handleClick}>
-          編輯
-        </button>
-        <button type="button" value="檢視" onClick={handleClick}>
-          檢視
-        </button>
-      </StyledButtonSection>
-      {mode === '編輯' ? <EditMode teamName={teamName} setTeamName={setTeamName} /> : <ViewMode teamName={teamName} />}
-    </StatsProvider>
+    <Router>
+      <main>
+        <header>
+          <StyledNav>
+            <Link to="/">進階數據紀錄表</Link>
+            <Link to="/turnover">失誤記錄表</Link>
+          </StyledNav>
+        </header>
+        <Switch>
+          <Route exact path="/">
+            <AdvancedStats />
+          </Route>
+          <Route path="/turnover">
+            <TurnoverSheet />
+          </Route>
+        </Switch>
+      </main>
+    </Router>
   );
 };
 

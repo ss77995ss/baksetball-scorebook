@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { Cell } from 'react-table';
-import { StyledCell } from './styles';
+import { StyledCell } from '../styles';
 import { useStatsDispatch } from './hooks/statData';
 import { StatType } from './types';
 

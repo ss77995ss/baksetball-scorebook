@@ -2,7 +2,7 @@ import React from 'react';
 import { Row } from 'react-table';
 import { StatType } from './types';
 import { getTotalWithCount } from './utils';
-import { StyledCell } from './styles';
+import { StyledCell } from '../styles';
 
 interface Props {
   row: Row<StatType>;

@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-key */
 import React, { useState } from 'react';
 import { useTable, Cell } from 'react-table';
-import { StyledTable } from './styles';
+import { StyledTable } from '../styles';
 import { useStatsState } from './hooks/statData';
 import { StatType } from './types';
 import { STAT_TYPE } from './constants';
