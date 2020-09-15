@@ -59,3 +59,9 @@ export const initialTurnoverData: Array<TurnoverCategoriesType> = [
     total: 0,
   },
 ];
+
+export const TURNOVER_SUB_CATEGORIES_TYPE = {
+  DIRECT_TRANSITION: '直接轉換',
+  DEAD_BALL: '死球',
+  MISS_POINTS: '失分',
+};

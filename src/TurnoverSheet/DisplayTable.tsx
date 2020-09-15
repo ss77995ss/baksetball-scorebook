@@ -3,6 +3,7 @@ import React from 'react';
 import { useTable } from 'react-table';
 import { StyledTable } from '../styles';
 import { columns, initialTurnoverData } from './constants';
+import TurnoverTypeHeader from './TurnoverTypeHeader';
 
 const DisplayTable: React.FC = () => {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({
@@ -12,20 +13,33 @@ const DisplayTable: React.FC = () => {
 
   return (
     <StyledTable>
-      <table {...getTableProps()}>
+      <table style={{ width: 1000 }} {...getTableProps()}>
         <thead>
           {// Loop over the header rows
           headerGroups.map(headerGroup => (
             // Apply the header row props
             <tr {...headerGroup.getHeaderGroupProps()}>
               {// Loop over the headers in each row
-              headerGroup.headers.map(column => (
-                // Apply the header cell props
-                <th {...column.getHeaderProps()}>
-                  {// Render the header
-                  column.render('Header')}
-                </th>
-              ))}
+              headerGroup.headers.map(column => {
+                const isTurnoverTypeHeader =
+                  column.Header === 'Drop' ||
+                  column.Header === '橫傳球' ||
+                  column.Header === '直傳球' ||
+                  column.Header === '其他傳球';
+
+                return (
+                  // Apply the header cell props
+                  <th
+                    {...column.getHeaderProps()}
+                    style={{
+                      padding: !isTurnoverTypeHeader ? '1rem' : 0,
+                    }}
+                  >
+                    {// Render the header
+                    isTurnoverTypeHeader ? <TurnoverTypeHeader passType={column.Header} /> : column.render('Header')}
+                  </th>
+                );
+              })}
             </tr>
           ))}
         </thead>

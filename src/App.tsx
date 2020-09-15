@@ -6,7 +6,7 @@ import TurnoverSheet from './TurnoverSheet';
 
 const StyledNav = styled.nav`
   text-align: center;
-  padding-top: 1rem;
+  padding: 1rem 0;
 
   a {
     margin: 4px;

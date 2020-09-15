@@ -7,7 +7,6 @@ import ViewMode from './ViewMode';
 
 const StyledButtonSection = styled.div`
   text-align: center;
-  padding-top: 4px;
 
   button {
     margin: 12px;

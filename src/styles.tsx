@@ -22,6 +22,10 @@ export const StyledTable = styled.div`
       }
     }
 
+    th {
+      padding: 0;
+    }
+
     th,
     td {
       margin: 0;
