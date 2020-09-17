@@ -7,9 +7,9 @@ export type TurnoverSubCategoriesType = {
 export type TurnoverCategoriesType = {
   playerNumber: number;
   drop: TurnoverSubCategoriesType;
-  cross: TurnoverSubCategoriesType;
-  direct: TurnoverSubCategoriesType;
-  other: TurnoverSubCategoriesType;
-  otherTOs: number;
+  crossPass: TurnoverSubCategoriesType;
+  directPass: TurnoverSubCategoriesType;
+  otherPass: TurnoverSubCategoriesType;
+  others: number;
   total: number;
 };

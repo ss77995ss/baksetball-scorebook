@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { TURNOVER_SUB_CATEGORIES_TYPE } from './constants';
+import { TURNOVER_SUB_CATEGORIES_NAME } from './constants';
 
 const StyledMainHeader = styled.section`
   border-bottom: 1px solid black;
@@ -32,8 +32,8 @@ interface Props {
   passType: string | undefined | {};
 }
 
-const TurnoverTypeHeader: React.FC<Props> = ({ passType }: Props) => {
-  const { DIRECT_TRANSITION, DEAD_BALL, MISS_POINTS } = TURNOVER_SUB_CATEGORIES_TYPE;
+const TurnoverCategoriesHeader: React.FC<Props> = ({ passType }: Props) => {
+  const { DIRECT_TRANSITION, DEAD_BALL, MISS_POINTS } = TURNOVER_SUB_CATEGORIES_NAME;
   return (
     <>
       <StyledMainHeader>{passType}</StyledMainHeader>
@@ -46,4 +46,4 @@ const TurnoverTypeHeader: React.FC<Props> = ({ passType }: Props) => {
   );
 };
 
-export default TurnoverTypeHeader;
+export default TurnoverCategoriesHeader;

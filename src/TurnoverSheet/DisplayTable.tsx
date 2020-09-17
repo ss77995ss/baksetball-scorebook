@@ -3,7 +3,7 @@ import React from 'react';
 import { useTable } from 'react-table';
 import { StyledTable } from '../styles';
 import { columns, initialTurnoverData } from './constants';
-import TurnoverTypeHeader from './TurnoverTypeHeader';
+import TurnoverCategoriesHeader from './TurnoverCategoriesHeader';
 
 const DisplayTable: React.FC = () => {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({
@@ -21,7 +21,7 @@ const DisplayTable: React.FC = () => {
             <tr {...headerGroup.getHeaderGroupProps()}>
               {// Loop over the headers in each row
               headerGroup.headers.map(column => {
-                const isTurnoverTypeHeader =
+                const isTurnoverCategoriesHeader =
                   column.Header === 'Drop' ||
                   column.Header === '橫傳球' ||
                   column.Header === '直傳球' ||
@@ -32,11 +32,15 @@ const DisplayTable: React.FC = () => {
                   <th
                     {...column.getHeaderProps()}
                     style={{
-                      padding: !isTurnoverTypeHeader ? '1rem' : 0,
+                      padding: !isTurnoverCategoriesHeader ? '1rem' : 0,
                     }}
                   >
                     {// Render the header
-                    isTurnoverTypeHeader ? <TurnoverTypeHeader passType={column.Header} /> : column.render('Header')}
+                    isTurnoverCategoriesHeader ? (
+                      <TurnoverCategoriesHeader passType={column.Header} />
+                    ) : (
+                      column.render('Header')
+                    )}
                   </th>
                 );
               })}
