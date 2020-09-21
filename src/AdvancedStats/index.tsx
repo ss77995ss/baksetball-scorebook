@@ -5,7 +5,7 @@ import { DEFAULT_TEAM_NAME } from './constants';
 import EditMode from './EditMode';
 import ViewMode from './ViewMode';
 
-const StyledButtonSection = styled.div`
+const StyledButtonSection = styled.section`
   text-align: center;
 
   button {

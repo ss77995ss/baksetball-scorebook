@@ -60,9 +60,10 @@ export const columns: Array<Column<TurnoverCategoriesType>> = [
   },
 ];
 
-export const initialTurnoverData: Array<TurnoverCategoriesType> = [
-  {
-    playerNumber: 1,
+export const defaultPlayers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+export const initialTurnoverData: Array<TurnoverCategoriesType> = defaultPlayers.map(playerNumber => {
+  return {
+    playerNumber,
     drop: {
       directTrans: 0,
       deadBall: 0,
@@ -85,5 +86,5 @@ export const initialTurnoverData: Array<TurnoverCategoriesType> = [
     },
     others: 0,
     total: 0,
-  },
-];
+  };
+});
