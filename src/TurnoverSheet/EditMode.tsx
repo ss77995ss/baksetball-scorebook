@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import PlayerSelector from './PlayerSelector';
 import TurnoverCategoriesSelector from './TurnoverCategoriesSelector';
 
 const StyledEditModeRoot = styled.section`
@@ -10,6 +11,7 @@ const StyledEditModeRoot = styled.section`
 const EditMode: React.FC = () => {
   return (
     <StyledEditModeRoot>
+      <PlayerSelector />
       <TurnoverCategoriesSelector />
     </StyledEditModeRoot>
   );
