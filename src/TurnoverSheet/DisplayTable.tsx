@@ -2,7 +2,7 @@
 import React from 'react';
 import { useTable, Cell } from 'react-table';
 import { StyledTable } from '../styles';
-import { columns, initialTurnoverData } from './constants';
+import { columns } from './constants';
 import { TurnoverCategoriesType } from './types';
 import TurnoverCategoriesHeader from './TurnoverCategoriesHeader';
 import TurnoverCell from './TurnoverCell';
@@ -11,18 +11,21 @@ const renderCell: (cell: Cell<TurnoverCategoriesType>) => {} | null | undefined 
   switch (cell.column.Header) {
     case '#':
     case '其他失誤':
-      return cell.render('Cell');
     case '總和':
-      return <span>0</span>;
+      return cell.render('Cell');
     default:
       return <TurnoverCell value={cell.value} />;
   }
 };
 
-const DisplayTable: React.FC = () => {
+interface Props {
+  turnoverData: TurnoverCategoriesType[];
+}
+
+const DisplayTable: React.FC<Props> = ({ turnoverData }: Props) => {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({
     columns,
-    data: initialTurnoverData,
+    data: turnoverData,
   });
 
   return (

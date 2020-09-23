@@ -28,7 +28,7 @@ const TurnoverCategoriesSelector: React.FC = () => {
           <input
             key={`turnover-catgories-${value}`}
             type="radio"
-            name={value}
+            name="turnoverCategory"
             value={value}
             onChange={handleCheck}
             checked={value === turnoverCategory}
@@ -43,7 +43,7 @@ const TurnoverCategoriesSelector: React.FC = () => {
               <input
                 key={`turnover-sub-catgories-${turnoverCategory}-${value}`}
                 type="radio"
-                name={value}
+                name="turnoverSubCategory"
                 value={value}
                 onChange={handleSubCheck}
                 checked={value === turnoverSubCategory}

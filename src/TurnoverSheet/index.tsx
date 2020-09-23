@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import DisplayTable from './DisplayTable';
 import EditMode from './EditMode';
+import { initialTurnoverData } from './constants';
 
 const StyledButtonSection = styled.section`
   text-align: center;
@@ -13,6 +14,7 @@ const StyledButtonSection = styled.section`
 
 const TurnoverSheet: React.FC = () => {
   const [mode, setMode] = useState('編輯');
+  const [turnoverData, setTurnoverData] = useState(initialTurnoverData);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void =>
     setMode(event.currentTarget.value);
@@ -27,7 +29,8 @@ const TurnoverSheet: React.FC = () => {
           檢視
         </button>
       </StyledButtonSection>
-      {mode === '編輯' ? <EditMode /> : <DisplayTable />}
+      {mode === '編輯' ? <EditMode setTurnoverData={setTurnoverData} /> : <DisplayTable turnoverData={turnoverData} />}
+      <DisplayTable turnoverData={turnoverData} />
     </section>
   );
 };
