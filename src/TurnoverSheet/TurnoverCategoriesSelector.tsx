@@ -10,7 +10,6 @@ const TurnoverCategoriesSelector: React.FC = () => {
   const [turnoverCategory, setTurnoverCategory] = useState(TURNOVER_CATEGORIES.DROP);
   const [turnoverSubCategory, setTurnoverSubCategory] = useState(TURNOVER_SUB_CATEGORIES.DIRECT_TRANSITION);
   const isSelectedPass = turnoverCategory !== TURNOVER_CATEGORIES.OTHERS;
-  const currentCategory = isSelectedPass ? `${turnoverCategory} -> ${turnoverSubCategory}` : turnoverCategory;
 
   const handleCheck = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setTurnoverCategory(event.target.value);
@@ -22,18 +21,18 @@ const TurnoverCategoriesSelector: React.FC = () => {
 
   return (
     <section>
-      <p>{`Current Turnover Category: ${currentCategory}`}</p>
       {Object.values(TURNOVER_CATEGORIES).map((value: string, index: number) => (
         <>
           <input
             key={`turnover-catgories-${value}`}
             type="radio"
             name="turnoverCategory"
+            id={`${value}-${index}`}
             value={value}
             onChange={handleCheck}
             checked={value === turnoverCategory}
           />
-          <label htmlFor={value}>{Object.values(TURNOVER_CATEGORIES_NAME)[index]}</label>
+          <label htmlFor={`${value}-${index}`}>{Object.values(TURNOVER_CATEGORIES_NAME)[index]}</label>
         </>
       ))}
       <section>
@@ -44,11 +43,12 @@ const TurnoverCategoriesSelector: React.FC = () => {
                 key={`turnover-sub-catgories-${turnoverCategory}-${value}`}
                 type="radio"
                 name="turnoverSubCategory"
+                id={`${value}-${index}`}
                 value={value}
                 onChange={handleSubCheck}
                 checked={value === turnoverSubCategory}
               />
-              <label htmlFor={value}>{Object.values(TURNOVER_SUB_CATEGORIES_NAME)[index]}</label>
+              <label htmlFor={`${value}-${index}`}>{Object.values(TURNOVER_SUB_CATEGORIES_NAME)[index]}</label>
             </>
           ))}
       </section>

@@ -1,9 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import { update, propEq, findIndex, prop, append, remove } from 'ramda';
+import { update, propEq, findIndex, prop, prepend, remove } from 'ramda';
 import PlayerSelector from './PlayerSelector';
 import TurnoverCategoriesSelector from './TurnoverCategoriesSelector';
 import { TurnoverCategoriesType, StatHistoryType } from './types';
+import { TURNOVER_CATEGORIES_NAME, TURNOVER_SUB_CATEGORIES_NAME } from './constants';
 
 const StyledEditModeRoot = styled.section`
   text-align: center;
@@ -13,6 +14,8 @@ const StyledEditModeRoot = styled.section`
 const StyledList = styled.ul`
   padding: 0;
   list-style-type: none;
+  max-height: 170px;
+  overflow: auto;
 
   span {
     cursor: pointer;
@@ -58,7 +61,7 @@ const EditMode: React.FC<Props> = ({ statHistory, setTurnoverData, setStatHistor
       return update(index, newData, prev);
     });
     setStatHistory(
-      append(
+      prepend(
         {
           playerNumber: playerNumber.value,
           turnoverCategory: turnoverCategory.value,
@@ -123,8 +126,8 @@ const EditMode: React.FC<Props> = ({ statHistory, setTurnoverData, setStatHistor
             >
               <span>
                 {turnoverSubCategory
-                  ? `#${playerNumber}: ${turnoverCategory} -> ${turnoverSubCategory}`
-                  : `#${playerNumber}: ${turnoverCategory}`}
+                  ? `#${playerNumber}: ${TURNOVER_CATEGORIES_NAME[turnoverCategory]} -> ${TURNOVER_SUB_CATEGORIES_NAME[turnoverSubCategory]}`
+                  : `#${playerNumber}: ${TURNOVER_CATEGORIES_NAME[turnoverCategory]}`}
               </span>
             </li>
           ))}

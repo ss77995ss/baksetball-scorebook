@@ -34,7 +34,6 @@ const PlayerSelector: React.FC = () => {
 
   return (
     <section>
-      <p>{`Selected Player: ${selectedPlayer}`}</p>
       {selectorStatus === '更換先發'
         ? onCourt.map(player => (
             <>

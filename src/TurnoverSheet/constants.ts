@@ -16,17 +16,17 @@ export const TURNOVER_SUB_CATEGORIES = {
 };
 
 export const TURNOVER_CATEGORIES_NAME = {
-  DROP: 'Drop',
-  CROSS_PASS: '橫傳球',
-  DIRECT_PASS: '直傳球',
-  OTHER_PASS: '其他傳球',
-  OTHERS: '其他失誤',
+  drop: 'Drop',
+  crossPass: '橫傳球',
+  directPass: '直傳球',
+  otherPass: '其他傳球',
+  others: '其他失誤',
 };
 
 export const TURNOVER_SUB_CATEGORIES_NAME = {
-  DIRECT_TRANSITION: '直接轉換',
-  DEAD_BALL: '死球',
-  MISS_POINTS: '失分',
+  directTrans: '直接轉換',
+  deadBall: '死球',
+  missPoints: '失分',
 };
 
 export const columns: Array<Column<TurnoverCategoriesType>> = [

@@ -13,14 +13,14 @@ interface Props {
 }
 
 const TurnoverCategoriesHeader: React.FC<Props> = ({ passType }: Props) => {
-  const { DIRECT_TRANSITION, DEAD_BALL, MISS_POINTS } = TURNOVER_SUB_CATEGORIES_NAME;
+  const { directTrans, deadBall, missPoints } = TURNOVER_SUB_CATEGORIES_NAME;
   return (
     <>
       <StyledMainHeader>{passType}</StyledMainHeader>
       <StyledSubHeader>
-        <li>{DIRECT_TRANSITION}</li>
-        <li>{DEAD_BALL}</li>
-        <li>{MISS_POINTS}</li>
+        <li>{directTrans}</li>
+        <li>{deadBall}</li>
+        <li>{missPoints}</li>
       </StyledSubHeader>
     </>
   );
