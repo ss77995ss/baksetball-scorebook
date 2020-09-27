@@ -13,3 +13,9 @@ export type TurnoverCategoriesType = {
   others: number;
   total: number;
 };
+
+export type StatHistoryType = {
+  playerNumber: string;
+  turnoverCategory: 'drop' | 'crossPass' | 'directPass' | 'otherPass' | 'others';
+  turnoverSubCategory: 'directTrans' | 'deadBall' | 'missPoints' | undefined;
+};

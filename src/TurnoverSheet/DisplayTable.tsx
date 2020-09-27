@@ -1,11 +1,16 @@
 /* eslint-disable react/jsx-key */
 import React from 'react';
 import { useTable, Cell } from 'react-table';
+import styled from 'styled-components';
 import { StyledTable } from '../styles';
 import { columns } from './constants';
 import { TurnoverCategoriesType } from './types';
 import TurnoverCategoriesHeader from './TurnoverCategoriesHeader';
 import TurnoverCell from './TurnoverCell';
+
+const StyledCells = styled.td`
+  font-size: 12px;
+`;
 
 const renderCell: (cell: Cell<TurnoverCategoriesType>) => {} | null | undefined = cell => {
   switch (cell.column.Header) {
@@ -76,7 +81,7 @@ const DisplayTable: React.FC<Props> = ({ turnoverData }: Props) => {
                 {// Loop over the rows cells
                 row.cells.map(cell => {
                   // Apply the cell props
-                  return <td {...cell.getCellProps()}>{renderCell(cell)}</td>;
+                  return <StyledCells {...cell.getCellProps()}>{renderCell(cell)}</StyledCells>;
                 })}
               </tr>
             );

@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import DisplayTable from './DisplayTable';
 import EditMode from './EditMode';
 import { initialTurnoverData } from './constants';
+import { StatHistoryType } from './types';
 
 const StyledButtonSection = styled.section`
   text-align: center;
@@ -15,6 +16,7 @@ const StyledButtonSection = styled.section`
 const TurnoverSheet: React.FC = () => {
   const [mode, setMode] = useState('編輯');
   const [turnoverData, setTurnoverData] = useState(initialTurnoverData);
+  const [statHistory, setStatHistory] = useState<StatHistoryType[]>([]);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void =>
     setMode(event.currentTarget.value);
@@ -29,8 +31,11 @@ const TurnoverSheet: React.FC = () => {
           檢視
         </button>
       </StyledButtonSection>
-      {mode === '編輯' ? <EditMode setTurnoverData={setTurnoverData} /> : <DisplayTable turnoverData={turnoverData} />}
-      <DisplayTable turnoverData={turnoverData} />
+      {mode === '編輯' ? (
+        <EditMode statHistory={statHistory} setTurnoverData={setTurnoverData} setStatHistory={setStatHistory} />
+      ) : (
+        <DisplayTable turnoverData={turnoverData} />
+      )}
     </section>
   );
 };
