@@ -20,6 +20,7 @@ const TurnoverCategoriesHeader: React.FC<Props> = ({ passType }: Props) => {
       <StyledSubHeader>
         <li>{directTrans}</li>
         <li>{deadBall}</li>
+        <li>總球數</li>
         <li>{missPoints}</li>
       </StyledSubHeader>
     </>

@@ -101,15 +101,13 @@ export const StyledSubHeader = styled.ul`
 
   li {
     font-size: 12px;
-    width: 48px;
-    padding: 4px 8px;
+    width: 25%;
+    padding: 4px 0;
 
-    :first-child {
-      border-right: 1px solid black;
-    }
+    border-right: 1px solid black;
 
     :last-child {
-      border-left: 1px solid black;
+      border: none;
     }
   }
 `;

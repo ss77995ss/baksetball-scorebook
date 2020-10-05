@@ -10,6 +10,12 @@ import TurnoverCell from './TurnoverCell';
 
 const StyledCells = styled.td`
   font-size: 12px;
+  padding: 0;
+
+  span,
+  li {
+    padding: 4px 8px;
+  }
 `;
 
 const renderCell: (cell: Cell<TurnoverCategoriesType>) => {} | null | undefined = cell => {
@@ -17,7 +23,7 @@ const renderCell: (cell: Cell<TurnoverCategoriesType>) => {} | null | undefined 
     case '#':
     case '其他失誤':
     case '總和':
-      return cell.render('Cell');
+      return <span>{cell.value}</span>;
     default:
       return <TurnoverCell value={cell.value} />;
   }
@@ -35,7 +41,7 @@ const DisplayTable: React.FC<Props> = ({ turnoverData }: Props) => {
 
   return (
     <StyledTable>
-      <table style={{ width: 1000 }} {...getTableProps()}>
+      <table style={{ width: 1276 }} {...getTableProps()}>
         <thead>
           {// Loop over the header rows
           headerGroups.map(headerGroup => (
@@ -45,9 +51,9 @@ const DisplayTable: React.FC<Props> = ({ turnoverData }: Props) => {
               headerGroup.headers.map(column => {
                 const isTurnoverCategoriesHeader =
                   column.Header === 'Drop' ||
-                  column.Header === '橫傳球' ||
-                  column.Header === '直傳球' ||
-                  column.Header === '其他傳球';
+                  column.Header === '非攻擊性傳球' ||
+                  column.Header === '攻擊性傳球' ||
+                  column.Header === '禁區傳球';
 
                 return (
                   // Apply the header cell props

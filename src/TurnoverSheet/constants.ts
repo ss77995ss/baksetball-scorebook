@@ -3,9 +3,9 @@ import { TurnoverCategoriesType } from './types';
 
 export const TURNOVER_CATEGORIES = {
   DROP: 'drop',
-  CROSS_PASS: 'crossPass',
-  DIRECT_PASS: 'directPass',
-  OTHER_PASS: 'otherPass',
+  NONE_OFFENSIVE_PASS: 'nonOffensivePass',
+  OFFENSIVE_PASS: 'offensivePass',
+  PAINT_PASS: 'paintPass',
   OTHERS: 'others',
 };
 
@@ -17,9 +17,9 @@ export const TURNOVER_SUB_CATEGORIES = {
 
 export const TURNOVER_CATEGORIES_NAME = {
   drop: 'Drop',
-  crossPass: '橫傳球',
-  directPass: '直傳球',
-  otherPass: '其他傳球',
+  nonOffensivePass: '非攻擊性傳球',
+  offensivePass: '攻擊性傳球',
+  paintPass: '禁區傳球',
   others: '其他失誤',
 };
 
@@ -39,16 +39,16 @@ export const columns: Array<Column<TurnoverCategoriesType>> = [
     accessor: 'drop',
   },
   {
-    Header: '橫傳球',
-    accessor: 'crossPass',
+    Header: '非攻擊性傳球',
+    accessor: 'nonOffensivePass',
   },
   {
-    Header: '直傳球',
-    accessor: 'directPass',
+    Header: '攻擊性傳球',
+    accessor: 'offensivePass',
   },
   {
-    Header: '其他傳球',
-    accessor: 'otherPass',
+    Header: '禁區傳球',
+    accessor: 'paintPass',
   },
   {
     Header: '其他失誤',
@@ -69,17 +69,17 @@ export const initialTurnoverData: Array<TurnoverCategoriesType> = defaultPlayers
       deadBall: 0,
       missPoints: 0,
     },
-    crossPass: {
+    nonOffensivePass: {
       directTrans: 0,
       deadBall: 0,
       missPoints: 0,
     },
-    directPass: {
+    offensivePass: {
       directTrans: 0,
       deadBall: 0,
       missPoints: 0,
     },
-    otherPass: {
+    paintPass: {
       directTrans: 0,
       deadBall: 0,
       missPoints: 0,

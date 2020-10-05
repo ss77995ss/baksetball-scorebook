@@ -7,15 +7,15 @@ export type TurnoverSubCategoriesType = {
 export type TurnoverCategoriesType = {
   playerNumber: number;
   drop: TurnoverSubCategoriesType;
-  crossPass: TurnoverSubCategoriesType;
-  directPass: TurnoverSubCategoriesType;
-  otherPass: TurnoverSubCategoriesType;
+  nonOffensivePass: TurnoverSubCategoriesType;
+  offensivePass: TurnoverSubCategoriesType;
+  paintPass: TurnoverSubCategoriesType;
   others: number;
   total: number;
 };
 
 export type StatHistoryType = {
   playerNumber: string;
-  turnoverCategory: 'drop' | 'crossPass' | 'directPass' | 'otherPass' | 'others';
+  turnoverCategory: 'drop' | 'nonOffensivePass' | 'offensivePass' | 'paintPass' | 'others';
   turnoverSubCategory: 'directTrans' | 'deadBall' | 'missPoints' | undefined;
 };
