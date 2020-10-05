@@ -61,7 +61,11 @@ const StatCellWithCount: React.FC<Props> = ({ cell, team, isSwipeable }: Props) 
     if (pointsClickCount.current < 1) {
       pointsClickCount.current += 1;
       pointsClickTimeout.current = setTimeout(() => {
-        updateStats({ points: points + 1, count: count + 1 });
+        if (isSwipeable) {
+          updateStats({ points: points + 1, count: count + 1 });
+        } else {
+          updateStats({ points: points + 1, count: count });
+        }
         pointsClickCount.current = 0;
       }, 200);
     } else {
