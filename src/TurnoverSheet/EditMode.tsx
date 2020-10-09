@@ -33,54 +33,92 @@ const EditMode: React.FC<Props> = ({ statHistory, setTurnoverData, setStatHistor
     event.preventDefault();
     const { playerNumber, turnoverCategory, turnoverSubCategory } = event.target as HTMLFormElement;
 
-    setTurnoverData(prev => {
-      const index = findIndex(propEq('playerNumber', parseInt(playerNumber.value, 10)))(prev);
-      const targetPlayer = prop(turnoverCategory.value, prev[index]);
+    if (turnoverSubCategory && turnoverSubCategory.value === 'missPoints') {
+      const inputMissPoints = prompt('失分', '2');
+      const resolvedMissPoints = inputMissPoints ? parseInt(inputMissPoints, 10) : 0;
 
-      if (!turnoverSubCategory) {
+      setTurnoverData(prev => {
+        const index = findIndex(propEq('playerNumber', parseInt(playerNumber.value, 10)))(prev);
+        const targetPlayer = prop(turnoverCategory.value, prev[index]);
+        const targetNumber = prop(turnoverSubCategory.value, targetPlayer);
         const newData = {
           ...prev[index],
-          [turnoverCategory.value]: targetPlayer + 1,
+          [turnoverCategory.value]: {
+            ...targetPlayer,
+            directTrans: targetPlayer.directTrans + 1,
+            [turnoverSubCategory.value]: targetNumber + resolvedMissPoints,
+          },
           total: prev[index]['total'] + 1,
         };
 
         return update(index, newData, prev);
-      }
+      });
 
-      const targetNumber = prop(turnoverSubCategory.value, targetPlayer);
+      setStatHistory(
+        prepend(
+          {
+            playerNumber: playerNumber.value,
+            turnoverCategory: turnoverCategory.value,
+            turnoverSubCategory: turnoverSubCategory ? turnoverSubCategory.value : undefined,
+            value: resolvedMissPoints,
+          },
+          statHistory,
+        ),
+      );
+    } else {
+      setTurnoverData(prev => {
+        const index = findIndex(propEq('playerNumber', parseInt(playerNumber.value, 10)))(prev);
+        const targetPlayer = prop(turnoverCategory.value, prev[index]);
+        let newData;
 
-      const newData = {
-        ...prev[index],
-        [turnoverCategory.value]: {
-          ...targetPlayer,
-          [turnoverSubCategory.value]: targetNumber + 1,
-        },
-        total: prev[index]['total'] + 1,
-      };
+        if (!turnoverSubCategory) {
+          newData = {
+            ...prev[index],
+            [turnoverCategory.value]: targetPlayer + 1,
+            total: prev[index]['total'] + 1,
+          };
 
-      return update(index, newData, prev);
-    });
-    setStatHistory(
-      prepend(
-        {
-          playerNumber: playerNumber.value,
-          turnoverCategory: turnoverCategory.value,
-          turnoverSubCategory: turnoverSubCategory ? turnoverSubCategory.value : undefined,
-        },
-        statHistory,
-      ),
-    );
+          return update(index, newData, prev);
+        }
+
+        const targetNumber = prop(turnoverSubCategory.value, targetPlayer);
+
+        newData = {
+          ...prev[index],
+          [turnoverCategory.value]: {
+            ...targetPlayer,
+            [turnoverSubCategory.value]: targetNumber + 1,
+          },
+          total: prev[index]['total'] + 1,
+        };
+
+        return update(index, newData, prev);
+      });
+
+      setStatHistory(
+        prepend(
+          {
+            playerNumber: playerNumber.value,
+            turnoverCategory: turnoverCategory.value,
+            turnoverSubCategory: turnoverSubCategory ? turnoverSubCategory.value : undefined,
+            value: 1,
+          },
+          statHistory,
+        ),
+      );
+    }
   };
 
   const handleClick = (stat: StatHistoryType, index: number) => (): void => {
-    const { playerNumber, turnoverCategory, turnoverSubCategory } = stat;
+    const { playerNumber, turnoverCategory, turnoverSubCategory, value } = stat;
 
     setTurnoverData(prev => {
       const index = findIndex(propEq('playerNumber', parseInt(playerNumber, 10)))(prev);
       const targetPlayer = prop(turnoverCategory, prev[index]);
+      let newData;
 
       if (typeof targetPlayer === 'number') {
-        const newData = {
+        newData = {
           ...prev[index],
           [turnoverCategory]: targetPlayer - 1,
           total: prev[index]['total'] - 1,
@@ -92,14 +130,25 @@ const EditMode: React.FC<Props> = ({ statHistory, setTurnoverData, setStatHistor
       if (turnoverSubCategory) {
         const targetNumber = prop(turnoverSubCategory, targetPlayer);
 
-        const newData = {
-          ...prev[index],
-          [turnoverCategory]: {
-            ...targetPlayer,
-            [turnoverSubCategory]: targetNumber - 1,
-          },
-          total: prev[index]['total'] - 1,
-        };
+        newData =
+          turnoverSubCategory === 'missPoints'
+            ? {
+                ...prev[index],
+                [turnoverCategory]: {
+                  ...targetPlayer,
+                  directTrans: targetPlayer.directTrans - 1,
+                  missPoints: targetPlayer.missPoints - value,
+                },
+                total: prev[index]['total'] - 1,
+              }
+            : {
+                ...prev[index],
+                [turnoverCategory]: {
+                  ...targetPlayer,
+                  [turnoverSubCategory]: targetNumber - 1,
+                },
+                total: prev[index]['total'] - 1,
+              };
 
         return update(index, newData, prev);
       }
@@ -119,14 +168,14 @@ const EditMode: React.FC<Props> = ({ statHistory, setTurnoverData, setStatHistor
       </form>
       {statHistory && (
         <StyledList>
-          {statHistory.map(({ playerNumber, turnoverCategory, turnoverSubCategory }, index) => (
+          {statHistory.map(({ playerNumber, turnoverCategory, turnoverSubCategory, value }, index) => (
             <li
               key={`history-#${index}`}
-              onClick={handleClick({ playerNumber, turnoverCategory, turnoverSubCategory }, index)}
+              onClick={handleClick({ playerNumber, turnoverCategory, turnoverSubCategory, value }, index)}
             >
               <span>
                 {turnoverSubCategory
-                  ? `#${playerNumber}: ${TURNOVER_CATEGORIES_NAME[turnoverCategory]} -> ${TURNOVER_SUB_CATEGORIES_NAME[turnoverSubCategory]}`
+                  ? `#${playerNumber}: ${TURNOVER_CATEGORIES_NAME[turnoverCategory]} -> ${TURNOVER_SUB_CATEGORIES_NAME[turnoverSubCategory]}: ${value}`
                   : `#${playerNumber}: ${TURNOVER_CATEGORIES_NAME[turnoverCategory]}`}
               </span>
             </li>

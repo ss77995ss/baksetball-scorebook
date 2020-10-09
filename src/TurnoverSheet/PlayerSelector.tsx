@@ -5,7 +5,7 @@ import { defaultPlayers } from './constants';
 const PlayerSelector: React.FC = () => {
   const [onCourt, setOnCourt] = useState(defaultPlayers.slice(0, 5));
   const [selectedPlayer, setSelectedPlayer] = useState(onCourt[0]);
-  const [selectorStatus, setSelectorStatus] = useState<'更換先發' | '確認更換'>('更換先發');
+  const [selectorStatus, setSelectorStatus] = useState<'更換場上五人' | '確認更換'>('更換場上五人');
   const excludedOnCourt = reject(n => onCourt.includes(n), defaultPlayers);
 
   const handleCheck = (event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -21,11 +21,11 @@ const PlayerSelector: React.FC = () => {
 
   const handleClick = (): void => {
     switch (selectorStatus) {
-      case '更換先發':
+      case '更換場上五人':
         setSelectorStatus('確認更換');
         break;
       case '確認更換':
-        setSelectorStatus('更換先發');
+        setSelectorStatus('更換場上五人');
         break;
       default:
         throw new Error('Wrong selector status');
@@ -34,7 +34,7 @@ const PlayerSelector: React.FC = () => {
 
   return (
     <section>
-      {selectorStatus === '更換先發'
+      {selectorStatus === '更換場上五人'
         ? onCourt.map(player => (
             <>
               <input

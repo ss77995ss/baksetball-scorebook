@@ -18,4 +18,5 @@ export type StatHistoryType = {
   playerNumber: string;
   turnoverCategory: 'drop' | 'nonOffensivePass' | 'offensivePass' | 'paintPass' | 'others';
   turnoverSubCategory: 'directTrans' | 'deadBall' | 'missPoints' | undefined;
+  value: number;
 };
