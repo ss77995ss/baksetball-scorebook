@@ -25,7 +25,7 @@ const StyledList = styled.ul`
 `;
 
 const TurnoverCell: React.FC<Props> = ({ value }: Props) => {
-  const { directTrans, deadBall, missPoints } = value;
+  const { directTrans, deadBall, lostPoints } = value;
 
   return (
     <>
@@ -33,7 +33,7 @@ const TurnoverCell: React.FC<Props> = ({ value }: Props) => {
         <li>{directTrans}</li>
         <li>{deadBall}</li>
         <li>{directTrans + deadBall}</li>
-        <li>{missPoints}</li>
+        <li>{lostPoints}</li>
       </StyledList>
     </>
   );

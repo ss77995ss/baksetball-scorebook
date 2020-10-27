@@ -31,14 +31,14 @@ interface Props {
 const EditMode: React.FC<Props> = ({ statHistory, setTurnoverData, setStatHistory }: Props) => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
-    const { playerNumber, turnoverCategory, turnoverSubCategory } = event.target as HTMLFormElement;
+    const { playerName, turnoverCategory, turnoverSubCategory } = event.target as HTMLFormElement;
 
-    if (turnoverSubCategory && turnoverSubCategory.value === 'missPoints') {
-      const inputMissPoints = prompt('失分', '2');
-      const resolvedMissPoints = inputMissPoints ? parseInt(inputMissPoints, 10) : 0;
+    if (turnoverSubCategory && turnoverSubCategory.value === 'lostPoints') {
+      const inputLostPoints = prompt('失分', '2');
+      const resolvedLostPoints = inputLostPoints ? parseInt(inputLostPoints, 10) : 0;
 
       setTurnoverData(prev => {
-        const index = findIndex(propEq('playerNumber', parseInt(playerNumber.value, 10)))(prev);
+        const index = findIndex(propEq('playerName', playerName.value))(prev);
         const targetPlayer = prop(turnoverCategory.value, prev[index]);
         const targetNumber = prop(turnoverSubCategory.value, targetPlayer);
         const newData = {
@@ -46,9 +46,10 @@ const EditMode: React.FC<Props> = ({ statHistory, setTurnoverData, setStatHistor
           [turnoverCategory.value]: {
             ...targetPlayer,
             directTrans: targetPlayer.directTrans + 1,
-            [turnoverSubCategory.value]: targetNumber + resolvedMissPoints,
+            [turnoverSubCategory.value]: targetNumber + resolvedLostPoints,
           },
-          total: prev[index]['total'] + 1,
+          totalTurnovers: prev[index]['totalTurnovers'] + 1,
+          totalLostPoints: prev[index]['totalLostPoints'] + resolvedLostPoints,
         };
 
         return update(index, newData, prev);
@@ -57,17 +58,17 @@ const EditMode: React.FC<Props> = ({ statHistory, setTurnoverData, setStatHistor
       setStatHistory(
         prepend(
           {
-            playerNumber: playerNumber.value,
+            playerName: playerName.value,
             turnoverCategory: turnoverCategory.value,
             turnoverSubCategory: turnoverSubCategory ? turnoverSubCategory.value : undefined,
-            value: resolvedMissPoints,
+            value: resolvedLostPoints,
           },
           statHistory,
         ),
       );
     } else {
       setTurnoverData(prev => {
-        const index = findIndex(propEq('playerNumber', parseInt(playerNumber.value, 10)))(prev);
+        const index = findIndex(propEq('playerName', playerName.value))(prev);
         const targetPlayer = prop(turnoverCategory.value, prev[index]);
         let newData;
 
@@ -75,7 +76,7 @@ const EditMode: React.FC<Props> = ({ statHistory, setTurnoverData, setStatHistor
           newData = {
             ...prev[index],
             [turnoverCategory.value]: targetPlayer + 1,
-            total: prev[index]['total'] + 1,
+            totalTurnovers: prev[index]['totalTurnovers'] + 1,
           };
 
           return update(index, newData, prev);
@@ -89,7 +90,7 @@ const EditMode: React.FC<Props> = ({ statHistory, setTurnoverData, setStatHistor
             ...targetPlayer,
             [turnoverSubCategory.value]: targetNumber + 1,
           },
-          total: prev[index]['total'] + 1,
+          totalTurnovers: prev[index]['totalTurnovers'] + 1,
         };
 
         return update(index, newData, prev);
@@ -98,7 +99,7 @@ const EditMode: React.FC<Props> = ({ statHistory, setTurnoverData, setStatHistor
       setStatHistory(
         prepend(
           {
-            playerNumber: playerNumber.value,
+            playerName: playerName.value,
             turnoverCategory: turnoverCategory.value,
             turnoverSubCategory: turnoverSubCategory ? turnoverSubCategory.value : undefined,
             value: 1,
@@ -110,10 +111,10 @@ const EditMode: React.FC<Props> = ({ statHistory, setTurnoverData, setStatHistor
   };
 
   const handleClick = (stat: StatHistoryType, index: number) => (): void => {
-    const { playerNumber, turnoverCategory, turnoverSubCategory, value } = stat;
+    const { playerName, turnoverCategory, turnoverSubCategory, value } = stat;
 
     setTurnoverData(prev => {
-      const index = findIndex(propEq('playerNumber', parseInt(playerNumber, 10)))(prev);
+      const index = findIndex(propEq('playerName', playerName))(prev);
       const targetPlayer = prop(turnoverCategory, prev[index]);
       let newData;
 
@@ -121,7 +122,7 @@ const EditMode: React.FC<Props> = ({ statHistory, setTurnoverData, setStatHistor
         newData = {
           ...prev[index],
           [turnoverCategory]: targetPlayer - 1,
-          total: prev[index]['total'] - 1,
+          totalTurnovers: prev[index]['totalTurnovers'] - 1,
         };
 
         return update(index, newData, prev);
@@ -131,15 +132,15 @@ const EditMode: React.FC<Props> = ({ statHistory, setTurnoverData, setStatHistor
         const targetNumber = prop(turnoverSubCategory, targetPlayer);
 
         newData =
-          turnoverSubCategory === 'missPoints'
+          turnoverSubCategory === 'lostPoints'
             ? {
                 ...prev[index],
                 [turnoverCategory]: {
                   ...targetPlayer,
                   directTrans: targetPlayer.directTrans - 1,
-                  missPoints: targetPlayer.missPoints - value,
+                  lostPoints: targetPlayer.lostPoints - value,
                 },
-                total: prev[index]['total'] - 1,
+                totalTurnovers: prev[index]['totalTurnovers'] - 1,
               }
             : {
                 ...prev[index],
@@ -147,7 +148,7 @@ const EditMode: React.FC<Props> = ({ statHistory, setTurnoverData, setStatHistor
                   ...targetPlayer,
                   [turnoverSubCategory]: targetNumber - 1,
                 },
-                total: prev[index]['total'] - 1,
+                totalTurnovers: prev[index]['totalTurnovers'] - 1,
               };
 
         return update(index, newData, prev);
@@ -168,15 +169,15 @@ const EditMode: React.FC<Props> = ({ statHistory, setTurnoverData, setStatHistor
       </form>
       {statHistory && (
         <StyledList>
-          {statHistory.map(({ playerNumber, turnoverCategory, turnoverSubCategory, value }, index) => (
+          {statHistory.map(({ playerName, turnoverCategory, turnoverSubCategory, value }, index) => (
             <li
               key={`history-#${index}`}
-              onClick={handleClick({ playerNumber, turnoverCategory, turnoverSubCategory, value }, index)}
+              onClick={handleClick({ playerName, turnoverCategory, turnoverSubCategory, value }, index)}
             >
               <span>
                 {turnoverSubCategory
-                  ? `#${playerNumber}: ${TURNOVER_CATEGORIES_NAME[turnoverCategory]} -> ${TURNOVER_SUB_CATEGORIES_NAME[turnoverSubCategory]}: ${value}`
-                  : `#${playerNumber}: ${TURNOVER_CATEGORIES_NAME[turnoverCategory]}`}
+                  ? `#${playerName}: ${TURNOVER_CATEGORIES_NAME[turnoverCategory]} -> ${TURNOVER_SUB_CATEGORIES_NAME[turnoverSubCategory]}: ${value}`
+                  : `#${playerName}: ${TURNOVER_CATEGORIES_NAME[turnoverCategory]}`}
               </span>
             </li>
           ))}

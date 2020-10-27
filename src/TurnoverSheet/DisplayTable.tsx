@@ -20,9 +20,10 @@ const StyledCells = styled.td`
 
 const renderCell: (cell: Cell<TurnoverCategoriesType>) => {} | null | undefined = cell => {
   switch (cell.column.Header) {
-    case '#':
+    case '名字':
     case '其他失誤':
-    case '總和':
+    case '總計次數':
+    case '總失分':
       return <span>{cell.value}</span>;
     default:
       return <TurnoverCell value={cell.value} />;

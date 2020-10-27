@@ -9,11 +9,11 @@ const PlayerSelector: React.FC = () => {
   const excludedOnCourt = reject(n => onCourt.includes(n), defaultPlayers);
 
   const handleCheck = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    setSelectedPlayer(parseInt(event.target.value, 10));
+    setSelectedPlayer(event.target.value);
   };
 
   const handleSelect = (index: number) => (event: React.ChangeEvent<HTMLSelectElement>): void => {
-    const selectedValue = parseInt(event.target.value, 10);
+    const selectedValue = event.target.value;
 
     setOnCourt(update(index, selectedValue, onCourt));
     setSelectedPlayer(selectedValue);
@@ -41,7 +41,7 @@ const PlayerSelector: React.FC = () => {
                 key={`player-on-court-#${player}`}
                 type="radio"
                 id={`#${player}`}
-                name="playerNumber"
+                name="playerName"
                 value={player}
                 onChange={handleCheck}
                 checked={player === selectedPlayer}
