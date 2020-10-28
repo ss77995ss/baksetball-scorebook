@@ -7,6 +7,7 @@ import { columns } from './constants';
 import { TurnoverCategoriesType } from './types';
 import TurnoverCategoriesHeader from './TurnoverCategoriesHeader';
 import TurnoverCell from './TurnoverCell';
+import TurnoverTotalRow from './TurnoverTotalRow';
 
 const StyledCells = styled.td`
   font-size: 12px;
@@ -93,6 +94,7 @@ const DisplayTable: React.FC<Props> = ({ turnoverData }: Props) => {
               </tr>
             );
           })}
+          <TurnoverTotalRow rows={rows} />
         </tbody>
       </table>
     </StyledTable>

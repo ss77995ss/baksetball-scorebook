@@ -91,31 +91,37 @@ export const defaultPlayers = [
   '白宗民',
   '廖柏誠',
 ];
+
+export const initialSingleData = {
+  playerName: 'Total',
+  drop: {
+    directTrans: 0,
+    deadBall: 0,
+    lostPoints: 0,
+  },
+  nonOffensivePass: {
+    directTrans: 0,
+    deadBall: 0,
+    lostPoints: 0,
+  },
+  offensivePass: {
+    directTrans: 0,
+    deadBall: 0,
+    lostPoints: 0,
+  },
+  paintPass: {
+    directTrans: 0,
+    deadBall: 0,
+    lostPoints: 0,
+  },
+  others: 0,
+  totalTurnovers: 0,
+  totalLostPoints: 0,
+};
+
 export const initialTurnoverData: Array<TurnoverCategoriesType> = defaultPlayers.map(playerName => {
   return {
+    ...initialSingleData,
     playerName,
-    drop: {
-      directTrans: 0,
-      deadBall: 0,
-      lostPoints: 0,
-    },
-    nonOffensivePass: {
-      directTrans: 0,
-      deadBall: 0,
-      lostPoints: 0,
-    },
-    offensivePass: {
-      directTrans: 0,
-      deadBall: 0,
-      lostPoints: 0,
-    },
-    paintPass: {
-      directTrans: 0,
-      deadBall: 0,
-      lostPoints: 0,
-    },
-    others: 0,
-    totalTurnovers: 0,
-    totalLostPoints: 0,
   };
 });
