@@ -1,7 +1,6 @@
 import React from 'react';
 import { Row } from 'react-table';
 import styled from 'styled-components';
-import { pick } from 'ramda';
 import TurnoverCell from './TurnoverCell';
 import { TurnoverCategoriesType } from './types';
 import { initialSingleData } from './constants';

@@ -16,10 +16,11 @@ const StyledList = styled.ul`
   list-style-type: none;
   max-height: 170px;
   overflow: auto;
+`;
 
-  span {
-    cursor: pointer;
-  }
+const DeleteHistoryBtn = styled.button`
+  margin-left: 4px;
+  cursor: pointer;
 `;
 
 interface Props {
@@ -111,53 +112,55 @@ const EditMode: React.FC<Props> = ({ statHistory, setTurnoverData, setStatHistor
   };
 
   const handleClick = (stat: StatHistoryType, index: number) => (): void => {
-    const { playerName, turnoverCategory, turnoverSubCategory, value } = stat;
+    if (window.confirm('確定要刪除此紀錄嗎？')) {
+      const { playerName, turnoverCategory, turnoverSubCategory, value } = stat;
 
-    setTurnoverData(prev => {
-      const index = findIndex(propEq('playerName', playerName))(prev);
-      const targetPlayer = prop(turnoverCategory, prev[index]);
-      let newData;
+      setTurnoverData(prev => {
+        const index = findIndex(propEq('playerName', playerName))(prev);
+        const targetPlayer = prop(turnoverCategory, prev[index]);
+        let newData;
 
-      if (typeof targetPlayer === 'number') {
-        newData = {
-          ...prev[index],
-          [turnoverCategory]: targetPlayer - 1,
-          totalTurnovers: prev[index]['totalTurnovers'] - 1,
-        };
+        if (typeof targetPlayer === 'number') {
+          newData = {
+            ...prev[index],
+            [turnoverCategory]: targetPlayer - 1,
+            totalTurnovers: prev[index]['totalTurnovers'] - 1,
+          };
 
-        return update(index, newData, prev);
-      }
+          return update(index, newData, prev);
+        }
 
-      if (turnoverSubCategory) {
-        const targetNumber = prop(turnoverSubCategory, targetPlayer);
+        if (turnoverSubCategory) {
+          const targetNumber = prop(turnoverSubCategory, targetPlayer);
 
-        newData =
-          turnoverSubCategory === 'lostPoints'
-            ? {
-                ...prev[index],
-                [turnoverCategory]: {
-                  ...targetPlayer,
-                  directTrans: targetPlayer.directTrans - 1,
-                  lostPoints: targetPlayer.lostPoints - value,
-                },
-                totalTurnovers: prev[index]['totalTurnovers'] - 1,
-              }
-            : {
-                ...prev[index],
-                [turnoverCategory]: {
-                  ...targetPlayer,
-                  [turnoverSubCategory]: targetNumber - 1,
-                },
-                totalTurnovers: prev[index]['totalTurnovers'] - 1,
-              };
+          newData =
+            turnoverSubCategory === 'lostPoints'
+              ? {
+                  ...prev[index],
+                  [turnoverCategory]: {
+                    ...targetPlayer,
+                    directTrans: targetPlayer.directTrans - 1,
+                    lostPoints: targetPlayer.lostPoints - value,
+                  },
+                  totalTurnovers: prev[index]['totalTurnovers'] - 1,
+                }
+              : {
+                  ...prev[index],
+                  [turnoverCategory]: {
+                    ...targetPlayer,
+                    [turnoverSubCategory]: targetNumber - 1,
+                  },
+                  totalTurnovers: prev[index]['totalTurnovers'] - 1,
+                };
 
-        return update(index, newData, prev);
-      }
+          return update(index, newData, prev);
+        }
 
-      return prev;
-    });
+        return prev;
+      });
 
-    setStatHistory(prev => remove(index, 1, prev));
+      setStatHistory(prev => remove(index, 1, prev));
+    }
   };
 
   return (
@@ -170,15 +173,17 @@ const EditMode: React.FC<Props> = ({ statHistory, setTurnoverData, setStatHistor
       {statHistory && (
         <StyledList>
           {statHistory.map(({ playerName, turnoverCategory, turnoverSubCategory, value }, index) => (
-            <li
-              key={`history-#${index}`}
-              onClick={handleClick({ playerName, turnoverCategory, turnoverSubCategory, value }, index)}
-            >
+            <li key={`history-#${index}`}>
               <span>
                 {turnoverSubCategory
                   ? `#${playerName}: ${TURNOVER_CATEGORIES_NAME[turnoverCategory]} -> ${TURNOVER_SUB_CATEGORIES_NAME[turnoverSubCategory]}: ${value}`
                   : `#${playerName}: ${TURNOVER_CATEGORIES_NAME[turnoverCategory]}`}
               </span>
+              <DeleteHistoryBtn
+                onClick={handleClick({ playerName, turnoverCategory, turnoverSubCategory, value }, index)}
+              >
+                X
+              </DeleteHistoryBtn>
             </li>
           ))}
         </StyledList>
