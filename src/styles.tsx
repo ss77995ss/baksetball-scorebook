@@ -22,10 +22,6 @@ export const StyledTable = styled.div`
       }
     }
 
-    th {
-      padding: 0;
-    }
-
     th,
     td {
       margin: 0;
@@ -108,6 +104,10 @@ export const StyledSubHeader = styled.ul`
 
     :last-child {
       border: none;
+    }
+
+    @media (max-width: 1119px) {
+      font-size: 8px;
     }
   }
 `;

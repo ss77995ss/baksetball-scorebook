@@ -16,6 +16,18 @@ const StyledCells = styled.td`
   span,
   li {
     padding: 4px 8px;
+
+    @media (max-width: 1119px) {
+      font-size: 10px;
+    }
+  }
+`;
+
+const StyledHeader = styled.th<{ isTurnoverCategoriesHeader: boolean }>`
+  padding: ${(props): string | number => (props.isTurnoverCategoriesHeader ? 0 : '4px')};
+
+  @media (max-width: 1119px) {
+    font-size: 10px;
   }
 `;
 
@@ -43,7 +55,7 @@ const DisplayTable: React.FC<Props> = ({ turnoverData }: Props) => {
 
   return (
     <StyledTable>
-      <table style={{ width: 1276 }} {...getTableProps()}>
+      <table {...getTableProps()}>
         <thead>
           {// Loop over the header rows
           headerGroups.map(headerGroup => (
@@ -59,19 +71,14 @@ const DisplayTable: React.FC<Props> = ({ turnoverData }: Props) => {
 
                 return (
                   // Apply the header cell props
-                  <th
-                    {...column.getHeaderProps()}
-                    style={{
-                      padding: !isTurnoverCategoriesHeader ? '1rem' : 0,
-                    }}
-                  >
+                  <StyledHeader {...column.getHeaderProps()} isTurnoverCategoriesHeader={isTurnoverCategoriesHeader}>
                     {// Render the header
                     isTurnoverCategoriesHeader ? (
                       <TurnoverCategoriesHeader passType={column.Header} />
                     ) : (
                       column.render('Header')
                     )}
-                  </th>
+                  </StyledHeader>
                 );
               })}
             </tr>

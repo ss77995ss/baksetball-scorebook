@@ -6,6 +6,12 @@ import { TURNOVER_SUB_CATEGORIES_NAME } from './constants';
 const StyledMainHeader = styled.section`
   border-bottom: 1px solid black;
   padding: 4px 0;
+  width: 220px;
+
+  @media (max-width: 1119px) {
+    font-size: 10px;
+    width: 150px;
+  }
 `;
 
 interface Props {
