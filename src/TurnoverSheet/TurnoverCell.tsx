@@ -19,9 +19,13 @@ const StyledList = styled.ul`
     border-right: 1px solid black;
 
     :last-child {
-      border: none;
+      border-right: none;
     }
   }
+`;
+
+const GrayList = styled.li`
+  background-color: #ccc;
 `;
 
 const TurnoverCell: React.FC<Props> = ({ value }: Props) => {
@@ -32,8 +36,8 @@ const TurnoverCell: React.FC<Props> = ({ value }: Props) => {
       <StyledList>
         <li>{directTrans}</li>
         <li>{deadBall}</li>
-        <li>{directTrans + deadBall}</li>
-        <li>{lostPoints}</li>
+        <GrayList>{directTrans + deadBall}</GrayList>
+        <GrayList>{lostPoints}</GrayList>
       </StyledList>
     </>
   );

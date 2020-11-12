@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 
 export const StyledTable = styled.div`
+  padding-bottom: 1rem;
+
   h3 {
     text-align: center;
   }

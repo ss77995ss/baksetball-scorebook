@@ -13,12 +13,28 @@ const StyledCells = styled.td`
   font-size: 12px;
   padding: 0;
 
+  :nth-child(2),
+  :nth-child(3),
+  :nth-child(4),
+  :nth-child(5) {
+    border-right: 1px solid black;
+    border-left: 1px solid black;
+  }
+
+  :nth-child(6) {
+    border-left: 1px solid black;
+  }
+
   span,
   li {
     padding: 4px 8px;
 
-    @media (max-width: 1119px) {
+    @media (max-width: 1152x) {
       font-size: 10px;
+    }
+
+    @media (max-width: 800px) {
+      font-size: 8px;
     }
   }
 `;
@@ -26,7 +42,20 @@ const StyledCells = styled.td`
 const StyledHeader = styled.th<{ isTurnoverCategoriesHeader: boolean }>`
   padding: ${(props): string | number => (props.isTurnoverCategoriesHeader ? 0 : '4px')};
 
-  @media (max-width: 1119px) {
+  :nth-child(2),
+  :nth-child(3),
+  :nth-child(4),
+  :nth-child(5) {
+    border-right: 1px solid black;
+    border-left: 1px solid black;
+    border-top: 1px solid black;
+  }
+
+  :nth-child(6) {
+    border-left: 1px solid black;
+  }
+
+  @media (max-width: 1152px) {
     font-size: 10px;
   }
 `;

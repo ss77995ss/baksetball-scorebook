@@ -9,13 +9,39 @@ interface Props {
   rows: Row<TurnoverCategoriesType>[];
 }
 
+const StyledRow = styled.tr`
+  li {
+    border-bottom: 1px solid black;
+  }
+
+  :first-child {
+    border-bottom: none;
+  }
+`;
+
 const StyledCells = styled.td`
   font-size: 12px;
   padding: 0;
 
+  :nth-child(2),
+  :nth-child(3),
+  :nth-child(4),
+  :nth-child(5) {
+    border-right: 1px solid black;
+    border-left: 1px solid black;
+  }
+
+  :nth-child(6) {
+    border-left: 1px solid black;
+  }
+
   span,
   li {
     padding: 4px 8px;
+
+    @media (max-width: 1119px) {
+      font-size: 10px;
+    }
   }
 `;
 
@@ -52,7 +78,7 @@ const TurnoverTotalRow: React.FC<Props> = ({ rows }: Props) => {
   }, initialSingleData);
 
   return (
-    <tr>
+    <StyledRow>
       {Object.keys(turnoverTotalList).map(key => {
         switch (key) {
           case 'drop':
@@ -77,7 +103,7 @@ const TurnoverTotalRow: React.FC<Props> = ({ rows }: Props) => {
             throw new Error('Invalid key');
         }
       })}
-    </tr>
+    </StyledRow>
   );
 };
 
