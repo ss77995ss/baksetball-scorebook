@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useLocalStorage } from 'react-use';
 import DisplayTable from './DisplayTable';
 import EditMode from './EditMode';
-import { initialTurnoverData } from './constants';
+import { initialSingleData, initialTurnoverData, defaultPlayers } from './constants';
 import { StatHistoryType } from './types';
 
 const StyledButtonSection = styled.section`
@@ -14,8 +15,18 @@ const StyledButtonSection = styled.section`
 `;
 
 const TurnoverSheet: React.FC = () => {
+  const [playerList] = useLocalStorage('playerList', defaultPlayers);
   const [mode, setMode] = useState('編輯');
-  const [turnoverData, setTurnoverData] = useState(initialTurnoverData);
+  const [turnoverData, setTurnoverData] = useState(
+    playerList
+      ? playerList.map(playerName => {
+          return {
+            ...initialSingleData,
+            playerName,
+          };
+        })
+      : initialTurnoverData,
+  );
   const [statHistory, setStatHistory] = useState<StatHistoryType[]>([]);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void =>
