@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import { update, reject } from 'ramda';
-import { defaultPlayers } from './constants';
 
-const PlayerSelector: React.FC = () => {
-  const [onCourt, setOnCourt] = useState(defaultPlayers.slice(0, 5));
+interface Props {
+  playerList: string[];
+}
+
+const PlayerSelector: React.FC<Props> = ({ playerList }: Props) => {
+  const [onCourt, setOnCourt] = useState(playerList.slice(0, 5));
   const [selectedPlayer, setSelectedPlayer] = useState(onCourt[0]);
   const [selectorStatus, setSelectorStatus] = useState<'更換場上五人' | '確認更換'>('更換場上五人');
-  const excludedOnCourt = reject(n => onCourt.includes(n), defaultPlayers);
+  const excludedOnCourt = reject(n => onCourt.includes(n), playerList);
 
   const handleCheck = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setSelectedPlayer(event.target.value);

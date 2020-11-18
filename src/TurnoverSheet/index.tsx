@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useLocalStorage } from 'react-use';
 import DisplayTable from './DisplayTable';
 import EditMode from './EditMode';
-import { initialSingleData, initialTurnoverData, defaultPlayers } from './constants';
+import { initialSingleData, initialTurnoverData, defaultPlayers, defaultPlayersList } from './constants';
 import { StatHistoryType } from './types';
 
 const StyledButtonSection = styled.section`
@@ -14,8 +14,15 @@ const StyledButtonSection = styled.section`
   }
 `;
 
+type PlayersList = {
+  name: string;
+  value: string[];
+};
+
 const TurnoverSheet: React.FC = () => {
-  const [playerList] = useLocalStorage('playerList', defaultPlayers);
+  const [playersList] = useLocalStorage<PlayersList[]>('playersList', defaultPlayersList);
+  const [listIndex] = useLocalStorage<number>('playerListSelectedIndex');
+  const playerList = playersList && listIndex ? playersList[listIndex].value : defaultPlayers;
   const [mode, setMode] = useState('編輯');
   const [turnoverData, setTurnoverData] = useState(
     playerList
@@ -43,7 +50,12 @@ const TurnoverSheet: React.FC = () => {
         </button>
       </StyledButtonSection>
       {mode === '編輯' ? (
-        <EditMode statHistory={statHistory} setTurnoverData={setTurnoverData} setStatHistory={setStatHistory} />
+        <EditMode
+          playerList={playerList}
+          statHistory={statHistory}
+          setTurnoverData={setTurnoverData}
+          setStatHistory={setStatHistory}
+        />
       ) : (
         <DisplayTable turnoverData={turnoverData} />
       )}

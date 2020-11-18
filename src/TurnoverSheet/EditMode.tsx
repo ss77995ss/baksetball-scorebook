@@ -24,12 +24,13 @@ const DeleteHistoryBtn = styled.button`
 `;
 
 interface Props {
+  playerList: string[];
   statHistory: StatHistoryType[];
   setTurnoverData: React.Dispatch<React.SetStateAction<TurnoverCategoriesType[]>>;
   setStatHistory: React.Dispatch<React.SetStateAction<StatHistoryType[]>>;
 }
 
-const EditMode: React.FC<Props> = ({ statHistory, setTurnoverData, setStatHistory }: Props) => {
+const EditMode: React.FC<Props> = ({ playerList, statHistory, setTurnoverData, setStatHistory }: Props) => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
     const { playerName, turnoverCategory, turnoverSubCategory } = event.target as HTMLFormElement;
@@ -166,7 +167,7 @@ const EditMode: React.FC<Props> = ({ statHistory, setTurnoverData, setStatHistor
   return (
     <StyledEditModeRoot>
       <form onSubmit={handleSubmit}>
-        <PlayerSelector />
+        {playerList && <PlayerSelector playerList={playerList} />}
         <TurnoverCategoriesSelector />
         <input type="submit" value="送出" />
       </form>

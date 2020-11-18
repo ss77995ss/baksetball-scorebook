@@ -92,6 +92,13 @@ export const defaultPlayers = [
   '廖柏誠',
 ];
 
+export const defaultPlayersList = [
+  {
+    name: 'default',
+    value: defaultPlayers,
+  },
+];
+
 export const initialSingleData = {
   playerName: 'Total',
   drop: {
