@@ -52,8 +52,8 @@ const EditMode: React.FC<Props> = ({ teamName, setTeamName }: Props) => {
       <label htmlFor="home">{HOME}</label>
       <input type="radio" id="away" name="team" value="AWAY" onChange={handleCheck} />
       <label htmlFor="away">{AWAY}</label>
-      <p onClick={handleClick}>
-        <span>{`Current: ${teamName[team]}`}</span>
+      <p>
+        <span onClick={handleClick}>{`Current: ${teamName[team]}`}</span>
       </p>
       <StatsTable team={team === 'HOME' ? 'home' : 'away'} />
     </StyledEditModeRoot>

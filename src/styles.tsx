@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 
 export const StyledTable = styled.div`
+  padding-bottom: 1rem;
+
   h3 {
     text-align: center;
   }
@@ -86,5 +88,28 @@ export const StyledDisplayCell = styled.div`
 
   @media (max-width: 600px) {
     padding: 0.15rem;
+  }
+`;
+
+export const StyledSubHeader = styled.ul`
+  list-style-type: none;
+  display: flex;
+  padding: 0;
+  margin: 0;
+
+  li {
+    font-size: 12px;
+    width: 25%;
+    padding: 4px 0;
+
+    border-right: 1px solid black;
+
+    :last-child {
+      border: none;
+    }
+
+    @media (max-width: 1119px) {
+      font-size: 8px;
+    }
   }
 `;

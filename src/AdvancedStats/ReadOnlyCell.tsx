@@ -1,6 +1,6 @@
 import React from 'react';
 import { Cell } from 'react-table';
-import { StyledCell } from './styles';
+import { StyledCell } from '../styles';
 import { StatType } from './types';
 
 interface Props {
