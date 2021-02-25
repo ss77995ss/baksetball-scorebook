@@ -5,12 +5,10 @@ import StatsTable from './StatsTable';
 const StyledEditModeRoot = styled.div`
   text-align: center;
   padding-bottom: 28px;
+`;
 
-  p {
-    span {
-      cursor: pointer;
-    }
-  }
+const StyledChangeTeamNameButton = styled.div`
+  margin-top: 4px;
 `;
 
 interface Props {
@@ -52,9 +50,9 @@ const EditMode: React.FC<Props> = ({ teamName, setTeamName }: Props) => {
       <label htmlFor="home">{HOME}</label>
       <input type="radio" id="away" name="team" value="AWAY" onChange={handleCheck} />
       <label htmlFor="away">{AWAY}</label>
-      <p>
-        <span onClick={handleClick}>{`Current: ${teamName[team]}`}</span>
-      </p>
+      <StyledChangeTeamNameButton>
+        <button onClick={handleClick}>變更選取隊伍名稱</button>
+      </StyledChangeTeamNameButton>
       <StatsTable team={team === 'HOME' ? 'home' : 'away'} />
     </StyledEditModeRoot>
   );

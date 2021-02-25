@@ -170,6 +170,37 @@ export const initialData: Array<StatType> = [
   },
   {
     statInfo: {
+      type: STAT_TYPE.POINTS_AND_COUNT,
+      name: '製造犯規',
+      title: {
+        points: DEFAULT_TITLE.POINTS,
+        count: DEFAULT_TITLE.COUNT,
+      },
+      isSwipeable: true,
+    },
+    q1: {
+      count: 0,
+      points: 0,
+    },
+    q2: {
+      count: 0,
+      points: 0,
+    },
+    q3: {
+      count: 0,
+      points: 0,
+    },
+    q4: {
+      count: 0,
+      points: 0,
+    },
+    total: {
+      count: 0,
+      points: 0,
+    },
+  },
+  {
+    statInfo: {
       type: STAT_TYPE.COUNT_ONLY,
       name: '失誤',
       title: DEFAULT_TITLE.COUNT,

@@ -7,7 +7,8 @@ import PlayerList from './PlayerList';
 
 const StyledNav = styled.nav`
   text-align: center;
-  padding: 1rem 0;
+  padding-top: 12px;
+  padding-bottom: 8px;
 
   a {
     margin: 4px;
