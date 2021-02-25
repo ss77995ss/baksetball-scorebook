@@ -9,7 +9,7 @@ const StyledButtonSection = styled.section`
   text-align: center;
 
   button {
-    margin: 12px;
+    margin: 8px 12px;
   }
 `;
 
