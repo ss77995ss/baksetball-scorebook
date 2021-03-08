@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 import { update, propEq, findIndex, prop, prepend, remove } from 'ramda';
 import PlayerSelector from './PlayerSelector';

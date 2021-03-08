@@ -1,4 +1,3 @@
-import React from 'react';
 import { Row } from 'react-table';
 import styled from 'styled-components';
 import TurnoverCell from './TurnoverCell';

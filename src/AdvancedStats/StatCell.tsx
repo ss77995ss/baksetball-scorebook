@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { Cell } from 'react-table';
 import { StyledCell } from '../styles';
 import { useStatsDispatch } from './hooks/statData';
@@ -40,7 +40,7 @@ const StatCell: React.FC<Props> = ({ cell, team }: Props) => {
   const handleCountClick = (): void => {
     if (countClickCount.current < 1) {
       countClickCount.current += 1;
-      countClickTimeout.current = setTimeout(() => {
+      countClickTimeout.current = window.setTimeout(() => {
         updateStats(value + 1);
         countClickCount.current = 0;
       }, 200);

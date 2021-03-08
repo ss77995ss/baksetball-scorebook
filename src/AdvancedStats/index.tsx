@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import { StatsProvider } from './hooks/statData';
 import { DEFAULT_TEAM_NAME } from './constants';

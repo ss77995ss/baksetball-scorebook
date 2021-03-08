@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-key */
-import React from 'react';
+import { ReactElement } from 'react';
 import { useTable, Cell } from 'react-table';
 import styled from 'styled-components';
 import { StyledTable } from '../styles';
@@ -60,7 +60,7 @@ const StyledHeader = styled.th<{ isTurnoverCategoriesHeader: boolean }>`
   }
 `;
 
-const renderCell: (cell: Cell<TurnoverCategoriesType>) => {} | null | undefined = cell => {
+const renderCell: (cell: Cell<TurnoverCategoriesType>) => ReactElement | null | undefined = cell => {
   switch (cell.column.Header) {
     case '名字':
     case '其他失誤':

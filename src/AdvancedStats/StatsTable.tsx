@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-key */
-import React, { useState } from 'react';
+import { ReactElement, useState } from 'react';
 import { useTable, Cell } from 'react-table';
 import { StyledTable } from '../styles';
 import { useStatsState } from './hooks/statData';
@@ -12,7 +12,7 @@ import TotalCell from './TotalCell';
 import TotalCellWithCount from './TotalCellWithCount';
 import ReadOnlyCell from './ReadOnlyCell';
 
-const renderCell: (quarter: string, team: string, cell: Cell<StatType>) => {} | null | undefined = (
+const renderCell: (quarter: string, team: string, cell: Cell<StatType>) => ReactElement | null | undefined = (
   quarter,
   team,
   cell,

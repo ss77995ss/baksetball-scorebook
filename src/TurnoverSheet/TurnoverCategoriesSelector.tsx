@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   TURNOVER_CATEGORIES,
   TURNOVER_CATEGORIES_NAME,
