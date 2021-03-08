@@ -1,5 +1,4 @@
 /* eslint-disable react/jsx-key */
-import React from 'react';
 import { useTable, Cell } from 'react-table';
 import { StyledTable } from '../styles';
 import { useStatsState } from './hooks/statData';
@@ -8,7 +7,7 @@ import { getTotal, getTotalWithCount } from './utils';
 import { StyledDisplayCell } from '../styles';
 import { StatType } from './types';
 
-const renderCell: (cell: Cell<StatType>) => {} | null | undefined = cell => {
+const renderCell: (cell: Cell<StatType>) => React.ElementType | null | undefined = cell => {
   switch (cell.column.Header) {
     case '項目':
       return (

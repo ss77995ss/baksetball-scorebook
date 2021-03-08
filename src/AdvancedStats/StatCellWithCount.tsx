@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { Cell } from 'react-table';
 import { useSwipeable } from 'react-swipeable';
 import { StyledCell } from '../styles';
@@ -60,7 +60,7 @@ const StatCellWithCount: React.FC<Props> = ({ cell, team, isSwipeable }: Props) 
   const handlePointsClick = (): void => {
     if (pointsClickCount.current < 1) {
       pointsClickCount.current += 1;
-      pointsClickTimeout.current = setTimeout(() => {
+      pointsClickTimeout.current = window.setTimeout(() => {
         updateStats({ points: points + 1, count: count });
         pointsClickCount.current = 0;
       }, 200);
@@ -74,7 +74,7 @@ const StatCellWithCount: React.FC<Props> = ({ cell, team, isSwipeable }: Props) 
   const handleCountClick = (): void => {
     if (countClickCount.current < 1) {
       countClickCount.current += 1;
-      countClickTimeout.current = setTimeout(() => {
+      countClickTimeout.current = window.setTimeout(() => {
         updateStats({ points, count: count + 1 });
         countClickCount.current = 0;
       }, 200);

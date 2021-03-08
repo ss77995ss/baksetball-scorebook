@@ -13,5 +13,7 @@ module.exports = {
       version: 'detect', // Tells eslint-plugin-react to automatically detect the version of React to use
     },
   },
-  rules: {},
+  rules: {
+    "react/react-in-jsx-scope": 0
+  },
 };

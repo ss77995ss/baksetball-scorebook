@@ -1,4 +1,3 @@
-import React from 'react';
 import { Cell } from 'react-table';
 import { StatType } from './types';
 import { lensProp, pick, set } from 'ramda';
@@ -39,7 +38,7 @@ const StatTitleCell: React.FC<Props> = ({ cell }: Props) => {
   const handleOnClick = (key: string) => (): void => {
     const targetValue = typeof title === 'object' && key !== 'name' ? pick([key], title)[key] : pick([key], value)[key];
     const newKeyName = prompt('輸入新的名稱', targetValue) || targetValue;
-    const targetLen = lensProp(key);
+    const targetLen = lensProp<Record<string, string>, string>(key);
 
     typeof title === 'object' && key !== 'name'
       ? updateStatsName({ ...value, title: set(targetLen, newKeyName, title) })

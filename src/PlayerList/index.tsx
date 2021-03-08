@@ -1,4 +1,3 @@
-import React from 'react';
 import { useLocalStorage } from 'react-use';
 import { useForm } from 'react-hook-form';
 import { remove, update } from 'ramda';
@@ -37,7 +36,7 @@ const PlayerList: React.FC = () => {
   const currentPlayers = playersList ? playersList[listIndex].value : defaultPlayers;
   const currentPlayerListName = playersList ? playersList[listIndex].name : '';
 
-  const onSubmit = (data: object): void => {
+  const onSubmit = (data: Record<string, string>): void => {
     if (!playersList) return;
 
     const newValue = {

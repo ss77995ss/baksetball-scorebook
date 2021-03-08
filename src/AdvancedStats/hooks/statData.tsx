@@ -1,4 +1,4 @@
-import React, { createContext, ReactNode, useContext, useReducer, ReactComponentElement } from 'react';
+import { createContext, ReactNode, useContext, useReducer, ReactComponentElement } from 'react';
 import { Column } from 'react-table';
 import { columns, initialData } from '../constants';
 import { StatType } from '../types';

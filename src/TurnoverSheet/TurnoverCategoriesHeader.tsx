@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 import { StyledSubHeader } from '../styles';
 import { TURNOVER_SUB_CATEGORIES_NAME } from './constants';
@@ -15,7 +14,8 @@ const StyledMainHeader = styled.section`
 `;
 
 interface Props {
-  passType: string | undefined | {};
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  passType: string | number | undefined | {};
 }
 
 const TurnoverCategoriesHeader: React.FC<Props> = ({ passType }: Props) => {
