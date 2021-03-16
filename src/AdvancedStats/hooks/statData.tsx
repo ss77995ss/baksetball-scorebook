@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext, useReducer, ReactComponentElement } from 'react';
+import React, { createContext, ReactNode, useContext, useReducer, ReactComponentElement } from 'react';
 import { Column } from 'react-table';
 import { columns, initialData } from '../constants';
 import { StatType } from '../types';
@@ -15,7 +15,8 @@ type UpdateParamsType = {
 
 type Action =
   | { type: 'UPDATE_CELL'; params: UpdateParamsType }
-  | { type: 'UPDATE_STATS_NAME'; params: UpdateParamsType };
+  | { type: 'UPDATE_STATS_NAME'; params: UpdateParamsType }
+  | { type: 'RESET' };
 type Dispatch = (action: Action) => void;
 type State = { columns: Array<Column<StatType>>; home: Array<StatType>; away: Array<StatType> };
 type StatsProviderProps = { children: ReactNode };
@@ -24,10 +25,9 @@ const StatsStateContext = createContext<State | undefined>(undefined);
 const StatsDispatchContext = createContext<Dispatch | undefined>(undefined);
 
 function statsReducer(state: State, action: Action): State {
-  const { team, rowIndex, columnId, value } = action.params;
-
   switch (action.type) {
     case 'UPDATE_CELL': {
+      const { team, rowIndex, columnId, value } = action.params;
       const prev = action.params.team === 'home' ? state.home : state.away;
 
       return {
@@ -44,6 +44,8 @@ function statsReducer(state: State, action: Action): State {
       };
     }
     case 'UPDATE_STATS_NAME': {
+      const { rowIndex, columnId, value } = action.params;
+
       return {
         ...state,
         home: state.home.map((row, index) => {
@@ -65,6 +67,9 @@ function statsReducer(state: State, action: Action): State {
           return row;
         }),
       };
+    }
+    case 'RESET': {
+      return { columns: columns, home: initialData, away: initialData };
     }
     default: {
       throw new Error('Unknown action type');
