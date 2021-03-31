@@ -1,8 +1,8 @@
-import { useLocalStorage } from 'react-use';
 import { useForm } from 'react-hook-form';
 import { remove, update } from 'ramda';
 import styled from 'styled-components';
-import { defaultPlayers, defaultPlayersList } from '../TurnoverSheet/constants';
+import { usePlayerListCtx } from './hooks/usePlayerList';
+import { defaultPlayers } from '../TurnoverSheet/constants';
 
 const StyledSection = styled.section`
   text-align: center;
@@ -22,33 +22,30 @@ const StyledSection = styled.section`
   }
 `;
 
-type PlayersList = {
-  name: string;
-  value: string[];
-};
-
 const PlayerList: React.FC = () => {
-  const [playersList, setPlayersList] = useLocalStorage<PlayersList[]>('playersList', defaultPlayersList);
-  const [playerListSelectedIndex, setListIndex] = useLocalStorage<string>('playerListSelectedIndex', '0');
-  const [playerListId, setPlayerListId] = useLocalStorage<number>('playerListId', 1);
+  const {
+    playerList,
+    currentPlayers,
+    currentPlayerListName,
+    listIndex,
+    playerListId,
+    setPlayerList,
+    setListIndex,
+    setPlayerListId,
+  } = usePlayerListCtx();
   const { register, handleSubmit } = useForm();
-  const listIndex = playerListSelectedIndex ? parseInt(playerListSelectedIndex, 10) : 0;
-  const currentPlayers = playersList ? playersList[listIndex].value : defaultPlayers;
-  const currentPlayerListName = playersList ? playersList[listIndex].name : '';
 
   const onSubmit = (data: Record<string, string>): void => {
-    if (!playersList) return;
-
     const newValue = {
-      name: playersList[listIndex].name,
+      name: currentPlayerListName,
       value: Object.values(data).map((newName, index) => {
         return newName ? newName : currentPlayers[index];
       }),
     };
 
-    const newList = update(listIndex, newValue, playersList);
+    const newList = update(listIndex, newValue, playerList);
 
-    setPlayersList(newList);
+    setPlayerList(newList);
   };
 
   const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>): void => {
@@ -58,19 +55,19 @@ const PlayerList: React.FC = () => {
   };
 
   const handleAdd = (): void => {
-    if (!playersList || !playerListId) return;
-    setPlayersList([...playersList, { name: `隊伍-${playerListId}`, value: defaultPlayers }]);
+    if (!playerList || !playerListId) return;
+    setPlayerList([...playerList, { name: `隊伍-${playerListId}`, value: defaultPlayers }]);
     setPlayerListId(playerListId + 1);
   };
 
   const handleDelete = (): void => {
-    if (!playersList || playersList.length === 1) return alert('需要留至少一個名單');
+    if (!playerList || playerList.length === 1) return alert('需要留至少一個名單');
 
-    setPlayersList(remove(listIndex, 1, playersList));
+    setPlayerList(remove(listIndex, 1, playerList));
   };
 
   const handleEditName = (): void => {
-    if (!playersList) return;
+    if (!playerList) return;
 
     const newName = prompt('輸入此名單名稱：', currentPlayerListName) || currentPlayerListName;
 
@@ -79,16 +76,16 @@ const PlayerList: React.FC = () => {
       value: currentPlayers,
     };
 
-    const newList = update(listIndex, newValue, playersList);
+    const newList = update(listIndex, newValue, playerList);
 
-    setPlayersList(newList);
+    setPlayerList(newList);
   };
 
   return (
     <StyledSection>
-      {playersList && (
+      {playerList && (
         <select onChange={handleSelect} defaultValue={listIndex}>
-          {playersList.map((players, index) => {
+          {playerList.map((players, index) => {
             return (
               <option key={`players-list-${index}`} value={index}>
                 {players.name}

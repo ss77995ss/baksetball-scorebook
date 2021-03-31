@@ -1,4 +1,4 @@
-import React, { createContext, ReactNode, useContext, useReducer, ReactComponentElement } from 'react';
+import { createContext, ReactNode, useContext, useReducer, ReactComponentElement } from 'react';
 import { Column } from 'react-table';
 import { columns, initialData } from '../constants';
 import { StatType } from '../types';
@@ -85,6 +85,7 @@ function StatsProvider({ children }: StatsProviderProps): ReactComponentElement<
     </StatsStateContext.Provider>
   );
 }
+
 function useStatsState(): State {
   const context = useContext(StatsStateContext);
   if (context === undefined) {
@@ -92,6 +93,7 @@ function useStatsState(): State {
   }
   return context;
 }
+
 function useStatsDispatch(): Dispatch {
   const context = useContext(StatsDispatchContext);
   if (context === undefined) {
