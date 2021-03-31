@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import { StatsProvider } from './hooks/statData';
 import { DEFAULT_TEAM_NAME } from './constants';
 import EditMode from './EditMode';
 import ViewMode from './ViewMode';
@@ -21,7 +20,7 @@ const AdvancedStats: React.FC = () => {
     setMode(event.currentTarget.value);
 
   return (
-    <StatsProvider>
+    <>
       <StyledButtonSection>
         <button type="button" value="編輯" onClick={handleClick}>
           編輯
@@ -31,7 +30,7 @@ const AdvancedStats: React.FC = () => {
         </button>
       </StyledButtonSection>
       {mode === '編輯' ? <EditMode teamName={teamName} setTeamName={setTeamName} /> : <ViewMode teamName={teamName} />}
-    </StatsProvider>
+    </>
   );
 };
 

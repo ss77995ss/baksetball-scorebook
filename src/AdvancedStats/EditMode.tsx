@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import styled from 'styled-components';
+import { useStatsDispatch } from './hooks/statData';
 import StatsTable from './StatsTable';
 
 const StyledEditModeRoot = styled.div`
@@ -9,6 +10,10 @@ const StyledEditModeRoot = styled.div`
 
 const StyledChangeTeamNameButton = styled.div`
   margin-top: 4px;
+
+  button {
+    margin-right: 4px;
+  }
 `;
 
 interface Props {
@@ -26,6 +31,7 @@ interface Props {
 
 const EditMode: React.FC<Props> = ({ teamName, setTeamName }: Props) => {
   const [team, setTeam] = useState<keyof typeof teamName>('HOME');
+  const statsDispatch = useStatsDispatch();
   const { HOME, AWAY } = teamName;
 
   const handleCheck = (event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -38,10 +44,14 @@ const EditMode: React.FC<Props> = ({ teamName, setTeamName }: Props) => {
 
   const handleClick = (): void => {
     const newTeamName = prompt('請輸入新的隊伍名稱', teamName[team]) || teamName[team];
-    setTeamName(prev => ({
+    setTeamName((prev) => ({
       ...prev,
       [team]: newTeamName,
     }));
+  };
+
+  const handleReset = (): void => {
+    statsDispatch({ type: 'RESET' });
   };
 
   return (
@@ -52,6 +62,7 @@ const EditMode: React.FC<Props> = ({ teamName, setTeamName }: Props) => {
       <label htmlFor="away">{AWAY}</label>
       <StyledChangeTeamNameButton>
         <button onClick={handleClick}>變更選取隊伍名稱</button>
+        <button onClick={handleReset}>重設</button>
       </StyledChangeTeamNameButton>
       <StatsTable team={team === 'HOME' ? 'home' : 'away'} />
     </StyledEditModeRoot>

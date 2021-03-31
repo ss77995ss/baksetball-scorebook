@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import { useLocalStorage } from 'react-use';
 import DisplayTable from './DisplayTable';
 import EditMode from './EditMode';
-import { initialSingleData, initialTurnoverData, defaultPlayers, defaultPlayersList } from './constants';
+import { initialSingleData, initialTurnoverData } from './constants';
 import { StatHistoryType } from './types';
+import { usePlayerListCtx } from '../PlayerList/hooks/usePlayerList';
 
 const StyledButtonSection = styled.section`
   text-align: center;
@@ -14,19 +14,13 @@ const StyledButtonSection = styled.section`
   }
 `;
 
-type PlayersList = {
-  name: string;
-  value: string[];
-};
-
 const TurnoverSheet: React.FC = () => {
-  const [playersList] = useLocalStorage<PlayersList[]>('playersList', defaultPlayersList);
-  const [listIndex] = useLocalStorage<number>('playerListSelectedIndex');
-  const playerList = playersList && listIndex ? playersList[listIndex].value : defaultPlayers;
+  const { currentPlayers } = usePlayerListCtx();
+
   const [mode, setMode] = useState('編輯');
   const [turnoverData, setTurnoverData] = useState(
-    playerList
-      ? playerList.map(playerName => {
+    currentPlayers
+      ? currentPlayers.map((playerName) => {
           return {
             ...initialSingleData,
             playerName,
@@ -51,7 +45,7 @@ const TurnoverSheet: React.FC = () => {
       </StyledButtonSection>
       {mode === '編輯' ? (
         <EditMode
-          playerList={playerList}
+          playerList={currentPlayers}
           statHistory={statHistory}
           setTurnoverData={setTurnoverData}
           setStatHistory={setStatHistory}

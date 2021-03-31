@@ -1,5 +1,7 @@
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { StatsProvider } from './AdvancedStats/hooks/statData';
+import { PlayerListProvider } from './PlayerList/hooks/usePlayerList';
 import AdvancedStats from './AdvancedStats';
 import TurnoverSheet from './TurnoverSheet';
 import PlayerList from './PlayerList';
@@ -25,17 +27,21 @@ const App: React.FC = () => {
             <Link to="playerlist">球員名單</Link>
           </StyledNav>
         </header>
-        <Switch>
-          <Route exact path="/">
-            <AdvancedStats />
-          </Route>
-          <Route path="/turnover">
-            <TurnoverSheet />
-          </Route>
-          <Route path="/playerlist">
-            <PlayerList />
-          </Route>
-        </Switch>
+        <StatsProvider>
+          <PlayerListProvider>
+            <Switch>
+              <Route exact path="/">
+                <AdvancedStats />
+              </Route>
+              <Route path="/turnover">
+                <TurnoverSheet />
+              </Route>
+              <Route path="/playerlist">
+                <PlayerList />
+              </Route>
+            </Switch>
+          </PlayerListProvider>
+        </StatsProvider>
       </main>
     </Router>
   );
