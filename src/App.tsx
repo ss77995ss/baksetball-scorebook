@@ -1,10 +1,14 @@
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import styled from 'styled-components';
 import { StatsProvider } from './AdvancedStats/hooks/statData';
 import { PlayerListProvider } from './PlayerList/hooks/usePlayerList';
 import AdvancedStats from './AdvancedStats';
 import TurnoverSheet from './TurnoverSheet';
 import PlayerList from './PlayerList';
+import Matches from './Matches';
+
+const queryClient = new QueryClient();
 
 const StyledNav = styled.nav`
   text-align: center;
@@ -38,6 +42,11 @@ const App: React.FC = () => {
               </Route>
               <Route path="/playerlist">
                 <PlayerList />
+              </Route>
+              <Route path="/matches">
+                <QueryClientProvider client={queryClient}>
+                  <Matches />
+                </QueryClientProvider>
               </Route>
             </Switch>
           </PlayerListProvider>
