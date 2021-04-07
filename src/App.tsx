@@ -7,6 +7,7 @@ import AdvancedStats from './AdvancedStats';
 import TurnoverSheet from './TurnoverSheet';
 import PlayerList from './PlayerList';
 import Matches from './Matches';
+import Match from './Matches/Match';
 
 const queryClient = new QueryClient();
 
@@ -33,22 +34,25 @@ const App: React.FC = () => {
         </header>
         <StatsProvider>
           <PlayerListProvider>
-            <Switch>
-              <Route exact path="/">
-                <AdvancedStats />
-              </Route>
-              <Route path="/turnover">
-                <TurnoverSheet />
-              </Route>
-              <Route path="/playerlist">
-                <PlayerList />
-              </Route>
-              <Route path="/matches">
-                <QueryClientProvider client={queryClient}>
+            <QueryClientProvider client={queryClient}>
+              <Switch>
+                <Route exact path="/">
+                  <AdvancedStats />
+                </Route>
+                <Route path="/turnover">
+                  <TurnoverSheet />
+                </Route>
+                <Route path="/playerlist">
+                  <PlayerList />
+                </Route>
+                <Route path="/matches">
                   <Matches />
-                </QueryClientProvider>
-              </Route>
-            </Switch>
+                </Route>
+                <Route path="/match/:id">
+                  <Match />
+                </Route>
+              </Switch>
+            </QueryClientProvider>
           </PlayerListProvider>
         </StatsProvider>
       </main>

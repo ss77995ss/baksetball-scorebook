@@ -1,16 +1,9 @@
 import { useQuery } from 'react-query';
-
-type Match = {
-  _id: string;
-  type: string | null;
-  name: string | null;
-  homeTeamId: string | null;
-  awayTeamId: string | null;
-  date: Date;
-};
+import { Link } from 'react-router-dom';
+import { MatchType } from './types';
 
 const Matches: React.FC = () => {
-  const { isLoading, error, data: matches } = useQuery<Match[]>('matches', () =>
+  const { isLoading, error, data: matches } = useQuery<MatchType[]>('matches', () =>
     fetch('http://localhost:8080/matches').then((res) => res.json()),
   );
 
@@ -26,9 +19,11 @@ const Matches: React.FC = () => {
         <ul>
           {matches.map(({ _id, type, name, date }) => (
             <li key={`match-${_id}`}>
-              <div>{name}</div>
-              <div>{type}</div>
-              <div>{date}</div>
+              <Link to={`/match/${_id}`}>
+                <div>{name}</div>
+                <div>{type}</div>
+                <div>{date}</div>
+              </Link>
             </li>
           ))}
         </ul>
