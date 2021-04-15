@@ -1,38 +1,38 @@
 /* eslint-disable react/jsx-key */
-import { ReactElement } from 'react';
-import { useTable, Cell } from 'react-table';
 import styled from 'styled-components';
+import { useTable } from 'react-table';
 import { BoxType } from './types';
 import { columns } from './constants';
-import { StyledTable } from '../styles';
 import ReboundHeader from './ReboundHeader';
 import ShootingHeader from './ShootingHeader';
 import ReboundCell from './ReboundCell';
 import ShootingCell from './ShootingCell';
 
-const StyledNormalHeader = styled.th`
-  border-right: 1px solid black;
+const StyledTable = styled.table`
+  border-collapse: collapse;
+  margin: auto;
 `;
 
-const StyledLeftHLHeader = styled.th`
-  border-left: 1px solid black;
+const StyledHeader = styled.th`
+  border: 1px solid black;
+  padding: 0 4px;
 `;
 
-const renderCell: (cell: Cell<BoxType>) => ReactElement | null | undefined = (cell) => {
-  switch (cell.column.Header) {
-    case '名字':
-      return <span>{cell.value.name}</span>;
-    case '籃板':
-      return <ReboundCell value={cell.value} />;
-    case 'FG':
-    case '3PT':
-    case 'FT':
-      return <ShootingCell value={cell.value} />;
-    default:
-      return <span>{cell.value}</span>;
-  }
-};
+const StyledCell = styled.td`
+  border: 1px solid black;
+  padding: 0 4px;
+  text-align: center;
+`;
 
+const StyledSplitCell = styled.td`
+  border: 1px solid black;
+  padding: 0;
+  text-align: center;
+`;
+
+const StyledCol = styled.col`
+  border: 2px solid black;
+`;
 interface Props {
   boxScore: BoxType[];
 }
@@ -44,55 +44,86 @@ const BoxScore: React.FC<Props> = ({ boxScore }: Props) => {
   });
 
   return (
-    <StyledTable>
-      <table {...getTableProps()}>
-        <thead>
-          {
-            // Loop over the header rows
-            headerGroups.map((headerGroup) => (
-              // Apply the header row props
-              <tr {...headerGroup.getHeaderGroupProps()}>
-                {
-                  // Loop over the headers in each row
-                  headerGroup.headers.map((column) => {
-                    switch (column.Header) {
-                      case '籃板':
-                        return <ReboundHeader />;
-                      case 'FG':
-                      case '3PT':
-                      case 'FT':
-                        return <ShootingHeader shootingType={column.Header} />;
-                      case '助攻':
-                      case '抄截':
-                        return <StyledLeftHLHeader>{column.render('Header')}</StyledLeftHLHeader>;
-                      default:
-                        return <StyledNormalHeader>{column.render('Header')}</StyledNormalHeader>;
-                    }
-                  })
-                }
-              </tr>
-            ))
-          }
-        </thead>
-        <tbody {...getTableBodyProps()}>
-          {rows.map((row) => {
-            prepareRow(row);
+    <StyledTable {...getTableProps()}>
+      <colgroup>
+        <col span={5} />
+        <StyledCol />
+        <col span={2} />
+        <StyledCol span={3} />
+      </colgroup>
+      <thead>
+        {
+          // Loop over the header rows
+          headerGroups.map((headerGroup) => (
+            // Apply the header row props
+            <tr {...headerGroup.getHeaderGroupProps()}>
+              {
+                // Loop over the headers in each row
+                headerGroup.headers.map((column) => {
+                  switch (column.Header) {
+                    case '籃板':
+                      return <ReboundHeader />;
+                    case 'FG':
+                    case '3PT':
+                    case 'FT':
+                      return <ShootingHeader shootingType={column.Header} />;
+                    case '助攻':
+                    case '抄截':
+                      return <StyledHeader>{column.render('Header')}</StyledHeader>;
+                    default:
+                      return <StyledHeader>{column.render('Header')}</StyledHeader>;
+                  }
+                })
+              }
+            </tr>
+          ))
+        }
+      </thead>
+      <tbody {...getTableBodyProps()}>
+        {rows.map((row) => {
+          prepareRow(row);
 
-            return (
-              // Apply the row props
-              <tr {...row.getRowProps()}>
-                {
-                  // Loop over the rows cells
-                  row.cells.map((cell) => {
-                    // Apply the cell props
-                    return <td {...cell.getCellProps()}>{renderCell(cell)}</td>;
-                  })
-                }
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+          return (
+            // Apply the row props
+            <tr {...row.getRowProps()}>
+              {
+                // Loop over the rows cells
+                row.cells.map((cell) => {
+                  // Apply the cell props
+                  switch (cell.column.Header) {
+                    case '名字':
+                      return (
+                        <StyledCell {...cell.getCellProps()}>
+                          <span>{cell.value.name}</span>
+                        </StyledCell>
+                      );
+                    case '籃板':
+                      return (
+                        <StyledSplitCell {...cell.getCellProps()}>
+                          <ReboundCell value={cell.value} />
+                        </StyledSplitCell>
+                      );
+                    case 'FG':
+                    case '3PT':
+                    case 'FT':
+                      return (
+                        <StyledSplitCell {...cell.getCellProps()}>
+                          <ShootingCell value={cell.value} />
+                        </StyledSplitCell>
+                      );
+                    default:
+                      return (
+                        <StyledCell {...cell.getCellProps()}>
+                          <span>{cell.value}</span>
+                        </StyledCell>
+                      );
+                  }
+                })
+              }
+            </tr>
+          );
+        })}
+      </tbody>
     </StyledTable>
   );
 };

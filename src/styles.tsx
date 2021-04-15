@@ -1,11 +1,5 @@
 import styled from 'styled-components';
 
-export const StyledHighlightHeader = styled.th`
-  border-right: 1px solid black;
-  border-left: 1px solid black;
-  border-top: 1px solid black;
-`;
-
 export const StyledTable = styled.div`
   padding-bottom: 1rem;
 

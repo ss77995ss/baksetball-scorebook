@@ -13,27 +13,38 @@ const StyledList = styled.ul`
 
   li {
     font-size: 12px;
-    width: 33%;
 
-    border-right: 1px solid black;
+    :first-child {
+      border-right: 1px solid black;
+      width: 66%;
+
+      span {
+        width: 33%;
+      }
+    }
 
     :last-child {
-      border-right: none;
+      margin: auto;
     }
   }
+`;
+
+const StyledDivider = styled.span`
+  margin: 0 8px;
 `;
 
 const ShootingCell: React.FC<Props> = ({ value }: Props) => {
   const { made, attempts, percentage } = value;
 
   return (
-    <>
-      <StyledList>
-        <li>{made}</li>
-        <li>{attempts}</li>
-        <li>{percentage}</li>
-      </StyledList>
-    </>
+    <StyledList>
+      <li>
+        <span>{made}</span>
+        <StyledDivider> - </StyledDivider>
+        <span>{attempts}</span>
+      </li>
+      <li>{percentage}</li>
+    </StyledList>
   );
 };
 
