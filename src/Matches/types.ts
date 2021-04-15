@@ -23,6 +23,7 @@ export type PlayerResultsType = {
   _id: string;
   matchId: string;
   playerId: string;
+  opponentTeamId: string;
   assists: number;
   blocks: number;
   dRebounds: number;
@@ -31,7 +32,6 @@ export type PlayerResultsType = {
   ftMades: number;
   minutes: number;
   oRebounds: number;
-  opponentTeamId: string;
   points: number;
   positions: number;
   steals: number;
@@ -54,8 +54,8 @@ export type BoxType = {
     id: string;
     name: string;
   };
-  ppp: number;
-  positionRate: number;
+  ppp: string;
+  positionRate: string;
   points: number;
   rebounds: ReboundType;
   assists: number;
@@ -66,7 +66,7 @@ export type BoxType = {
   steals: number;
   blocks: number;
   fouls: number;
-  minutes: number;
-  gameScore: number;
+  minutes: string;
+  gameScore: string;
   positions: number;
 };

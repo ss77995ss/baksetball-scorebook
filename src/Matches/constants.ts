@@ -1,6 +1,35 @@
 import { Column } from 'react-table';
 import { BoxType } from './types';
 
+export const defaultPlayerResults = {
+  _id: '',
+  matchId: '',
+  playerId: '',
+  opponentTeamId: '',
+  assists: 0,
+  blocks: 0,
+  dRebounds: 0,
+  fouls: 0,
+  ftAttempts: 0,
+  ftMades: 0,
+  minutes: 0,
+  oRebounds: 0,
+  points: 0,
+  positions: 0,
+  steals: 0,
+  threeAttempts: 0,
+  threeMades: 0,
+  turnovers: 0,
+  twoAttempts: 0,
+  twoMades: 0,
+  player: {
+    _id: '',
+    name: '',
+    number: '',
+    teamId: '',
+  },
+};
+
 export const REBOUND_TYPES_NAME = {
   OFFENSIVE: '攻',
   DEFENSIVE: '守',
