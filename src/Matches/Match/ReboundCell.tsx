@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { ReboundType } from './types';
+import { ReboundType } from '../types';
 
 interface Props {
   value: ReboundType;

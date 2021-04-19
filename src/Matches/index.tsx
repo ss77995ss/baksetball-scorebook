@@ -15,11 +15,16 @@ const Matches: React.FC = () => {
 
   return (
     <div>
+      <div>
+        <Link to="/match/add">
+          <button>新增比賽</button>
+        </Link>
+      </div>
       {matches.length > 0 && (
         <ul>
           {matches.map(({ _id, type, name, date }) => (
             <li key={`match-${_id}`}>
-              <Link to={`/match/${_id}`}>
+              <Link to={`/match/show/${_id}`}>
                 <div>{name}</div>
                 <div>{type}</div>
                 <div>{date}</div>

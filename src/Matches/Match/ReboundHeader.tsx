@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { StyledSubHeader } from '../styles';
-import { REBOUND_TYPES_NAME } from './constants';
+import { StyledSubHeader } from '../../styles';
+import { REBOUND_TYPES_NAME } from '../constants';
 
 const StyledHeader = styled.th`
   padding: 0;

@@ -1,7 +1,7 @@
 import { useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
-import { PlayerResultsType } from './types';
-import { getBoxScore } from './utils';
+import { PlayerResultsType } from '../types';
+import { getBoxScore } from '../utils';
 import BoxScore from './BoxScore';
 
 const Match: React.FC = () => {

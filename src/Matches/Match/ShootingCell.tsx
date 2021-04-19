@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { ShootingType } from './types';
+import { ShootingType } from '../types';
 
 interface Props {
   value: ShootingType;

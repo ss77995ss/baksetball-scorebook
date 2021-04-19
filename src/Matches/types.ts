@@ -70,3 +70,14 @@ export type BoxType = {
   gameScore: string;
   positions: number;
 };
+
+export type TeamType = {
+  _id: string;
+  name: string;
+};
+
+export type PlayerType = {
+  _id: string;
+  name: string;
+  number: string;
+};

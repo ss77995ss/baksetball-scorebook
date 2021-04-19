@@ -8,6 +8,9 @@ import TurnoverSheet from './TurnoverSheet';
 import PlayerList from './PlayerList';
 import Matches from './Matches';
 import Match from './Matches/Match';
+import AddMatchForm from './Matches/AddMatchForm';
+import Teams from './Matches/Teams';
+import Players from './Matches/Players';
 
 const queryClient = new QueryClient();
 
@@ -29,7 +32,8 @@ const App: React.FC = () => {
           <StyledNav>
             <Link to="/">進階數據紀錄表</Link>
             <Link to="/turnover">失誤記錄表</Link>
-            <Link to="playerlist">球員名單</Link>
+            <Link to="/playerlist">球員名單</Link>
+            <Link to="/matches">賽事資料</Link>
           </StyledNav>
         </header>
         <StatsProvider>
@@ -48,8 +52,17 @@ const App: React.FC = () => {
                 <Route path="/matches">
                   <Matches />
                 </Route>
-                <Route path="/match/:id">
+                <Route path="/match/show/:id">
                   <Match />
+                </Route>
+                <Route path="/match/add">
+                  <AddMatchForm />
+                </Route>
+                <Route path="/match/teams">
+                  <Teams />
+                </Route>
+                <Route path="/match/players">
+                  <Players />
                 </Route>
               </Switch>
             </QueryClientProvider>
