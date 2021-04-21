@@ -1,4 +1,6 @@
 import { usePlayers } from '../hooks/useAPI';
+import Player from './Player';
+import NewPlayer from './NewPlayer';
 
 const PlayerList: React.FC<{ teamId: string }> = ({ teamId }: { teamId: string }) => {
   const { isLoading, error, players } = usePlayers(teamId);
@@ -9,7 +11,20 @@ const PlayerList: React.FC<{ teamId: string }> = ({ teamId }: { teamId: string }
 
   if (!players) return null;
 
-  return <div>{JSON.stringify(players)}</div>;
+  return (
+    <div>
+      {players.length > 0 ? (
+        <>
+          <NewPlayer teamId={teamId} />
+          {players.map((player) => (
+            <Player key={player._id} player={player} />
+          ))}
+        </>
+      ) : (
+        '目前無球員'
+      )}
+    </div>
+  );
 };
 
 export default PlayerList;

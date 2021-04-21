@@ -1,10 +1,23 @@
 import { useState } from 'react';
+import styled from 'styled-components';
 import { useTeams } from '../hooks/useAPI';
 import PlayerList from './PlayerList';
 
+const StyledSection = styled.section`
+  text-align: center;
+
+  button {
+    margin: 4px;
+  }
+
+  input {
+    margin-right: 4px;
+  }
+`;
+
 const Players: React.FC = () => {
   const { isLoading, error, teams } = useTeams();
-  const [selectedTeam, setSelectedTeam] = useState(teams ? teams[0]._id : '');
+  const [selectedTeam, setSelectedTeam] = useState('');
 
   if (isLoading) return <div>Loading...</div>;
 
@@ -17,9 +30,10 @@ const Players: React.FC = () => {
   };
 
   return (
-    <div>
+    <StyledSection>
       <div>{`選擇的隊伍： ${selectedTeam}`}</div>
       <select onChange={handleTeamChange}>
+        <option></option>
         {teams.map((team) => (
           <option key={team._id} value={team._id}>
             {team.name}
@@ -30,7 +44,7 @@ const Players: React.FC = () => {
         球員名單：
         <PlayerList teamId={selectedTeam} />
       </div>
-    </div>
+    </StyledSection>
   );
 };
 

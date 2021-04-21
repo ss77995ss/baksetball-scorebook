@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { useMutation } from 'react-query';
 import { TeamType } from '../types';
-import Delete from './Delete';
+import DeleteButton from './DeleteButton';
 
 const Team: React.FC<{ team: TeamType }> = ({ team }: { team: TeamType }) => {
   const { isLoading, isError, mutate } = useMutation((formData: { teamId: string; name: string }) =>
@@ -30,7 +30,7 @@ const Team: React.FC<{ team: TeamType }> = ({ team }: { team: TeamType }) => {
       <button type="submit" disabled={isLoading}>
         修改
       </button>
-      <Delete team={team} />
+      <DeleteButton team={team} />
       {isError && <div>Something went wrong</div>}
     </form>
   );
