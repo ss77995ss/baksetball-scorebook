@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useTeams } from '../hooks/useAPI';
+import NewMatch from './NewMatch';
 
 const AddMatchForm: React.FC = () => {
   const { isLoading, error, teams } = useTeams();
@@ -14,11 +15,7 @@ const AddMatchForm: React.FC = () => {
     <div>
       <Link to="/match/teams">編輯隊伍</Link>
       <Link to="/match/players">編輯球員名單</Link>
-      <select>
-        {teams.map((team) => (
-          <option key={team._id}>{team.name}</option>
-        ))}
-      </select>
+      <NewMatch teams={teams} />
     </div>
   );
 };
