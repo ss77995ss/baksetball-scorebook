@@ -28,9 +28,9 @@ const Player: React.FC<{ player: PlayerType }> = ({ player }: { player: PlayerTy
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <label htmlFor="name">名字：</label>
-      <input ref={register({ required: true })} name="name" disabled={isLoading} />
+      <input {...register('name', { required: true })} disabled={isLoading} />
       <label htmlFor="number">背號：</label>
-      <input ref={register} name="number" disabled={isLoading} />
+      <input {...register('number')} disabled={isLoading} />
       <button type="submit" disabled={isLoading}>
         修改
       </button>

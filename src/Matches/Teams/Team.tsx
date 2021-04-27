@@ -26,7 +26,7 @@ const Team: React.FC<{ team: TeamType }> = ({ team }: { team: TeamType }) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <input ref={register} name="name" disabled={isLoading} />
+      <input {...register('name', { required: true })} disabled={isLoading} />
       <button type="submit" disabled={isLoading}>
         修改
       </button>

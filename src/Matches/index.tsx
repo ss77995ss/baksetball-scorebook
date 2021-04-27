@@ -1,9 +1,9 @@
 import { useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
-import { MatchType } from './types';
+import { MatchInfoType } from './types';
 
 const Matches: React.FC = () => {
-  const { isLoading, error, data: matches } = useQuery<MatchType[]>('matches', () =>
+  const { isLoading, error, data: matches } = useQuery<MatchInfoType[]>('matches', () =>
     fetch('http://localhost:8080/matches').then((res) => res.json()),
   );
 

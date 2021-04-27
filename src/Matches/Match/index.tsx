@@ -1,29 +1,32 @@
-import { useQuery } from 'react-query';
+import { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { PlayerResultsType } from '../types';
-import { getBoxScore } from '../utils';
-import BoxScore from './BoxScore';
+import { useMatchInfo } from '../hooks/useAPI';
+import View from './View';
+import Edit from './Edit';
 
 const Match: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const { isLoading, error, data: playerResults } = useQuery<PlayerResultsType[]>('playerResults', () =>
-    fetch(`http://localhost:8080/playerResults/match?matchId=${id}`).then((res) => res.json()),
-  );
+  const [mode, setMode] = useState<'view' | 'edit'>('view');
+  const { isLoading, error, matchInfo } = useMatchInfo(id);
 
   if (isLoading) return <div>Loading...</div>;
 
   if (error) return <div>{`An error has occurred: ${error}`}</div>;
 
-  if (!playerResults) return <div>暫無資料</div>;
-
-  const boxScore = getBoxScore(playerResults);
+  if (!matchInfo) return <div>有些問題</div>;
 
   return (
     <div>
-      <div>{`This is match: ${id}`}</div>
       <div>
-        <BoxScore boxScore={boxScore} />
+        <div>{`賽事類型：${matchInfo.type}`}</div>
+        <div>{`比賽名稱：${matchInfo.name}`}</div>
+        <div>{`主隊：${matchInfo.homeTeam.name} 客隊：${matchInfo.awayTeam.name}`}</div>
+        <div>{`日期：${matchInfo.date}`}</div>
       </div>
+      <div>
+        <button onClick={() => setMode(mode === 'view' ? 'edit' : 'view')}>{mode === 'view' ? '編輯' : '返回'}</button>
+      </div>
+      <div>{mode === 'view' ? <View id={id} /> : <Edit matchInfo={matchInfo} setMode={setMode} />}</div>
     </div>
   );
 };

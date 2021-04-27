@@ -23,7 +23,7 @@ const NewTeam: React.FC = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <input ref={register({ required: true })} name="name" disabled={isLoading} />
+      <input {...register('name', { required: true })} disabled={isLoading} />
       <button type="submit" disabled={isLoading}>
         新增
       </button>

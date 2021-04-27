@@ -102,7 +102,7 @@ const PlayerList: React.FC = () => {
         <ul>
           {currentPlayers.map((player, index) => (
             <li key={`${player}-${index}`}>
-              <input name={`${index}`} defaultValue={player} ref={register} />
+              <input {...register(`${index}`)} defaultValue={player} />
             </li>
           ))}
         </ul>

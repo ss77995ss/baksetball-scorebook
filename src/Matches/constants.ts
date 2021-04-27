@@ -1,33 +1,57 @@
 import { Column } from 'react-table';
 import { BoxType } from './types';
 
+export const boxScoreHeaderName = {
+  assists: '助攻',
+  blocks: '阻攻',
+  dRebounds: '防守籃板',
+  fouls: '犯規',
+  ftAttempts: '罰球出手',
+  ftMades: '罰球進球',
+  minutes: '上場時間',
+  oRebounds: '進攻籃板',
+  points: '得分',
+  positions: '球權',
+  steals: '抄截',
+  threeAttempts: '三分出手',
+  threeMades: '三分進球',
+  turnovers: '失誤',
+  twoAttempts: '兩分出手',
+  twoMades: '兩分進球',
+};
+
+export const defaultStats = {
+  points: 0,
+  oRebounds: 0,
+  dRebounds: 0,
+  assists: 0,
+  turnovers: 0,
+  twoMades: 0,
+  twoAttempts: 0,
+  threeMades: 0,
+  threeAttempts: 0,
+  ftMades: 0,
+  ftAttempts: 0,
+  steals: 0,
+  blocks: 0,
+  fouls: 0,
+  positions: 0,
+};
+
 export const defaultPlayerResults = {
   _id: '',
   matchId: '',
   playerId: '',
+  teamId: '',
   opponentTeamId: '',
-  assists: 0,
-  blocks: 0,
-  dRebounds: 0,
-  fouls: 0,
-  ftAttempts: 0,
-  ftMades: 0,
-  minutes: 0,
-  oRebounds: 0,
-  points: 0,
-  positions: 0,
-  steals: 0,
-  threeAttempts: 0,
-  threeMades: 0,
-  turnovers: 0,
-  twoAttempts: 0,
-  twoMades: 0,
   player: {
     _id: '',
     name: '',
     number: '',
     teamId: '',
   },
+  minutes: 0.0,
+  ...defaultStats,
 };
 
 export const REBOUND_TYPES_NAME = {
@@ -108,7 +132,7 @@ export const columns: Array<Column<BoxType>> = [
     accessor: 'gameScore',
   },
   {
-    Header: '球權',
+    Header: '球權%',
     accessor: 'positions',
   },
 ];

@@ -59,15 +59,15 @@ const NewMatch: React.FC<{ teams: TeamType[] }> = ({ teams }: { teams: TeamType[
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
           <label htmlFor="type">賽事類型：</label>
-          <input ref={register} name="type" />
+          <input {...register('type')} />
         </div>
         <div>
           <label htmlFor="name">比賽名稱：</label>
-          <input ref={register} name="name" />
+          <input {...register('name')} />
         </div>
         <div>
           <label htmlFor="homeTeamId">主隊：</label>
-          <select ref={register} name="homeTeamId">
+          <select {...register('homeTeamId')}>
             {teams.map((team) => (
               <option key={team._id} value={team._id}>
                 {team.name}
@@ -77,7 +77,7 @@ const NewMatch: React.FC<{ teams: TeamType[] }> = ({ teams }: { teams: TeamType[
         </div>
         <div>
           <label htmlFor="awayTeamId">客隊：</label>
-          <select ref={register} name="awayTeamId">
+          <select {...register('awayTeamId')}>
             {teams.map((team) => (
               <option key={team._id} value={team._id}>
                 {team.name}

@@ -1,8 +1,8 @@
 /* eslint-disable react/jsx-key */
 import styled from 'styled-components';
 import { useTable } from 'react-table';
-import { BoxType } from '../types';
-import { columns } from '../constants';
+import { BoxType } from '../../types';
+import { columns } from '../../constants';
 import ReboundHeader from './ReboundHeader';
 import ShootingHeader from './ShootingHeader';
 import ReboundCell from './ReboundCell';

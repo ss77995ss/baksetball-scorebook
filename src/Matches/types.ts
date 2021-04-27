@@ -1,9 +1,10 @@
-export type MatchType = {
+export type MatchInfoType = {
   _id: string;
   type: string | null;
   name: string | null;
-  homeTeamId: string | null;
-  awayTeamId: string | null;
+  homeTeam: TeamType;
+  awayTeam: TeamType;
+  mode: 'basic' | 'advanced' | null;
   date: Date;
 };
 
@@ -23,6 +24,7 @@ export type PlayerResultsType = {
   _id: string;
   matchId: string;
   playerId: string;
+  teamId: string;
   opponentTeamId: string;
   assists: number;
   blocks: number;

@@ -26,9 +26,9 @@ const NewTeam: React.FC<{ teamId: string }> = ({ teamId }: { teamId: string }) =
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <label htmlFor="name">名字：</label>
-      <input ref={register({ required: true })} name="name" disabled={isLoading} />
+      <input {...register('name', { required: true })} disabled={isLoading} />
       <label htmlFor="number">背號：</label>
-      <input ref={register} name="number" disabled={isLoading} />
+      <input {...register('number')} disabled={isLoading} />
       <button type="submit" disabled={isLoading}>
         新增
       </button>
