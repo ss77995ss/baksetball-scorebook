@@ -1,17 +1,26 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useMutation } from 'react-query';
+import styled from 'styled-components';
 import { PlayerResultsType, MatchInfoType } from '../../types';
 import { defaultStats } from '../../constants';
 import PlayerSelector from './PlayerSelector';
 import TeamSelector from './TeamSelector';
 import StatsForm from './StatsForm';
+import ExistResults from './ExistResults';
+
+const StyledSection = styled.section`
+  display: flex;
+  justify-content: center;
+  text-align: center;
+
+  input,
+  div {
+    margin: 2px 0;
+  }
+`;
 
 type FormDataType = {
-  matchId: string;
-  playerId: string;
-  teamId: string;
-  opponentTeamId: string;
   assists: number;
   blocks: number;
   dRebounds: number;
@@ -32,17 +41,23 @@ type FormDataType = {
 
 interface Props {
   matchInfo: MatchInfoType;
+  selectedTeam: string;
+  setSelectedTeam: React.Dispatch<React.SetStateAction<string>>;
   setMode: React.Dispatch<React.SetStateAction<'view' | 'edit'>>;
 }
 
-const Edit: React.FC<Props> = ({ matchInfo, setMode }: Props) => {
+const Edit: React.FC<Props> = ({ matchInfo, selectedTeam, setSelectedTeam, setMode }: Props) => {
   const { _id, homeTeam, awayTeam } = matchInfo;
-  const [selectedTeam, setSelectedTeam] = useState(homeTeam._id);
   const [selectedPlayer, setSelectedPlayer] = useState('');
-  const { register, handleSubmit } = useForm<PlayerResultsType>({ defaultValues: { ...defaultStats, minutes: 0.0 } });
+  const { register, handleSubmit, setValue } = useForm<PlayerResultsType>({
+    defaultValues: {
+      ...defaultStats,
+      minutes: 0.0,
+    },
+  });
 
   const { isLoading, error, mutate } = useMutation(
-    (formData: FormDataType) =>
+    (formData: FormDataType & { playerId: string; matchId: string; teamId: string; opponentTeamId: string }) =>
       fetch('http://localhost:8080/playerResults', {
         method: 'POST',
         body: JSON.stringify(formData),
@@ -89,17 +104,29 @@ const Edit: React.FC<Props> = ({ matchInfo, setMode }: Props) => {
   if (error) return <div>Something went wrong</div>;
 
   return (
-    <div>
-      {_id}
+    <StyledSection>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <TeamSelector register={register} homeTeam={homeTeam} awayTeam={awayTeam} setSelectedTeam={setSelectedTeam} />
+        <TeamSelector
+          register={register}
+          homeTeam={homeTeam}
+          awayTeam={awayTeam}
+          selectedTeam={selectedTeam}
+          setSelectedTeam={setSelectedTeam}
+        />
         <PlayerSelector register={register} teamId={selectedTeam} setSelectedPlayer={setSelectedPlayer} />
         <StatsForm register={register} />
         <button type="submit" disabled={isLoading}>
           新增球員紀錄
         </button>
       </form>
-    </div>
+      <ExistResults
+        matchId={_id}
+        teamId={selectedTeam}
+        setValue={setValue}
+        setSelectedPlayer={setSelectedPlayer}
+        setMode={setMode}
+      />
+    </StyledSection>
   );
 };
 

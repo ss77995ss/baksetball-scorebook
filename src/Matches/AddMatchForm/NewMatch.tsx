@@ -17,6 +17,12 @@ type MatchType = {
 
 const StyledSection = styled.section`
   text-align: center;
+
+  margin-top: 8px;
+
+  div {
+    margin: 4px 0;
+  }
 `;
 
 const NewMatch: React.FC<{ teams: TeamType[] }> = ({ teams }: { teams: TeamType[] }) => {
@@ -46,6 +52,7 @@ const NewMatch: React.FC<{ teams: TeamType[] }> = ({ teams }: { teams: TeamType[
   if (!teams) return null;
 
   const onSubmit = (newMatch: MatchType): void => {
+    console.log(newMatch);
     if (window.confirm(`新增新比賽： ${newMatch.name}？`)) {
       mutate({
         ...newMatch,
@@ -91,9 +98,9 @@ const NewMatch: React.FC<{ teams: TeamType[] }> = ({ teams }: { teams: TeamType[
         </div>
         <div>
           <label htmlFor="matchModeBA">基本紀錄</label>
-          <input id="matchModeBA" type="radio" name="mode" value="basic" checked />
+          <input {...register('mode')} id="matchModeBA" type="radio" value="basic" checked />
           <label htmlFor="matchModeAD">進階紀錄</label>
-          <input id="matchModeAD" type="radio" name="mode" value="advanced" />
+          <input {...register('mode')} id="matchModeAD" type="radio" value="advanced" disabled />
         </div>
         <button type="submit">送出</button>
       </form>

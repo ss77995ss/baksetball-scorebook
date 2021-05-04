@@ -21,7 +21,10 @@ const PlayerList: React.FC<{ teamId: string }> = ({ teamId }: { teamId: string }
           ))}
         </>
       ) : (
-        '目前無球員'
+        <>
+          {teamId && <NewPlayer teamId={teamId} />}
+          <div>目前無球員</div>
+        </>
       )}
     </div>
   );

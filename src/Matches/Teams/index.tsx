@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { useTeams } from '../hooks/useAPI';
 import NewTeam from './NewTeam';
 import Team from './Team';
+import GoBackBtn from '../common/GoBackBtn';
 
 const StyledSection = styled.section`
   text-align: center;
@@ -22,6 +23,7 @@ const Teams: React.FC = () => {
 
   return (
     <StyledSection>
+      <GoBackBtn />
       <NewTeam />
       {teams.map((team) => (
         <Team key={team._id} team={team} />

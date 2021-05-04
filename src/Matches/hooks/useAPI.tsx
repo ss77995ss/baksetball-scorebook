@@ -1,5 +1,5 @@
 import { useQuery } from 'react-query';
-import { TeamType, PlayerType, MatchInfoType } from '../types';
+import { TeamType, PlayerType, MatchInfoType, PlayerResultsType } from '../types';
 
 function useTeams(): { isLoading: boolean; error: unknown; teams: TeamType[] | undefined } {
   const { isLoading, error, data: teams } = useQuery<TeamType[]>('teams', () =>
@@ -45,4 +45,24 @@ function useMatchInfo(matchId: string): { isLoading: boolean; error: unknown; ma
   };
 }
 
-export { useTeams, usePlayers, useMatchInfo };
+function usePlayerResultsByTeam(
+  matchId: string,
+  teamId: string,
+): { isLoading: boolean; error: unknown; playerResults: PlayerResultsType[] | undefined } {
+  const { isLoading, error, data: playerResults } = useQuery<PlayerResultsType[]>(
+    ['playerResultsByTeam', teamId],
+    () =>
+      fetch(`http://localhost:8080/playerResults/match?matchId=${matchId}&teamId=${teamId}`).then((res) => res.json()),
+    {
+      enabled: !!teamId,
+    },
+  );
+
+  return {
+    isLoading,
+    error,
+    playerResults: playerResults ? playerResults : [],
+  };
+}
+
+export { useTeams, usePlayers, useMatchInfo, usePlayerResultsByTeam };

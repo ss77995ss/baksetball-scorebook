@@ -2,6 +2,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import { useTeams } from '../hooks/useAPI';
 import PlayerList from './PlayerList';
+import GoBackBtn from '../common/GoBackBtn';
 
 const StyledSection = styled.section`
   text-align: center;
@@ -31,7 +32,9 @@ const Players: React.FC = () => {
 
   return (
     <StyledSection>
-      <div>{`選擇的隊伍： ${selectedTeam}`}</div>
+      <div>
+        <GoBackBtn />
+      </div>
       <select onChange={handleTeamChange}>
         <option></option>
         {teams.map((team) => (

@@ -132,7 +132,7 @@ export const columns: Array<Column<BoxType>> = [
     accessor: 'gameScore',
   },
   {
-    Header: '球權%',
+    Header: '球權',
     accessor: 'positions',
   },
 ];

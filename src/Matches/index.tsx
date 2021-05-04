@@ -1,6 +1,13 @@
 import { useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 import { MatchInfoType } from './types';
+
+const StyledLinks = styled.section`
+  button {
+    margin: 0 4px;
+  }
+`;
 
 const Matches: React.FC = () => {
   const { isLoading, error, data: matches } = useQuery<MatchInfoType[]>('matches', () =>
@@ -15,11 +22,11 @@ const Matches: React.FC = () => {
 
   return (
     <div>
-      <div>
+      <StyledLinks>
         <Link to="/match/add">
           <button>新增比賽</button>
         </Link>
-      </div>
+      </StyledLinks>
       {matches.length > 0 && (
         <ul>
           {matches.map(({ _id, type, name, date }) => (

@@ -1,6 +1,15 @@
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 import { useTeams } from '../hooks/useAPI';
 import NewMatch from './NewMatch';
+
+const StyledLinks = styled.section`
+  text-align: center;
+
+  button {
+    margin: 0 4px;
+  }
+`;
 
 const AddMatchForm: React.FC = () => {
   const { isLoading, error, teams } = useTeams();
@@ -13,8 +22,17 @@ const AddMatchForm: React.FC = () => {
 
   return (
     <div>
-      <Link to="/match/teams">編輯隊伍</Link>
-      <Link to="/match/players">編輯球員名單</Link>
+      <StyledLinks>
+        <Link to="/match/teams">
+          <button>編輯隊伍</button>
+        </Link>
+        <Link to="/match/players">
+          <button>編輯球員名單</button>
+        </Link>
+        <Link to="/matches">
+          <button>返回</button>
+        </Link>
+      </StyledLinks>
       <NewMatch teams={teams} />
     </div>
   );

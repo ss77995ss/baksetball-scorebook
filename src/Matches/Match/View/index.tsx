@@ -1,12 +1,13 @@
-import { useQuery } from 'react-query';
-import { PlayerResultsType } from '../../types';
 import { getBoxScore } from '../../utils';
+import { usePlayerResultsByTeam } from '../../hooks/useAPI';
 import BoxScore from './BoxScore';
+interface Props {
+  id: string;
+  selectedTeam: string;
+}
 
-const View: React.FC<{ id: string }> = ({ id }: { id: string }) => {
-  const { isLoading, error, data: playerResults } = useQuery<PlayerResultsType[]>('playerResults', () =>
-    fetch(`http://localhost:8080/playerResults/match?matchId=${id}`).then((res) => res.json()),
-  );
+const View: React.FC<Props> = ({ id, selectedTeam }: Props) => {
+  const { isLoading, error, playerResults } = usePlayerResultsByTeam(id, selectedTeam);
 
   if (isLoading) return <div>Loading...</div>;
 
