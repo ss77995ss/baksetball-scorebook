@@ -2,12 +2,12 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { useTable } from 'react-table';
-import { BoxType } from '../../types';
-import { columns } from '../../constants';
-import ReboundHeader from './ReboundHeader';
-import ShootingHeader from './ShootingHeader';
-import ReboundCell from './ReboundCell';
-import ShootingCell from './ShootingCell';
+import { SinglePlayerBoxType } from '../../../types';
+import { singlePlayerColumns } from '../../../constants';
+import ReboundHeader from '../ReboundHeader';
+import ShootingHeader from '../ShootingHeader';
+import ReboundCell from '../ReboundCell';
+import ShootingCell from '../ShootingCell';
 
 const StyledTable = styled.table`
   border-collapse: collapse;
@@ -35,12 +35,14 @@ const StyledCol = styled.col`
   border: 2px solid black;
 `;
 interface Props {
-  boxScore: BoxType[];
+  boxScore: SinglePlayerBoxType[];
+  total: SinglePlayerBoxType;
+  average: SinglePlayerBoxType;
 }
 
-const BoxScore: React.FC<Props> = ({ boxScore }: Props) => {
+const BoxScore: React.FC<Props> = ({ boxScore, total, average }: Props) => {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({
-    columns,
+    columns: singlePlayerColumns,
     data: boxScore,
   });
 
@@ -81,6 +83,60 @@ const BoxScore: React.FC<Props> = ({ boxScore }: Props) => {
         }
       </thead>
       <tbody {...getTableBodyProps()}>
+        <tr>
+          <StyledCell>Total</StyledCell>
+          <StyledCell></StyledCell>
+          <StyledCell></StyledCell>
+          <StyledCell></StyledCell>
+          <StyledCell>{total.points}</StyledCell>
+          <StyledSplitCell>
+            <ReboundCell value={total.rebounds} />
+          </StyledSplitCell>
+          <StyledCell>{total.assists}</StyledCell>
+          <StyledCell>{total.turnovers}</StyledCell>
+          <StyledSplitCell>
+            <ShootingCell value={total.fieldGoal} />
+          </StyledSplitCell>
+          <StyledSplitCell>
+            <ShootingCell value={total.threePoints} />
+          </StyledSplitCell>
+          <StyledSplitCell>
+            <ShootingCell value={total.freeThrows} />
+          </StyledSplitCell>
+          <StyledCell>{total.steals}</StyledCell>
+          <StyledCell>{total.blocks}</StyledCell>
+          <StyledCell>{total.fouls}</StyledCell>
+          <StyledCell>{total.minutes}</StyledCell>
+          <StyledCell>{total.gameScore}</StyledCell>
+          <StyledCell>{total.positions}</StyledCell>
+        </tr>
+        <tr>
+          <StyledCell>Average</StyledCell>
+          <StyledCell></StyledCell>
+          <StyledCell></StyledCell>
+          <StyledCell></StyledCell>
+          <StyledCell>{average.points}</StyledCell>
+          <StyledSplitCell>
+            <ReboundCell value={average.rebounds} />
+          </StyledSplitCell>
+          <StyledCell>{average.assists}</StyledCell>
+          <StyledCell>{average.turnovers}</StyledCell>
+          <StyledSplitCell>
+            <ShootingCell value={average.fieldGoal} />
+          </StyledSplitCell>
+          <StyledSplitCell>
+            <ShootingCell value={average.threePoints} />
+          </StyledSplitCell>
+          <StyledSplitCell>
+            <ShootingCell value={average.freeThrows} />
+          </StyledSplitCell>
+          <StyledCell>{average.steals}</StyledCell>
+          <StyledCell>{average.blocks}</StyledCell>
+          <StyledCell>{average.fouls}</StyledCell>
+          <StyledCell>{average.minutes}</StyledCell>
+          <StyledCell>{average.gameScore}</StyledCell>
+          <StyledCell>{average.positions}</StyledCell>
+        </tr>
         {rows.map((row) => {
           prepareRow(row);
 
@@ -92,10 +148,10 @@ const BoxScore: React.FC<Props> = ({ boxScore }: Props) => {
                 row.cells.map((cell) => {
                   // Apply the cell props
                   switch (cell.column.Header) {
-                    case '名字':
+                    case '日期':
                       return (
                         <StyledCell {...cell.getCellProps()}>
-                          <Link to={`/match/player/${cell.value.id}`}>{cell.value.name}</Link>
+                          <Link to={`/match/show/${cell.value.id}`}>{cell.value.date}</Link>
                         </StyledCell>
                       );
                     case '籃板':

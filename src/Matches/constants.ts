@@ -1,5 +1,5 @@
 import { Column } from 'react-table';
-import { BoxType } from './types';
+import { BoxType, SinglePlayerBoxType } from './types';
 
 export const boxScoreHeaderName = {
   assists: '助攻',
@@ -82,6 +82,77 @@ export const columns: Array<Column<BoxType>> = [
   {
     Header: '球權％',
     accessor: 'positionRate',
+  },
+  {
+    Header: '得分',
+    accessor: 'points',
+  },
+  {
+    Header: '籃板',
+    accessor: 'rebounds',
+  },
+  {
+    Header: '助攻',
+    accessor: 'assists',
+  },
+  {
+    Header: '失誤',
+    accessor: 'turnovers',
+  },
+  {
+    Header: 'FG',
+    accessor: 'fieldGoal',
+  },
+  {
+    Header: '3PT',
+    accessor: 'threePoints',
+  },
+  {
+    Header: 'FT',
+    accessor: 'freeThrows',
+  },
+  {
+    Header: '抄截',
+    accessor: 'steals',
+  },
+  {
+    Header: '火鍋',
+    accessor: 'blocks',
+  },
+  {
+    Header: '犯規',
+    accessor: 'fouls',
+  },
+  {
+    Header: '上場時間',
+    accessor: 'minutes',
+  },
+  {
+    Header: 'GameScore',
+    accessor: 'gameScore',
+  },
+  {
+    Header: '球權',
+    accessor: 'positions',
+  },
+];
+
+export const singlePlayerColumns: Array<Column<SinglePlayerBoxType>> = [
+  {
+    Header: '比賽性質',
+    accessor: 'matchType',
+  },
+  {
+    Header: '日期',
+    accessor: 'matchDate',
+  },
+  {
+    Header: '對手',
+    accessor: 'opponentName',
+  },
+  {
+    Header: 'PPP',
+    accessor: 'ppp',
   },
   {
     Header: '得分',

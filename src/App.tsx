@@ -11,6 +11,7 @@ import Match from './Matches/Match';
 import AddMatchForm from './Matches/AddMatchForm';
 import Teams from './Matches/Teams';
 import Players from './Matches/Players';
+import SinglePlayerBox from './Matches/Match/View/SinglePlayerBox';
 
 const queryClient = new QueryClient();
 
@@ -63,6 +64,9 @@ const App: React.FC = () => {
                 </Route>
                 <Route path="/match/players">
                   <Players />
+                </Route>
+                <Route path="/match/player/:id">
+                  <SinglePlayerBox />
                 </Route>
               </Switch>
             </QueryClientProvider>

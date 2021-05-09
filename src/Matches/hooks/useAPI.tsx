@@ -1,5 +1,5 @@
 import { useQuery } from 'react-query';
-import { TeamType, PlayerType, MatchInfoType, PlayerResultsType } from '../types';
+import { TeamType, PlayerType, MatchInfoType, PlayerResultsType, SinglePlayerResultsType } from '../types';
 
 function useTeams(): { isLoading: boolean; error: unknown; teams: TeamType[] | undefined } {
   const { isLoading, error, data: teams } = useQuery<TeamType[]>('teams', () =>
@@ -26,6 +26,22 @@ function usePlayers(teamId: string): { isLoading: boolean; error: unknown; playe
     isLoading,
     error,
     players: players || [],
+  };
+}
+
+function usePlayerInfo(playerId: string): { isLoading: boolean; error: unknown; playerInfo: PlayerType | undefined } {
+  const { isLoading, error, data: playerInfo } = useQuery<PlayerType>(
+    ['playerInfo', playerId],
+    () => fetch(`http://localhost:8080/players/?playerId=${playerId}`).then((res) => res.json()),
+    {
+      enabled: !!playerId,
+    },
+  );
+
+  return {
+    isLoading,
+    error,
+    playerInfo: playerInfo,
   };
 }
 
@@ -65,4 +81,22 @@ function usePlayerResultsByTeam(
   };
 }
 
-export { useTeams, usePlayers, useMatchInfo, usePlayerResultsByTeam };
+function usePlayerResultsByPlayer(
+  playerId: string,
+): { isLoading: boolean; error: unknown; playerResults: SinglePlayerResultsType[] | undefined } {
+  const { isLoading, error, data: playerResults } = useQuery<SinglePlayerResultsType[]>(
+    ['playerResultsByPlayer', playerId],
+    () => fetch(`http://localhost:8080/playerResults/player/?playerId=${playerId}`).then((res) => res.json()),
+    {
+      enabled: !!playerId,
+    },
+  );
+
+  return {
+    isLoading,
+    error,
+    playerResults: playerResults ? playerResults : [],
+  };
+}
+
+export { useTeams, usePlayers, usePlayerInfo, useMatchInfo, usePlayerResultsByTeam, usePlayerResultsByPlayer };

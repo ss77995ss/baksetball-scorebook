@@ -2,6 +2,7 @@ import { useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { MatchInfoType } from './types';
+import { formatDate } from './utils';
 
 const StyledLinks = styled.section`
   button {
@@ -34,7 +35,7 @@ const Matches: React.FC = () => {
               <Link to={`/match/show/${_id}`}>
                 <div>{name}</div>
                 <div>{type}</div>
-                <div>{date}</div>
+                <div>{formatDate(new Date(date))}</div>
               </Link>
             </li>
           ))}
