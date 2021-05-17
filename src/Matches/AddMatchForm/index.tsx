@@ -29,6 +29,9 @@ const AddMatchForm: React.FC = () => {
         <Link to="/match/players">
           <button>編輯球員名單</button>
         </Link>
+        <Link to="/matchType">
+          <button>編輯賽事類型</button>
+        </Link>
         <Link to="/matches">
           <button>返回</button>
         </Link>

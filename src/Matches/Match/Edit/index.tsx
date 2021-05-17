@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { useMutation } from 'react-query';
 import styled from 'styled-components';
 import { PlayerResultsType, MatchInfoType } from '../../types';
+import { API_DOMAIN } from '../../constants';
 import { defaultStats } from '../../constants';
 import PlayerSelector from './PlayerSelector';
 import TeamSelector from './TeamSelector';
@@ -58,7 +59,7 @@ const Edit: React.FC<Props> = ({ matchInfo, selectedTeam, setSelectedTeam, setMo
 
   const { isLoading, error, mutate } = useMutation(
     (formData: FormDataType & { playerId: string; matchId: string; teamId: string; opponentTeamId: string }) =>
-      fetch('http://localhost:8080/playerResults', {
+      fetch(`${API_DOMAIN}/playerResults`, {
         method: 'POST',
         body: JSON.stringify(formData),
         headers: {

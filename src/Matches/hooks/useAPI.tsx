@@ -1,9 +1,17 @@
 import { useQuery } from 'react-query';
-import { TeamType, PlayerType, MatchInfoType, PlayerResultsType, SinglePlayerResultsType } from '../types';
+import {
+  TeamType,
+  PlayerType,
+  MatchInfoType,
+  PlayerResultsType,
+  SinglePlayerResultsType,
+  MatchCategoryType,
+} from '../types';
+import { API_DOMAIN } from '../constants';
 
 function useTeams(): { isLoading: boolean; error: unknown; teams: TeamType[] | undefined } {
   const { isLoading, error, data: teams } = useQuery<TeamType[]>('teams', () =>
-    fetch(`http://localhost:8080/teams`).then((res) => res.json()),
+    fetch(`${API_DOMAIN}/teams`).then((res) => res.json()),
   );
 
   return {
@@ -16,7 +24,7 @@ function useTeams(): { isLoading: boolean; error: unknown; teams: TeamType[] | u
 function usePlayers(teamId: string): { isLoading: boolean; error: unknown; players: PlayerType[] } {
   const { isLoading, error, data: players } = useQuery<PlayerType[]>(
     ['players', teamId],
-    () => fetch(`http://localhost:8080/players/?teamId=${teamId}`).then((res) => res.json()),
+    () => fetch(`${API_DOMAIN}/players/?teamId=${teamId}`).then((res) => res.json()),
     {
       enabled: !!teamId,
     },
@@ -32,7 +40,7 @@ function usePlayers(teamId: string): { isLoading: boolean; error: unknown; playe
 function usePlayerInfo(playerId: string): { isLoading: boolean; error: unknown; playerInfo: PlayerType | undefined } {
   const { isLoading, error, data: playerInfo } = useQuery<PlayerType>(
     ['playerInfo', playerId],
-    () => fetch(`http://localhost:8080/players/?playerId=${playerId}`).then((res) => res.json()),
+    () => fetch(`${API_DOMAIN}/players/?playerId=${playerId}`).then((res) => res.json()),
     {
       enabled: !!playerId,
     },
@@ -48,7 +56,7 @@ function usePlayerInfo(playerId: string): { isLoading: boolean; error: unknown; 
 function useMatchInfo(matchId: string): { isLoading: boolean; error: unknown; matchInfo: MatchInfoType | undefined } {
   const { isLoading, error, data: matchInfo } = useQuery<MatchInfoType[]>(
     ['matches', matchId],
-    () => fetch(`http://localhost:8080/matches/?matchId=${matchId}`).then((res) => res.json()),
+    () => fetch(`${API_DOMAIN}/matches/?matchId=${matchId}`).then((res) => res.json()),
     {
       enabled: !!matchId,
     },
@@ -67,8 +75,7 @@ function usePlayerResultsByTeam(
 ): { isLoading: boolean; error: unknown; playerResults: PlayerResultsType[] | undefined } {
   const { isLoading, error, data: playerResults } = useQuery<PlayerResultsType[]>(
     ['playerResultsByTeam', teamId],
-    () =>
-      fetch(`http://localhost:8080/playerResults/match?matchId=${matchId}&teamId=${teamId}`).then((res) => res.json()),
+    () => fetch(`${API_DOMAIN}/playerResults/match?matchId=${matchId}&teamId=${teamId}`).then((res) => res.json()),
     {
       enabled: !!teamId,
     },
@@ -86,7 +93,7 @@ function usePlayerResultsByPlayer(
 ): { isLoading: boolean; error: unknown; playerResults: SinglePlayerResultsType[] | undefined } {
   const { isLoading, error, data: playerResults } = useQuery<SinglePlayerResultsType[]>(
     ['playerResultsByPlayer', playerId],
-    () => fetch(`http://localhost:8080/playerResults/player/?playerId=${playerId}`).then((res) => res.json()),
+    () => fetch(`${API_DOMAIN}/playerResults/player/?playerId=${playerId}`).then((res) => res.json()),
     {
       enabled: !!playerId,
     },
@@ -99,4 +106,24 @@ function usePlayerResultsByPlayer(
   };
 }
 
-export { useTeams, usePlayers, usePlayerInfo, useMatchInfo, usePlayerResultsByTeam, usePlayerResultsByPlayer };
+function useMatchTypes(): { isLoading: boolean; error: unknown; matchTypes: MatchCategoryType[] | undefined } {
+  const { isLoading, error, data: matchTypes } = useQuery<MatchCategoryType[]>('matchType', () =>
+    fetch('${API_DOMAIN}/matchTypes').then((res) => res.json()),
+  );
+
+  return {
+    isLoading,
+    error,
+    matchTypes: matchTypes ? matchTypes : [],
+  };
+}
+
+export {
+  useTeams,
+  usePlayers,
+  usePlayerInfo,
+  useMatchInfo,
+  usePlayerResultsByTeam,
+  usePlayerResultsByPlayer,
+  useMatchTypes,
+};

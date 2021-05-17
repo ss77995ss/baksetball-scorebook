@@ -1,5 +1,5 @@
 import { useMutation } from 'react-query';
-
+import { API_DOMAIN } from '../../constants';
 interface Props {
   id: string;
   name: string;
@@ -9,7 +9,7 @@ interface Props {
 const DeleteButton: React.FC<Props> = ({ id, name, setMode }: Props) => {
   const { isLoading, isError, mutate } = useMutation(
     (formData: { resultId: string }) =>
-      fetch('http://localhost:8080/playerResults', {
+      fetch(`${API_DOMAIN}/playerResults`, {
         method: 'DELETE',
         body: JSON.stringify(formData),
         headers: {

@@ -1,9 +1,10 @@
 import { useForm } from 'react-hook-form';
 import { useMutation } from 'react-query';
+import { API_DOMAIN } from '../constants';
 
 const NewTeam: React.FC<{ teamId: string }> = ({ teamId }: { teamId: string }) => {
   const { isLoading, isError, mutate } = useMutation((formData: { teamId: string; name: string; number: string }) =>
-    fetch('http://localhost:8080/players', {
+    fetch(`${API_DOMAIN}/players`, {
       method: 'POST',
       body: JSON.stringify(formData),
       headers: {

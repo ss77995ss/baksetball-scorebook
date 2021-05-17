@@ -1,9 +1,10 @@
 import { useMutation } from 'react-query';
 import { TeamType } from '../types';
+import { API_DOMAIN } from '../constants';
 
 const DeleteButton: React.FC<{ team: TeamType }> = ({ team }: { team: TeamType }) => {
   const { isLoading, isError, mutate } = useMutation((formData: { teamId: string }) =>
-    fetch('http://localhost:8080/teams', {
+    fetch(`${API_DOMAIN}/teams`, {
       method: 'DELETE',
       body: JSON.stringify(formData),
       headers: {

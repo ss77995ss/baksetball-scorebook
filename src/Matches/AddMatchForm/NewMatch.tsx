@@ -6,6 +6,8 @@ import { useMutation } from 'react-query';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { TeamType } from '../types';
+import { API_DOMAIN } from '../constants';
+import MatchTypeSelector from './MatchTypeSelector';
 
 type MatchType = {
   type: string;
@@ -30,7 +32,7 @@ const NewMatch: React.FC<{ teams: TeamType[] }> = ({ teams }: { teams: TeamType[
   const [startDate, setStartDate] = useState(new Date());
   const { isLoading, isError, mutate } = useMutation(
     (formData: MatchType) =>
-      fetch('http://localhost:8080/matches', {
+      fetch(`${API_DOMAIN}/matches`, {
         method: 'POST',
         body: JSON.stringify(formData),
         headers: {
@@ -64,10 +66,7 @@ const NewMatch: React.FC<{ teams: TeamType[] }> = ({ teams }: { teams: TeamType[
   return (
     <StyledSection>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div>
-          <label htmlFor="type">賽事類型：</label>
-          <input {...register('type')} />
-        </div>
+        <MatchTypeSelector register={register} />
         <div>
           <label htmlFor="name">比賽名稱：</label>
           <input {...register('name')} />
@@ -76,7 +75,7 @@ const NewMatch: React.FC<{ teams: TeamType[] }> = ({ teams }: { teams: TeamType[
           <label htmlFor="homeTeamId">主隊：</label>
           <select {...register('homeTeamId')}>
             {teams.map((team) => (
-              <option key={team._id} value={team._id}>
+              <option key={team._id} value={team._id} selected={team.name === '台灣大學'}>
                 {team.name}
               </option>
             ))}
@@ -85,6 +84,7 @@ const NewMatch: React.FC<{ teams: TeamType[] }> = ({ teams }: { teams: TeamType[
         <div>
           <label htmlFor="awayTeamId">客隊：</label>
           <select {...register('awayTeamId')}>
+            <option></option>
             {teams.map((team) => (
               <option key={team._id} value={team._id}>
                 {team.name}

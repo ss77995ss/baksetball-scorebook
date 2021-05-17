@@ -2,6 +2,7 @@ import { useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { MatchInfoType } from './types';
+import { API_DOMAIN } from './constants';
 import { formatDate } from './utils';
 
 const StyledLinks = styled.section`
@@ -12,7 +13,7 @@ const StyledLinks = styled.section`
 
 const Matches: React.FC = () => {
   const { isLoading, error, data: matches } = useQuery<MatchInfoType[]>('matches', () =>
-    fetch('http://localhost:8080/matches').then((res) => res.json()),
+    fetch(`${API_DOMAIN}/matches`).then((res) => res.json()),
   );
 
   if (isLoading) return <div>Loading...</div>;

@@ -1,11 +1,12 @@
 import { useForm } from 'react-hook-form';
 import { useMutation } from 'react-query';
 import { TeamType } from '../types';
+import { API_DOMAIN } from '../constants';
 import DeleteButton from './DeleteButton';
 
 const Team: React.FC<{ team: TeamType }> = ({ team }: { team: TeamType }) => {
   const { isLoading, isError, mutate } = useMutation((formData: { teamId: string; name: string }) =>
-    fetch('http://localhost:8080/teams', {
+    fetch(`${API_DOMAIN}/teams`, {
       method: 'PUT',
       body: JSON.stringify(formData),
       headers: {

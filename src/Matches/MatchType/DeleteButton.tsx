@@ -1,10 +1,10 @@
 import { useMutation } from 'react-query';
-import { PlayerType } from '../types';
+import { MatchCategoryType } from '../types';
 import { API_DOMAIN } from '../constants';
 
-const DeleteButton: React.FC<{ player: PlayerType }> = ({ player }: { player: PlayerType }) => {
-  const { isLoading, isError, mutate } = useMutation((formData: { playerId: string }) =>
-    fetch(`${API_DOMAIN}/players`, {
+const DeleteButton: React.FC<{ matchType: MatchCategoryType }> = ({ matchType }: { matchType: MatchCategoryType }) => {
+  const { isLoading, isError, mutate } = useMutation((formData: { typeId: string }) =>
+    fetch(`${API_DOMAIN}/matchTypes`, {
       method: 'DELETE',
       body: JSON.stringify(formData),
       headers: {
@@ -14,9 +14,9 @@ const DeleteButton: React.FC<{ player: PlayerType }> = ({ player }: { player: Pl
   );
 
   const onDelete = (): void => {
-    if (window.confirm(`刪除球員：${player.name}？`)) {
+    if (window.confirm(`刪除類型：${matchType.name}？`)) {
       mutate({
-        playerId: player._id,
+        typeId: matchType._id,
       });
     }
   };

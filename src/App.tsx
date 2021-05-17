@@ -7,6 +7,7 @@ import AdvancedStats from './AdvancedStats';
 import TurnoverSheet from './TurnoverSheet';
 import PlayerList from './PlayerList';
 import Matches from './Matches';
+import MatchType from './Matches/MatchType';
 import Match from './Matches/Match';
 import AddMatchForm from './Matches/AddMatchForm';
 import Teams from './Matches/Teams';
@@ -52,6 +53,9 @@ const App: React.FC = () => {
                 </Route>
                 <Route path="/matches">
                   <Matches />
+                </Route>
+                <Route path="/matchType">
+                  <MatchType />
                 </Route>
                 <Route path="/match/show/:id">
                   <Match />
