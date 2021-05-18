@@ -108,7 +108,7 @@ function usePlayerResultsByPlayer(
 
 function useMatchTypes(): { isLoading: boolean; error: unknown; matchTypes: MatchCategoryType[] | undefined } {
   const { isLoading, error, data: matchTypes } = useQuery<MatchCategoryType[]>('matchType', () =>
-    fetch('${API_DOMAIN}/matchTypes').then((res) => res.json()),
+    fetch(`${API_DOMAIN}/matchTypes`).then((res) => res.json()),
   );
 
   return {

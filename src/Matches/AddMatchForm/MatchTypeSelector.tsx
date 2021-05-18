@@ -1,8 +1,8 @@
-import { FieldValues, UseFormRegister } from 'react-hook-form';
+import { UseFormRegisterReturn } from 'react-hook-form';
 import { useMatchTypes } from '../hooks/useAPI';
-
 interface Props {
-  register: UseFormRegister<FieldValues>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  register: UseFormRegisterReturn;
 }
 
 const MatchTypeSelector: React.FC<Props> = ({ register }: Props) => {
@@ -16,8 +16,8 @@ const MatchTypeSelector: React.FC<Props> = ({ register }: Props) => {
 
   return (
     <div>
-      <label htmlFor="type">賽事類型：</label>
-      <select {...register('type')}>
+      <label htmlFor="typeId">賽事類型：</label>
+      <select {...register}>
         {matchTypes.map((type) => (
           <option key={`new-match-type-option-${type._id}`} value={type._id}>
             {type.name}

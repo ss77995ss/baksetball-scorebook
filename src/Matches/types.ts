@@ -1,6 +1,6 @@
 export type MatchInfoType = {
   _id: string;
-  type: string | null;
+  type: MatchCategoryType;
   name: string | null;
   homeTeam: TeamType;
   awayTeam: TeamType;

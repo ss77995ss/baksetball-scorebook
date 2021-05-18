@@ -1,7 +1,8 @@
 import { Column } from 'react-table';
 import { BoxType, SinglePlayerBoxType } from './types';
 
-export const API_DOMAIN = process.env.DEV ? 'http://localhost:8080/api' : 'https://ntu-bt-api.vercel.app/api';
+export const API_DOMAIN =
+  process.env.NODE_ENV !== 'production' ? 'http://localhost:8080/api' : 'https://ntu-bt-api.vercel.app/api';
 
 export const boxScoreHeaderName = {
   assists: '助攻',

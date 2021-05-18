@@ -25,9 +25,11 @@ const Teams: React.FC = () => {
     <StyledSection>
       <GoBackBtn />
       <NewTeam />
-      {teams.map((team) => (
-        <Team key={team._id} team={team} />
-      ))}
+      {teams
+        .filter((team) => team.name !== '無')
+        .map((team) => (
+          <Team key={team._id} team={team} />
+        ))}
     </StyledSection>
   );
 };

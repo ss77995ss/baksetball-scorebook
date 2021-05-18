@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useMatchInfo } from '../hooks/useAPI';
+import { formatDate } from '../utils';
 import View from './View';
 import Edit from './Edit';
 
@@ -40,10 +41,10 @@ const Match: React.FC = () => {
   return (
     <div>
       <div>
-        <div>{`賽事類型：${matchInfo.type}`}</div>
+        <div>{`賽事類型：${matchInfo.type.name}`}</div>
         <div>{`比賽名稱：${matchInfo.name}`}</div>
         <div>{`主隊：${matchInfo.homeTeam.name} 客隊：${matchInfo.awayTeam.name}`}</div>
-        <div>{`日期：${matchInfo.date}`}</div>
+        <div>{`日期：${formatDate(new Date(matchInfo.date))}`}</div>
       </div>
       <StyledLinks>
         <button onClick={() => setMode(mode === 'view' ? 'edit' : 'view')}>{mode === 'view' ? '編輯' : '返回'}</button>

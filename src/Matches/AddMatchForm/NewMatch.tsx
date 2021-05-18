@@ -10,7 +10,7 @@ import { API_DOMAIN } from '../constants';
 import MatchTypeSelector from './MatchTypeSelector';
 
 type MatchType = {
-  type: string;
+  typeId: string;
   name: string;
   homeTeamId: string;
   awayTeamId: string;
@@ -54,7 +54,6 @@ const NewMatch: React.FC<{ teams: TeamType[] }> = ({ teams }: { teams: TeamType[
   if (!teams) return null;
 
   const onSubmit = (newMatch: MatchType): void => {
-    console.log(newMatch);
     if (window.confirm(`新增新比賽： ${newMatch.name}？`)) {
       mutate({
         ...newMatch,
@@ -66,7 +65,7 @@ const NewMatch: React.FC<{ teams: TeamType[] }> = ({ teams }: { teams: TeamType[
   return (
     <StyledSection>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <MatchTypeSelector register={register} />
+        <MatchTypeSelector register={register('typeId')} />
         <div>
           <label htmlFor="name">比賽名稱：</label>
           <input {...register('name')} />
@@ -84,9 +83,8 @@ const NewMatch: React.FC<{ teams: TeamType[] }> = ({ teams }: { teams: TeamType[
         <div>
           <label htmlFor="awayTeamId">客隊：</label>
           <select {...register('awayTeamId')}>
-            <option></option>
             {teams.map((team) => (
-              <option key={team._id} value={team._id}>
+              <option key={team._id} value={team._id} selected={team.name === '無'}>
                 {team.name}
               </option>
             ))}
