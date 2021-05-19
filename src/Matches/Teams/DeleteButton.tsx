@@ -1,16 +1,21 @@
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import { TeamType } from '../types';
 import { API_DOMAIN } from '../constants';
 
 const DeleteButton: React.FC<{ team: TeamType }> = ({ team }: { team: TeamType }) => {
-  const { isLoading, isError, mutate } = useMutation((formData: { teamId: string }) =>
-    fetch(`${API_DOMAIN}/teams`, {
-      method: 'DELETE',
-      body: JSON.stringify(formData),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }),
+  const queryClient = useQueryClient();
+  const { isLoading, isError, mutate } = useMutation(
+    (formData: { teamId: string }) =>
+      fetch(`${API_DOMAIN}/teams`, {
+        method: 'DELETE',
+        body: JSON.stringify(formData),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }),
+    {
+      onSuccess: () => queryClient.invalidateQueries('teams'),
+    },
   );
 
   const onDelete = (): void => {

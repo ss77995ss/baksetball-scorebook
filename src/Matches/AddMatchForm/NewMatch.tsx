@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { TeamType } from '../types';
@@ -28,6 +28,7 @@ const StyledSection = styled.section`
 `;
 
 const NewMatch: React.FC<{ teams: TeamType[] }> = ({ teams }: { teams: TeamType[] }) => {
+  const queryClient = useQueryClient();
   const history = useHistory();
   const [startDate, setStartDate] = useState(new Date());
   const { isLoading, isError, mutate } = useMutation(
@@ -41,6 +42,7 @@ const NewMatch: React.FC<{ teams: TeamType[] }> = ({ teams }: { teams: TeamType[
       }),
     {
       onSuccess: () => {
+        queryClient.invalidateQueries('matches');
         history.push('/matches');
       },
     },

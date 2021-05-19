@@ -1,16 +1,21 @@
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import { PlayerType } from '../types';
 import { API_DOMAIN } from '../constants';
 
 const DeleteButton: React.FC<{ player: PlayerType }> = ({ player }: { player: PlayerType }) => {
-  const { isLoading, isError, mutate } = useMutation((formData: { playerId: string }) =>
-    fetch(`${API_DOMAIN}/players`, {
-      method: 'DELETE',
-      body: JSON.stringify(formData),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }),
+  const queryClient = useQueryClient();
+  const { isLoading, isError, mutate } = useMutation(
+    (formData: { playerId: string }) =>
+      fetch(`${API_DOMAIN}/players`, {
+        method: 'DELETE',
+        body: JSON.stringify(formData),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }),
+    {
+      onSuccess: () => queryClient.invalidateQueries('players'),
+    },
   );
 
   const onDelete = (): void => {
@@ -23,7 +28,7 @@ const DeleteButton: React.FC<{ player: PlayerType }> = ({ player }: { player: Pl
 
   return (
     <>
-      <button type="submit" onClick={onDelete} disabled={isLoading}>
+      <button onClick={onDelete} disabled={isLoading}>
         刪除
       </button>
       {isError && <div>Something went wrong</div>}

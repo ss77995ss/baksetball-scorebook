@@ -1,16 +1,21 @@
 import { useForm } from 'react-hook-form';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import { API_DOMAIN } from '../constants';
 
 const NewTeam: React.FC = () => {
-  const { isLoading, isError, mutate } = useMutation((formData: { name: string }) =>
-    fetch(`${API_DOMAIN}/teams`, {
-      method: 'POST',
-      body: JSON.stringify(formData),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }),
+  const queryClient = useQueryClient();
+  const { isLoading, isError, mutate } = useMutation(
+    (formData: { name: string }) =>
+      fetch(`${API_DOMAIN}/teams`, {
+        method: 'POST',
+        body: JSON.stringify(formData),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }),
+    {
+      onSuccess: () => queryClient.invalidateQueries('teams'),
+    },
   );
   const { register, handleSubmit } = useForm();
 
