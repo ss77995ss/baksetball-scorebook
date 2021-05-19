@@ -100,7 +100,7 @@ export const StyledSubHeader = styled.ul`
 
   li {
     font-size: 12px;
-    width: 25%;
+    width: 33%;
     padding: 4px 0;
 
     border-right: 1px solid black;
