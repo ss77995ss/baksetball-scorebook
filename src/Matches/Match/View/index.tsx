@@ -7,9 +7,9 @@ interface Props {
 }
 
 const View: React.FC<Props> = ({ id, selectedTeam }: Props) => {
-  const { isLoading, error, playerResults } = usePlayerResultsByTeam(id, selectedTeam);
+  const { isLoading, isFetching, error, playerResults } = usePlayerResultsByTeam(id, selectedTeam);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading || isFetching) return <div>Loading...</div>;
 
   if (error) return <div>{`An error has occurred: ${error}`}</div>;
 
