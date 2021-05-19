@@ -4,9 +4,9 @@ import PlayerStats from './PlayerStats';
 
 const SinglePlayerBox: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const { isLoading, error, playerInfo } = usePlayerInfo(id);
+  const { isLoading, isFetching, error, playerInfo } = usePlayerInfo(id);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading || isFetching) return <div>Loading...</div>;
 
   if (error) return <div>{`An error has occurred: ${error}`}</div>;
 

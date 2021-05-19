@@ -9,20 +9,23 @@ import {
 } from '../types';
 import { API_DOMAIN } from '../constants';
 
-function useTeams(): { isLoading: boolean; error: unknown; teams: TeamType[] | undefined } {
-  const { isLoading, error, data: teams } = useQuery<TeamType[]>('teams', () =>
+function useTeams(): { isLoading: boolean; isFetching: boolean; error: unknown; teams: TeamType[] | undefined } {
+  const { isLoading, isFetching, error, data: teams } = useQuery<TeamType[]>('teams', () =>
     fetch(`${API_DOMAIN}/teams`).then((res) => res.json()),
   );
 
   return {
     isLoading,
+    isFetching,
     error,
     teams,
   };
 }
 
-function usePlayers(teamId: string): { isLoading: boolean; error: unknown; players: PlayerType[] } {
-  const { isLoading, error, data: players } = useQuery<PlayerType[]>(
+function usePlayers(
+  teamId: string,
+): { isLoading: boolean; isFetching: boolean; error: unknown; players: PlayerType[] } {
+  const { isLoading, isFetching, error, data: players } = useQuery<PlayerType[]>(
     ['players', teamId],
     () => fetch(`${API_DOMAIN}/players/?teamId=${teamId}`).then((res) => res.json()),
     {
@@ -32,13 +35,16 @@ function usePlayers(teamId: string): { isLoading: boolean; error: unknown; playe
 
   return {
     isLoading,
+    isFetching,
     error,
     players: players || [],
   };
 }
 
-function usePlayerInfo(playerId: string): { isLoading: boolean; error: unknown; playerInfo: PlayerType | undefined } {
-  const { isLoading, error, data: playerInfo } = useQuery<PlayerType>(
+function usePlayerInfo(
+  playerId: string,
+): { isLoading: boolean; isFetching: boolean; error: unknown; playerInfo: PlayerType | undefined } {
+  const { isLoading, isFetching, error, data: playerInfo } = useQuery<PlayerType>(
     ['playerInfo', playerId],
     () => fetch(`${API_DOMAIN}/players/?playerId=${playerId}`).then((res) => res.json()),
     {
@@ -48,13 +54,16 @@ function usePlayerInfo(playerId: string): { isLoading: boolean; error: unknown; 
 
   return {
     isLoading,
+    isFetching,
     error,
     playerInfo: playerInfo,
   };
 }
 
-function useMatchInfo(matchId: string): { isLoading: boolean; error: unknown; matchInfo: MatchInfoType | undefined } {
-  const { isLoading, error, data: matchInfo } = useQuery<MatchInfoType[]>(
+function useMatchInfo(
+  matchId: string,
+): { isLoading: boolean; isFetching: boolean; error: unknown; matchInfo: MatchInfoType | undefined } {
+  const { isLoading, isFetching, error, data: matchInfo } = useQuery<MatchInfoType[]>(
     ['matches', matchId],
     () => fetch(`${API_DOMAIN}/matches/?matchId=${matchId}`).then((res) => res.json()),
     {
@@ -64,6 +73,7 @@ function useMatchInfo(matchId: string): { isLoading: boolean; error: unknown; ma
 
   return {
     isLoading,
+    isFetching,
     error,
     matchInfo: matchInfo ? matchInfo[0] : undefined,
   };
@@ -72,8 +82,8 @@ function useMatchInfo(matchId: string): { isLoading: boolean; error: unknown; ma
 function usePlayerResultsByTeam(
   matchId: string,
   teamId: string,
-): { isLoading: boolean; error: unknown; playerResults: PlayerResultsType[] | undefined } {
-  const { isLoading, error, data: playerResults } = useQuery<PlayerResultsType[]>(
+): { isLoading: boolean; isFetching: boolean; error: unknown; playerResults: PlayerResultsType[] | undefined } {
+  const { isLoading, isFetching, error, data: playerResults } = useQuery<PlayerResultsType[]>(
     ['playerResultsByTeam', teamId],
     () => fetch(`${API_DOMAIN}/playerResults/match?matchId=${matchId}&teamId=${teamId}`).then((res) => res.json()),
     {
@@ -83,6 +93,7 @@ function usePlayerResultsByTeam(
 
   return {
     isLoading,
+    isFetching,
     error,
     playerResults: playerResults ? playerResults : [],
   };
@@ -90,8 +101,8 @@ function usePlayerResultsByTeam(
 
 function usePlayerResultsByPlayer(
   playerId: string,
-): { isLoading: boolean; error: unknown; playerResults: SinglePlayerResultsType[] | undefined } {
-  const { isLoading, error, data: playerResults } = useQuery<SinglePlayerResultsType[]>(
+): { isLoading: boolean; isFetching: boolean; error: unknown; playerResults: SinglePlayerResultsType[] | undefined } {
+  const { isLoading, isFetching, error, data: playerResults } = useQuery<SinglePlayerResultsType[]>(
     ['playerResultsByPlayer', playerId],
     () => fetch(`${API_DOMAIN}/playerResults/player/?playerId=${playerId}`).then((res) => res.json()),
     {
@@ -101,18 +112,25 @@ function usePlayerResultsByPlayer(
 
   return {
     isLoading,
+    isFetching,
     error,
     playerResults: playerResults ? playerResults : [],
   };
 }
 
-function useMatchTypes(): { isLoading: boolean; error: unknown; matchTypes: MatchCategoryType[] | undefined } {
-  const { isLoading, error, data: matchTypes } = useQuery<MatchCategoryType[]>('matchType', () =>
+function useMatchTypes(): {
+  isLoading: boolean;
+  isFetching: boolean;
+  error: unknown;
+  matchTypes: MatchCategoryType[] | undefined;
+} {
+  const { isLoading, isFetching, error, data: matchTypes } = useQuery<MatchCategoryType[]>('matchType', () =>
     fetch(`${API_DOMAIN}/matchTypes`).then((res) => res.json()),
   );
 
   return {
     isLoading,
+    isFetching,
     error,
     matchTypes: matchTypes ? matchTypes : [],
   };

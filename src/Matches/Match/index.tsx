@@ -70,7 +70,7 @@ const Match: React.FC = () => {
                 {matchInfo.awayTeam.name}
               </button>
             </StyledButtons>
-            <View id={id} selectedTeam={selectedTeam} />
+            <View id={id} selectedTeam={selectedTeam || matchInfo.homeTeam._id} />
           </>
         ) : (
           <Edit matchInfo={matchInfo} selectedTeam={selectedTeam} setSelectedTeam={setSelectedTeam} setMode={setMode} />
