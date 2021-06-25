@@ -2,7 +2,9 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { useTable } from 'react-table';
+import { usePlayerResultsByTeam } from '../../hooks/useAPI';
 import { BoxType } from '../../types';
+import { getBoxScore } from '../../utils';
 import { columns } from '../../constants';
 import ReboundHeader from './ReboundHeader';
 import ShootingHeader from './ShootingHeader';
@@ -129,4 +131,28 @@ const BoxScore: React.FC<Props> = ({ boxScore }: Props) => {
   );
 };
 
-export default BoxScore;
+const BoxScoreWrapper: React.FC<{ id: string; selectedTeam: string }> = ({
+  id,
+  selectedTeam,
+}: {
+  id: string;
+  selectedTeam: string;
+}) => {
+  const { isLoading, isFetching, error, playerResults } = usePlayerResultsByTeam(id, selectedTeam);
+
+  if (isLoading || isFetching) return <div>Loading...</div>;
+
+  if (error) return <div>{`An error has occurred: ${error}`}</div>;
+
+  if (!playerResults) return <div>暫無資料</div>;
+
+  const boxScore = getBoxScore(playerResults);
+
+  return (
+    <div>
+      <BoxScore boxScore={boxScore} />
+    </div>
+  );
+};
+
+export default BoxScoreWrapper;
