@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { UseFormSetValue } from 'react-hook-form';
 import { usePlayerResultsByTeam } from '../../hooks/useAPI';
 import { PlayerResultsType } from '../../types';
@@ -29,10 +30,26 @@ interface Props {
   setValue: UseFormSetValue<PlayerResultsType>;
   setSelectedPlayer: React.Dispatch<React.SetStateAction<string>>;
   setMode: React.Dispatch<React.SetStateAction<'view' | 'edit'>>;
+  setHasPlayerResults: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const ExistResults: React.FC<Props> = ({ matchId, teamId, setValue, setSelectedPlayer, setMode }: Props) => {
+const ExistResults: React.FC<Props> = ({
+  matchId,
+  teamId,
+  setValue,
+  setSelectedPlayer,
+  setMode,
+  setHasPlayerResults,
+}: Props) => {
   const { isLoading, error, playerResults } = usePlayerResultsByTeam(matchId, teamId);
+
+  useEffect(() => {
+    if (playerResults && playerResults.length > 0) {
+      setHasPlayerResults(true);
+    } else {
+      setHasPlayerResults(false);
+    }
+  }, [playerResults]);
 
   const handleUpdateForm = (result: FormDataType) => () => {
     setValue('assists', result.assists);

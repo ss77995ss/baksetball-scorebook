@@ -1,7 +1,6 @@
 import { UseFormRegisterReturn } from 'react-hook-form';
 import { useMatchTypes } from '../hooks/useAPI';
 interface Props {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   register: UseFormRegisterReturn;
 }
 

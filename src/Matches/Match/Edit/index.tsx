@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useMutation } from 'react-query';
 import styled from 'styled-components';
@@ -9,6 +10,8 @@ import PlayerSelector from './PlayerSelector';
 import TeamSelector from './TeamSelector';
 import StatsForm from './StatsForm';
 import ExistResults from './ExistResults';
+import UpdateForm from './UpdateForm';
+import DeleteMatchButton from './DeleteMatchButton';
 
 const StyledSection = styled.section`
   display: flex;
@@ -18,6 +21,14 @@ const StyledSection = styled.section`
   input,
   div {
     margin: 2px 0;
+  }
+`;
+
+const StyledLinks = styled.section`
+  text-align: center;
+
+  button {
+    margin: 8px 4px;
   }
 `;
 
@@ -50,6 +61,7 @@ interface Props {
 const Edit: React.FC<Props> = ({ matchInfo, selectedTeam, setSelectedTeam, setMode }: Props) => {
   const { _id, homeTeam, awayTeam } = matchInfo;
   const [selectedPlayer, setSelectedPlayer] = useState('');
+  const [hasPlayerResults, setHasPlayerResults] = useState(false);
   const { register, handleSubmit, setValue } = useForm<PlayerResultsType>({
     defaultValues: {
       ...defaultStats,
@@ -105,29 +117,43 @@ const Edit: React.FC<Props> = ({ matchInfo, selectedTeam, setSelectedTeam, setMo
   if (error) return <div>Something went wrong</div>;
 
   return (
-    <StyledSection>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <TeamSelector
-          register={register}
-          homeTeam={homeTeam}
-          awayTeam={awayTeam}
-          selectedTeam={selectedTeam}
-          setSelectedTeam={setSelectedTeam}
+    <div>
+      <UpdateForm matchInfo={matchInfo} setMode={setMode} hasPlayerResults={hasPlayerResults} />
+      <StyledLinks>
+        <DeleteMatchButton matchId={matchInfo._id} />
+        <button onClick={() => setMode('view')}>返回</button>
+        <Link to="/match/teams">
+          <button>編輯隊伍</button>
+        </Link>
+        <Link to="/match/players">
+          <button>編輯球員名單</button>
+        </Link>
+      </StyledLinks>
+      <StyledSection>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <TeamSelector
+            register={register}
+            homeTeam={homeTeam}
+            awayTeam={awayTeam}
+            selectedTeam={selectedTeam}
+            setSelectedTeam={setSelectedTeam}
+          />
+          <PlayerSelector register={register} teamId={selectedTeam} setSelectedPlayer={setSelectedPlayer} />
+          <StatsForm register={register} />
+          <button type="submit" disabled={isLoading}>
+            新增球員紀錄
+          </button>
+        </form>
+        <ExistResults
+          matchId={_id}
+          teamId={selectedTeam}
+          setValue={setValue}
+          setSelectedPlayer={setSelectedPlayer}
+          setMode={setMode}
+          setHasPlayerResults={setHasPlayerResults}
         />
-        <PlayerSelector register={register} teamId={selectedTeam} setSelectedPlayer={setSelectedPlayer} />
-        <StatsForm register={register} />
-        <button type="submit" disabled={isLoading}>
-          新增球員紀錄
-        </button>
-      </form>
-      <ExistResults
-        matchId={_id}
-        teamId={selectedTeam}
-        setValue={setValue}
-        setSelectedPlayer={setSelectedPlayer}
-        setMode={setMode}
-      />
-    </StyledSection>
+      </StyledSection>
+    </div>
   );
 };
 

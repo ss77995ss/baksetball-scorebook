@@ -104,7 +104,7 @@ function usePlayerResultsByPlayer(
 ): { isLoading: boolean; isFetching: boolean; error: unknown; playerResults: SinglePlayerResultsType[] | undefined } {
   const { isLoading, isFetching, error, data: playerResults } = useQuery<SinglePlayerResultsType[]>(
     ['playerResultsByPlayer', playerId],
-    () => fetch(`${API_DOMAIN}/playerResults/player/?playerId=${playerId}`).then((res) => res.json()),
+    () => fetch(`${API_DOMAIN}/playerResults/player?playerId=${playerId}`).then((res) => res.json()),
     {
       enabled: !!playerId,
     },

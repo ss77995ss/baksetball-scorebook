@@ -1,15 +1,15 @@
 import { useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import { useMutation, useQueryClient } from 'react-query';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { API_DOMAIN } from '../constants';
-import MatchTypeSelector from './MatchTypeSelector';
-import TeamSelector from './TeamSelector';
+import { API_DOMAIN } from '../../constants';
+import MatchTypeSelector from '../../AddMatchForm/MatchTypeSelector';
+import TeamSelector from '../../AddMatchForm/TeamSelector';
+import { MatchInfoType } from '../../types';
 
 type MatchType = {
+  matchId: string;
   typeId: string;
   name: string;
   homeTeamId: string;
@@ -17,24 +17,19 @@ type MatchType = {
   date: Date;
 };
 
-const StyledSection = styled.section`
-  text-align: center;
+interface Props {
+  matchInfo: MatchInfoType;
+  setMode: React.Dispatch<React.SetStateAction<'view' | 'edit'>>;
+  hasPlayerResults: boolean;
+}
 
-  margin-top: 8px;
-
-  div {
-    margin: 4px 0;
-  }
-`;
-
-const NewMatch: React.FC = () => {
+const UpdateForm: React.FC<Props> = ({ matchInfo, setMode, hasPlayerResults }: Props) => {
   const queryClient = useQueryClient();
-  const history = useHistory();
-  const [startDate, setStartDate] = useState(new Date());
+  const [startDate, setStartDate] = useState(new Date(matchInfo.date));
   const { isLoading, isError, mutate } = useMutation(
     (formData: MatchType) =>
       fetch(`${API_DOMAIN}/matches`, {
-        method: 'POST',
+        method: 'PUT',
         body: JSON.stringify(formData),
         headers: {
           'Content-Type': 'application/json',
@@ -43,27 +38,36 @@ const NewMatch: React.FC = () => {
     {
       onSuccess: () => {
         queryClient.invalidateQueries('matches');
-        history.push('/matches');
+        setMode('view');
       },
     },
   );
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit } = useForm({
+    defaultValues: {
+      typeId: matchInfo.type._id,
+      name: matchInfo.name,
+      homeTeamId: matchInfo.homeTeam._id,
+      awayTeamId: matchInfo.awayTeam._id,
+      mode: matchInfo.mode,
+    },
+  });
 
   if (isLoading) return <div>Loading...</div>;
 
   if (isError) return <div>Something went wrong</div>;
 
   const onSubmit = (newMatch: MatchType): void => {
-    if (window.confirm(`新增新比賽： ${newMatch.name}？`)) {
+    if (window.confirm(`修改比賽資訊： ${newMatch.name}？`)) {
       mutate({
         ...newMatch,
+        matchId: matchInfo._id,
         date: startDate,
       });
     }
   };
 
   return (
-    <StyledSection>
+    <div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <MatchTypeSelector register={register('typeId')} />
         <div>
@@ -86,10 +90,12 @@ const NewMatch: React.FC = () => {
           <label htmlFor="matchModeAD">進階紀錄</label>
           <input {...register('mode')} id="matchModeAD" type="radio" value="advanced" disabled />
         </div>
-        <button type="submit">送出</button>
+        <button type="submit" disabled={hasPlayerResults || isLoading}>
+          修改比賽資訊
+        </button>
       </form>
-    </StyledSection>
+    </div>
   );
 };
 
-export default NewMatch;
+export default UpdateForm;
