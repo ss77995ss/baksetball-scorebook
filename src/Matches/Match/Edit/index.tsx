@@ -61,6 +61,7 @@ interface Props {
 const Edit: React.FC<Props> = ({ matchInfo, selectedTeam, setSelectedTeam, setMode }: Props) => {
   const { _id, homeTeam, awayTeam } = matchInfo;
   const [selectedPlayer, setSelectedPlayer] = useState('');
+  const [hasPlayerResults, setHasPlayerResults] = useState(false);
   const { register, handleSubmit, setValue } = useForm<PlayerResultsType>({
     defaultValues: {
       ...defaultStats,
@@ -117,7 +118,7 @@ const Edit: React.FC<Props> = ({ matchInfo, selectedTeam, setSelectedTeam, setMo
 
   return (
     <div>
-      <UpdateForm matchInfo={matchInfo} setMode={setMode} />
+      <UpdateForm matchInfo={matchInfo} setMode={setMode} hasPlayerResults={hasPlayerResults} />
       <StyledLinks>
         <DeleteMatchButton matchId={matchInfo._id} />
         <button onClick={() => setMode('view')}>返回</button>
@@ -149,6 +150,7 @@ const Edit: React.FC<Props> = ({ matchInfo, selectedTeam, setSelectedTeam, setMo
           setValue={setValue}
           setSelectedPlayer={setSelectedPlayer}
           setMode={setMode}
+          setHasPlayerResults={setHasPlayerResults}
         />
       </StyledSection>
     </div>

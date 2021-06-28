@@ -20,9 +20,10 @@ type MatchType = {
 interface Props {
   matchInfo: MatchInfoType;
   setMode: React.Dispatch<React.SetStateAction<'view' | 'edit'>>;
+  hasPlayerResults: boolean;
 }
 
-const UpdateForm: React.FC<Props> = ({ matchInfo, setMode }: Props) => {
+const UpdateForm: React.FC<Props> = ({ matchInfo, setMode, hasPlayerResults }: Props) => {
   const queryClient = useQueryClient();
   const [startDate, setStartDate] = useState(new Date(matchInfo.date));
   const { isLoading, isError, mutate } = useMutation(
@@ -89,7 +90,9 @@ const UpdateForm: React.FC<Props> = ({ matchInfo, setMode }: Props) => {
           <label htmlFor="matchModeAD">進階紀錄</label>
           <input {...register('mode')} id="matchModeAD" type="radio" value="advanced" disabled />
         </div>
-        <button type="submit">修改比賽資訊</button>
+        <button type="submit" disabled={hasPlayerResults || isLoading}>
+          修改比賽資訊
+        </button>
       </form>
     </div>
   );
