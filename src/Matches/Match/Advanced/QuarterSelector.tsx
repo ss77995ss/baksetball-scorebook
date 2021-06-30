@@ -1,53 +1,44 @@
 import { useState } from 'react';
 import { UseFormRegisterReturn } from 'react-hook-form';
 
+const QUARTERS = [
+  { name: '第一節', value: 'first' },
+  { name: '第二節', value: 'second' },
+  { name: '第三節', value: 'third' },
+  { name: '第四節', value: 'fourth' },
+];
+
 interface Props {
   register: UseFormRegisterReturn;
 }
 
 const QuarterSelector: React.FC<Props> = ({ register }: Props) => {
   const [overtimes, setOverTimes] = useState(['OT1']);
+  const [checkedQuarter, setCheckedQuarter] = useState('first');
 
   const handleClick = () => setOverTimes((prev) => [...prev, `OT${prev.length + 1}`]);
 
+  const handleCheckedQuarter = (event: React.ChangeEvent<HTMLInputElement>) => setCheckedQuarter(event.target.value);
+
   return (
     <div>
-      <input
-        {...register}
-        key={`select-first-quarter`}
-        type="radio"
-        id={`#first-quarter-radio`}
-        name="quarter"
-        value="first"
-      />
-      <label htmlFor="#first-quarter-radio">第一節</label>
-      <input
-        {...register}
-        key={`select-second-quarter`}
-        type="radio"
-        id={`#second-quarter-radio`}
-        name="quarter"
-        value="second"
-      />
-      <label htmlFor="#second-quarter-radio">第二節</label>
-      <input
-        {...register}
-        key={`select-third-quarter`}
-        type="radio"
-        id={`#third-quarter-radio`}
-        name="quarter"
-        value="third"
-      />
-      <label htmlFor="#third-quarter-radio">第三節</label>
-      <input
-        {...register}
-        key={`select-fourth-quarter`}
-        type="radio"
-        id={`#fourth-quarter-radio`}
-        name="quarter"
-        value="fourth"
-      />
-      <label htmlFor="#fourth-quarter-radio">第四節</label>
+      {QUARTERS.map((quarter) => (
+        <>
+          <input
+            {...register}
+            key={`select-${quarter.value}-quarter`}
+            type="radio"
+            id={`#${quarter.value}-quarter-radio`}
+            name="quarter"
+            value={quarter.value}
+            checked={checkedQuarter === quarter.value}
+            onChange={handleCheckedQuarter}
+          />
+          <label key={`select-${quarter.value}-quarter-label`} htmlFor={`#${quarter.value}-quarter-radio`}>
+            {quarter.name}
+          </label>
+        </>
+      ))}
       {overtimes.map((overtime, index) => {
         return (
           <>
@@ -57,7 +48,9 @@ const QuarterSelector: React.FC<Props> = ({ register }: Props) => {
               type="radio"
               id={`#${index}-${overtime}-radio`}
               name="quarter"
-              value="quarter"
+              value={overtime}
+              checked={checkedQuarter === overtime}
+              onChange={handleCheckedQuarter}
             />
             <label htmlFor={`#${index}-${overtime}-radio`}>{overtime}</label>
           </>
