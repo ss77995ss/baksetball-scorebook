@@ -5,6 +5,7 @@ import MatchInfo from '../View/MatchInfo';
 import TeamButtons from '../View/TeamButtons';
 import QuarterSelector from './QuarterSelector';
 import OnCourt from './OnCourt';
+import StatsSelector from './StatsSelector';
 
 interface Props {
   matchInfo: MatchInfoType;
@@ -29,6 +30,7 @@ const Advanced: React.FC<Props> = ({ matchInfo }: Props) => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <QuarterSelector register={register('quarter')} />
         <OnCourt teamId={selectedTeam} register={register('playerId')} />
+        <StatsSelector mainRegister={register('mainStat')} subRegister={register('subStat')} />
         <button type="submit">送出</button>
       </form>
     </div>
