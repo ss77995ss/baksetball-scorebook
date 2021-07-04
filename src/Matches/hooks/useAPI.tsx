@@ -6,6 +6,7 @@ import {
   PlayerResultsType,
   SinglePlayerResultsType,
   MatchCategoryType,
+  PlayByPlayType,
 } from '../types';
 import { API_DOMAIN } from '../constants';
 
@@ -136,6 +137,19 @@ function useMatchTypes(): {
   };
 }
 
+function usePlayByPlays(
+  matchId: string,
+): { isLoading: boolean; isFetching: boolean; error: unknown; playByPlays: PlayByPlayType[] | undefined } {
+  const { isLoading, isFetching, error, data: playByPlays } = useQuery<PlayByPlayType[]>(['playByPlays', matchId], () =>
+    fetch(`${API_DOMAIN}/playByPlays?matchId=${matchId}`).then((res) => res.json()),
+  );
+  return {
+    isLoading,
+    isFetching,
+    error,
+    playByPlays: playByPlays ? playByPlays : [],
+  };
+}
 export {
   useTeams,
   usePlayers,
@@ -144,4 +158,5 @@ export {
   usePlayerResultsByTeam,
   usePlayerResultsByPlayer,
   useMatchTypes,
+  usePlayByPlays,
 };

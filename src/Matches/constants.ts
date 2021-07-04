@@ -26,8 +26,8 @@ export const statsCategories: {
   rebounds: {
     name: '籃板',
     subStats: {
-      offensive: '進攻',
-      defensive: '防守',
+      offensiveRebound: '進攻',
+      defensiveRebound: '防守',
     },
   },
   assists: {
@@ -44,14 +44,23 @@ export const statsCategories: {
   fouls: {
     name: '犯規',
     subStats: {
-      offensive: '進攻',
-      defensive: '防守',
+      offensiveFoul: '進攻',
+      defensiveFoul: '防守',
     },
   },
   turnovers: {
     name: '失誤',
     subStats: {},
   },
+};
+
+export const quarterNames: {
+  [key: string]: string;
+} = {
+  first: '第一節',
+  second: '第二節',
+  third: '第三節',
+  fourth: '第四節',
 };
 
 export const boxScoreHeaderName = {

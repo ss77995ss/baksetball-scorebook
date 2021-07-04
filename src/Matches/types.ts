@@ -145,3 +145,20 @@ export type MatchCategoryType = {
   name: string;
   type: string;
 };
+
+export type PlayByPlayType = {
+  _id: string;
+  quarter: string;
+  timestamp: string | undefined;
+  priority: string | undefined;
+  range: string | undefined;
+  position: string | undefined;
+  statType: string;
+  advancedType: string;
+  matchId: string;
+  playerId: string;
+  teamId: string;
+  opponentTeamId: string;
+  player: PlayerType;
+  team: TeamType;
+};

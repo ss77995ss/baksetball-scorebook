@@ -1,18 +1,24 @@
 import { useState } from 'react';
-import { UseFormRegisterReturn } from 'react-hook-form';
+import { UseFormRegisterReturn, UseFormSetValue, FieldValues } from 'react-hook-form';
 import { statsCategories } from '../../../constants';
 import SubStatsSelector from './SubStatsSelector';
 
 interface Props {
   mainRegister: UseFormRegisterReturn;
   subRegister: UseFormRegisterReturn;
+  setValue: UseFormSetValue<FieldValues>;
 }
 
-const StatsSelector: React.FC<Props> = ({ mainRegister, subRegister }: Props) => {
+const StatsSelector: React.FC<Props> = ({ mainRegister, subRegister, setValue }: Props) => {
   const [selectedMainStats, setSelectedMainStats] = useState('shot');
+  const isNotOnlyMain = !(selectedMainStats === 'assists' || selectedMainStats === 'turnovers');
 
-  const handleSelectMainStats = (event: React.ChangeEvent<HTMLInputElement>) =>
+  const handleSelectMainStats = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (isNotOnlyMain) {
+      setValue('subStat', null);
+    }
     setSelectedMainStats(event.target.value);
+  };
 
   return (
     <div>
@@ -33,7 +39,7 @@ const StatsSelector: React.FC<Props> = ({ mainRegister, subRegister }: Props) =>
           </>
         );
       })}
-      <SubStatsSelector mainStat={selectedMainStats} subRegister={subRegister} />
+      {isNotOnlyMain && <SubStatsSelector mainStat={selectedMainStats} subRegister={subRegister} />}
     </div>
   );
 };

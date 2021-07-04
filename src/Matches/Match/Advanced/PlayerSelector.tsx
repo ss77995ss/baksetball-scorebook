@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { UseFormRegisterReturn } from 'react-hook-form';
+import { UseFormRegisterReturn, UseFormSetValue, FieldValues } from 'react-hook-form';
 import { update, reject } from 'ramda';
 import { PlayerType } from '../../types';
 
@@ -8,9 +8,10 @@ interface Props {
   onCourt: PlayerType[];
   setOnCourt: React.Dispatch<React.SetStateAction<PlayerType[]>>;
   register: UseFormRegisterReturn;
+  setValue: UseFormSetValue<FieldValues>;
 }
 
-const PlayerSelector: React.FC<Props> = ({ players, onCourt, setOnCourt, register }: Props) => {
+const PlayerSelector: React.FC<Props> = ({ players, onCourt, setOnCourt, register, setValue }: Props) => {
   const [selectedPlayer, setSelectedPlayer] = useState(onCourt[0]._id);
   const [selectorStatus, setSelectorStatus] = useState<'更換場上五人' | '確認更換'>('更換場上五人');
   const excludedOnCourt = reject((n) => onCourt.includes(n), players);
@@ -30,11 +31,15 @@ const PlayerSelector: React.FC<Props> = ({ players, onCourt, setOnCourt, registe
 
   const handleClick = (): void => {
     switch (selectorStatus) {
-      case '更換場上五人':
+      case '更換場上五人': {
         setSelectorStatus('確認更換');
+        setSelectedPlayer('');
+        setValue('playerId', '');
         break;
+      }
       case '確認更換':
         setSelectorStatus('更換場上五人');
+        setValue('playerId', selectedPlayer);
         break;
       default:
         throw new Error('Wrong selector status');
@@ -51,7 +56,6 @@ const PlayerSelector: React.FC<Props> = ({ players, onCourt, setOnCourt, registe
                 key={`player-on-court-#${player}`}
                 type="radio"
                 id={`#${player._id}`}
-                name="playerName"
                 value={player._id}
                 onChange={handleCheck}
                 checked={player._id === selectedPlayer}

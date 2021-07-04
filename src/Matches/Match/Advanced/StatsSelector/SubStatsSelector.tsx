@@ -10,10 +10,10 @@ interface Props {
 const SubStatsSelector: React.FC<Props> = ({ mainStat, subRegister }: Props) => {
   return (
     <div>
-      {Object.keys(statsCategories[mainStat].subStats).map((stat) => {
+      {Object.keys(statsCategories[mainStat].subStats).map((stat, index) => {
         return (
           <Fragment key={`${mainStat}-${stat}`}>
-            <input {...subRegister} id={`${mainStat}-${stat}`} type="radio" value={stat} />
+            <input {...subRegister} id={`${mainStat}-${stat}`} type="radio" value={stat} defaultChecked={index === 0} />
             <label htmlFor={`${mainStat}-${stat}`}>{statsCategories[mainStat].subStats[stat]}</label>
           </Fragment>
         );

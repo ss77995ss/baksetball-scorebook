@@ -1,12 +1,6 @@
 import { useState } from 'react';
 import { UseFormRegisterReturn } from 'react-hook-form';
-
-const QUARTERS = [
-  { name: '第一節', value: 'first' },
-  { name: '第二節', value: 'second' },
-  { name: '第三節', value: 'third' },
-  { name: '第四節', value: 'fourth' },
-];
+import { quarterNames } from '../../constants';
 
 interface Props {
   register: UseFormRegisterReturn;
@@ -22,20 +16,20 @@ const QuarterSelector: React.FC<Props> = ({ register }: Props) => {
 
   return (
     <div>
-      {QUARTERS.map((quarter) => (
+      {Object.keys(quarterNames).map((key) => (
         <>
           <input
             {...register}
-            key={`select-${quarter.value}-quarter`}
+            key={`select-${quarterNames[key]}-quarter`}
             type="radio"
-            id={`#${quarter.value}-quarter-radio`}
+            id={`#${quarterNames[key]}-quarter-radio`}
             name="quarter"
-            value={quarter.value}
-            checked={checkedQuarter === quarter.value}
+            value={quarterNames[key]}
+            checked={checkedQuarter === quarterNames[key]}
             onChange={handleCheckedQuarter}
           />
-          <label key={`select-${quarter.value}-quarter-label`} htmlFor={`#${quarter.value}-quarter-radio`}>
-            {quarter.name}
+          <label key={`select-${quarterNames[key]}-quarter-label`} htmlFor={`#${quarterNames[key]}-quarter-radio`}>
+            {key}
           </label>
         </>
       ))}
