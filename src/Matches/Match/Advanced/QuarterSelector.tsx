@@ -20,16 +20,16 @@ const QuarterSelector: React.FC<Props> = ({ register }: Props) => {
         <>
           <input
             {...register}
-            key={`select-${quarterNames[key]}-quarter`}
+            key={`select-${key}-quarter`}
             type="radio"
-            id={`#${quarterNames[key]}-quarter-radio`}
+            id={`#${key}-quarter-radio`}
             name="quarter"
-            value={quarterNames[key]}
-            checked={checkedQuarter === quarterNames[key]}
+            value={key}
+            checked={checkedQuarter === key}
             onChange={handleCheckedQuarter}
           />
-          <label key={`select-${quarterNames[key]}-quarter-label`} htmlFor={`#${quarterNames[key]}-quarter-radio`}>
-            {key}
+          <label key={`select-${key}-quarter-label`} htmlFor={`#${key}-quarter-radio`}>
+            {quarterNames[key]}
           </label>
         </>
       ))}

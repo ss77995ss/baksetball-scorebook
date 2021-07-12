@@ -150,6 +150,27 @@ function usePlayByPlays(
     playByPlays: playByPlays ? playByPlays : [],
   };
 }
+
+function usePlayersByTeams(
+  home: string,
+  away: string,
+): { isLoading: boolean; isFetching: boolean; error: unknown; players: PlayerType[] } {
+  const { isLoading, isFetching, error, data: players } = useQuery<PlayerType[]>(
+    ['players', home, away],
+    () => fetch(`${API_DOMAIN}/players/?home=${home}&away=${away}`).then((res) => res.json()),
+    {
+      enabled: !!home && !!away,
+    },
+  );
+
+  return {
+    isLoading,
+    isFetching,
+    error,
+    players: players || [],
+  };
+}
+
 export {
   useTeams,
   usePlayers,
@@ -159,4 +180,5 @@ export {
   usePlayerResultsByPlayer,
   useMatchTypes,
   usePlayByPlays,
+  usePlayersByTeams,
 };

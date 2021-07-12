@@ -4,6 +4,25 @@ import { BoxType, SinglePlayerBoxType } from './types';
 export const API_DOMAIN =
   process.env.NODE_ENV !== 'production' ? 'http://localhost:8080/api' : 'https://ntu-bt-api.vercel.app/api';
 
+export const statsNames: {
+  [key: string]: string;
+} = {
+  twoPointsMade: '兩分進',
+  twoPointsMiss: '兩分不進',
+  threePointsMade: '三分進',
+  threePointsMiss: '三分不進',
+  freeThrowMade: '罰球進',
+  freeThrowMiss: '罰球不進',
+  offensiveRebound: '進攻',
+  defensiveRebound: '防守',
+  assists: '助攻',
+  turnovers: '失誤',
+  steal: '抄截',
+  block: '阻攻',
+  offensiveFoul: '進攻犯規',
+  defensiveFoul: '防守犯規',
+};
+
 export const statsCategories: {
   [key: string]: {
     name: string;

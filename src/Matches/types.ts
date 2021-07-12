@@ -138,6 +138,7 @@ export type PlayerType = {
   _id: string;
   name: string;
   number: string;
+  teamId: string;
 };
 
 export type MatchCategoryType = {

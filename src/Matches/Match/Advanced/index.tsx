@@ -1,12 +1,11 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useMutation, useQueryClient } from 'react-query';
-import { PlayByPlaysProvier, usePlayByPlaysState, usePlayByPlaysDispatch } from '../../hooks/usePlayByPlays';
-import { MatchInfoType } from '../../types';
+import { usePlayersByTeams } from '../../hooks/useAPI';
+import { MatchInfoType, PlayerType } from '../../types';
 import { API_DOMAIN } from '../../constants';
 import MatchInfo from '../View/MatchInfo';
 import TeamButtons from '../View/TeamButtons';
-import UpdateForm from '../Edit/UpdateForm';
 import QuarterSelector from './QuarterSelector';
 import OnCourt from './OnCourt';
 import StatsSelector from './StatsSelector';
@@ -25,12 +24,13 @@ interface FormProps {
   matchId: string;
   selectedTeam: string;
   opponentTeam: string;
+  players: PlayerType[];
 }
 
-const Form: React.FC<FormProps> = ({ matchId, selectedTeam, opponentTeam }: FormProps) => {
+const Form: React.FC<FormProps> = ({ matchId, selectedTeam, opponentTeam, players }: FormProps) => {
+  const resolvedPlayers = players.filter((player) => player.teamId === selectedTeam);
   const queryClient = useQueryClient();
   const { register, handleSubmit, setValue } = useForm();
-  const { setPlayByPlays } = usePlayByPlaysDispatch();
   const { isLoading, isError, mutate } = useMutation(
     (formData: Record<string, string>) =>
       fetch(`${API_DOMAIN}/playByPlays`, {
@@ -51,47 +51,41 @@ const Form: React.FC<FormProps> = ({ matchId, selectedTeam, opponentTeam }: Form
     const { mainStat, subStat, ...rest } = newPlay;
     const statType = subStat ? subStat : mainStat;
 
-    setPlayByPlays((prev) => [
-      ...prev,
-      { ...rest, statType, teamId: selectedTeam, opponentTeamId: opponentTeam, matchId },
-    ]);
     mutate({ ...rest, statType, teamId: selectedTeam, opponentTeamId: opponentTeam, matchId });
   };
 
   return (
-    <>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <QuarterSelector register={register('quarter')} />
-        <OnCourt teamId={selectedTeam} register={register('playerId', { required: true })} setValue={setValue} />
-        <StatsSelector mainRegister={register('mainStat')} subRegister={register('subStat')} setValue={setValue} />
-        <button type="submit" disabled={isLoading}>
-          送出
-        </button>
-        {isError && <div>Something went wrong</div>}
-      </form>
-      <PlayByPlays matchId={matchId} />
-    </>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <QuarterSelector register={register('quarter')} />
+      <OnCourt register={register('playerId', { required: true })} players={resolvedPlayers} />
+      <StatsSelector mainRegister={register('mainStat')} subRegister={register('subStat')} setValue={setValue} />
+      <button type="submit" disabled={isLoading || resolvedPlayers.length < 5}>
+        送出
+      </button>
+      {isError && <div>Something went wrong</div>}
+    </form>
   );
 };
 
-const Edit: React.FC<EditProps> = ({ matchInfo, setMode }: EditProps) => {
+const Edit: React.FC<EditProps> = ({ matchInfo }: EditProps) => {
   const [selectedTeam, setSelectedTeam] = useState(matchInfo.homeTeam._id);
-  const { playByPlays } = usePlayByPlaysState();
+  const { isLoading, error, players } = usePlayersByTeams(matchInfo.homeTeam._id, matchInfo.awayTeam._id);
   const opponentTeam = matchInfo.homeTeam._id === selectedTeam ? matchInfo.awayTeam._id : matchInfo.homeTeam._id;
 
   const handleSwitchTeam = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     setSelectedTeam(event.currentTarget.value);
   };
 
+  if (isLoading) return <div>Loading...</div>;
+
+  if (error) return <div>Something went wrong</div>;
+
   return (
     <div>
-      {playByPlays.length > 0 ? (
-        <MatchInfo matchInfo={matchInfo} />
-      ) : (
-        <UpdateForm matchInfo={matchInfo} setMode={setMode} />
-      )}
+      <MatchInfo matchInfo={matchInfo} />
       <TeamButtons matchInfo={matchInfo} handleSwitchTeam={handleSwitchTeam} />
-      <Form matchId={matchInfo._id} selectedTeam={selectedTeam} opponentTeam={opponentTeam} />
+      <Form matchId={matchInfo._id} selectedTeam={selectedTeam} opponentTeam={opponentTeam} players={players} />
+      <PlayByPlays players={players} matchId={matchInfo._id} />
     </div>
   );
 };
@@ -115,11 +109,7 @@ const View: React.FC<Props> = ({ matchInfo }: Props) => {
 const Advanced: React.FC<Props> = ({ matchInfo }: Props) => {
   const [mode, setMode] = useState<'view' | 'edit'>('edit');
 
-  return (
-    <PlayByPlaysProvier>
-      {mode === 'view' ? <View matchInfo={matchInfo} /> : <Edit matchInfo={matchInfo} setMode={setMode} />}
-    </PlayByPlaysProvier>
-  );
+  return <>{mode === 'view' ? <View matchInfo={matchInfo} /> : <Edit matchInfo={matchInfo} setMode={setMode} />}</>;
 };
 
 export default Advanced;

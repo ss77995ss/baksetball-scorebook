@@ -89,8 +89,6 @@ const Edit: React.FC<Props> = ({ matchInfo, selectedTeam, setSelectedTeam, setMo
   const onSubmit = (data: Record<string, string>) => {
     if (!selectedPlayer) return alert('請選取球員');
 
-    console.log(data);
-
     mutate({
       playerId: selectedPlayer,
       teamId: selectedTeam,
