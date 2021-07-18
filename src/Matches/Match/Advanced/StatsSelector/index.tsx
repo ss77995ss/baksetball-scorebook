@@ -22,7 +22,6 @@ const StatsSelector: React.FC<Props> = ({ mainRegister, subRegister, setValue }:
 
   return (
     <div>
-      <div>{`Selected Stat: ${selectedMainStats}`}</div>
       {Object.keys(statsCategories).map((stat, index) => {
         return (
           <>

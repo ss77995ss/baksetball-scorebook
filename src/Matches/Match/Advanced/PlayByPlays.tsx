@@ -1,8 +1,24 @@
 import { useState } from 'react';
+import styled from 'styled-components';
 import { usePlayByPlays } from '../../hooks/useAPI';
-import { quarterNames } from '../../constants';
 import { PlayByPlayType, PlayerType } from '../../types';
+import { quarterNames } from '../../constants';
 import EditPlay from './EditPlay';
+
+const StyledTable = styled.table`
+  margin: auto;
+`;
+
+const StyledButton = styled.button<{ active: boolean }>`
+  border: none;
+  background-color: white;
+
+  color: ${(props): string => (props.active ? 'red' : 'black')};
+  border-bottom: ${(props): string => (props.active ? '1px solid red' : 'none')};
+
+  cursor: pointer;
+  outline: none;
+`;
 
 interface Props {
   matchId: string;
@@ -38,12 +54,17 @@ const PlayByPlays: React.FC<{ playByPlays: PlayByPlayType[]; players: PlayerType
     <div>
       <div>
         {Object.keys(quarterNames).map((quarter) => (
-          <button key={`update-play-quarter-selector-${quarter}`} value={quarter} onClick={handleSelectQuarter}>
+          <StyledButton
+            key={`update-play-quarter-selector-${quarter}`}
+            value={quarter}
+            onClick={handleSelectQuarter}
+            active={selectedQuarter === quarter}
+          >
             {quarterNames[quarter]}
-          </button>
+          </StyledButton>
         ))}
       </div>
-      <table>
+      <StyledTable>
         <thead>
           <tr>
             <th>隊伍</th>
@@ -57,7 +78,7 @@ const PlayByPlays: React.FC<{ playByPlays: PlayByPlayType[]; players: PlayerType
             <EditPlay key={`play-by-play-${play._id}-view`} play={play} players={players} />
           ))}
         </tbody>
-      </table>
+      </StyledTable>
     </div>
   );
 };

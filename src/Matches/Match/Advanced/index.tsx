@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import { useMutation, useQueryClient } from 'react-query';
 import { usePlayersByTeams } from '../../hooks/useAPI';
@@ -10,12 +11,17 @@ import QuarterSelector from './QuarterSelector';
 import OnCourt from './OnCourt';
 import StatsSelector from './StatsSelector';
 import PlayByPlays from './PlayByPlays';
+import PlaysBox from './PlaysBox';
+
+const StyledCenter = styled.div`
+  text-align: center;
+
+  button {
+    margin: 4px;
+  }
+`;
 
 interface Props {
-  matchInfo: MatchInfoType;
-}
-
-interface EditProps {
   matchInfo: MatchInfoType;
   setMode: React.Dispatch<React.SetStateAction<'view' | 'edit'>>;
 }
@@ -67,7 +73,7 @@ const Form: React.FC<FormProps> = ({ matchId, selectedTeam, opponentTeam, player
   );
 };
 
-const Edit: React.FC<EditProps> = ({ matchInfo }: EditProps) => {
+const Edit: React.FC<Props> = ({ matchInfo, setMode }: Props) => {
   const [selectedTeam, setSelectedTeam] = useState(matchInfo.homeTeam._id);
   const { isLoading, error, players } = usePlayersByTeams(matchInfo.homeTeam._id, matchInfo.awayTeam._id);
   const opponentTeam = matchInfo.homeTeam._id === selectedTeam ? matchInfo.awayTeam._id : matchInfo.homeTeam._id;
@@ -84,13 +90,16 @@ const Edit: React.FC<EditProps> = ({ matchInfo }: EditProps) => {
     <div>
       <MatchInfo matchInfo={matchInfo} />
       <TeamButtons matchInfo={matchInfo} handleSwitchTeam={handleSwitchTeam} />
-      <Form matchId={matchInfo._id} selectedTeam={selectedTeam} opponentTeam={opponentTeam} players={players} />
-      <PlayByPlays players={players} matchId={matchInfo._id} />
+      <StyledCenter>
+        <button onClick={() => setMode('view')}>Box</button>
+        <Form matchId={matchInfo._id} selectedTeam={selectedTeam} opponentTeam={opponentTeam} players={players} />
+        <PlayByPlays players={players} matchId={matchInfo._id} />
+      </StyledCenter>
     </div>
   );
 };
 
-const View: React.FC<Props> = ({ matchInfo }: Props) => {
+const View: React.FC<Props> = ({ matchInfo, setMode }: Props) => {
   const [selectedTeam, setSelectedTeam] = useState(matchInfo.homeTeam._id);
 
   const handleSwitchTeam = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -101,15 +110,26 @@ const View: React.FC<Props> = ({ matchInfo }: Props) => {
     <div>
       <MatchInfo matchInfo={matchInfo} />
       <TeamButtons matchInfo={matchInfo} handleSwitchTeam={handleSwitchTeam} />
-      <div>{`Current Team: ${selectedTeam}`}</div>
+      <StyledCenter>
+        <button onClick={() => setMode('edit')}>Box</button>
+        <PlaysBox matchInfo={matchInfo} selectedTeam={selectedTeam} />
+      </StyledCenter>
     </div>
   );
 };
 
-const Advanced: React.FC<Props> = ({ matchInfo }: Props) => {
+const Advanced: React.FC<{ matchInfo: MatchInfoType }> = ({ matchInfo }: { matchInfo: MatchInfoType }) => {
   const [mode, setMode] = useState<'view' | 'edit'>('edit');
 
-  return <>{mode === 'view' ? <View matchInfo={matchInfo} /> : <Edit matchInfo={matchInfo} setMode={setMode} />}</>;
+  return (
+    <>
+      {mode === 'view' ? (
+        <View matchInfo={matchInfo} setMode={setMode} />
+      ) : (
+        <Edit matchInfo={matchInfo} setMode={setMode} />
+      )}
+    </>
+  );
 };
 
 export default Advanced;

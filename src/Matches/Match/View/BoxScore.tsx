@@ -40,7 +40,7 @@ interface Props {
   boxScore: BoxType[];
 }
 
-const BoxScore: React.FC<Props> = ({ boxScore }: Props) => {
+export const BoxScore: React.FC<Props> = ({ boxScore }: Props) => {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({
     columns,
     data: boxScore,

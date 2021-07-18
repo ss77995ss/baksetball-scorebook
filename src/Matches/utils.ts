@@ -1,5 +1,5 @@
-import { PlayerResultsType, BoxType, SinglePlayerResultsType, SinglePlayerBoxType } from './types';
-import { defaultPlayerResults } from './constants';
+import { PlayerResultsType, BoxType, SinglePlayerResultsType, SinglePlayerBoxType, PlayByPlayType } from './types';
+import { defaultPlayerResults, defaultStats } from './constants';
 import { append } from 'ramda';
 
 export const getSinglePlayerBoxScore = (playerResults: SinglePlayerResultsType[]): SinglePlayerBoxType[] => {
@@ -254,6 +254,106 @@ export const getAverage = (playerResults: SinglePlayerResultsType, matchCount: n
     turnovers: playerResults.turnovers / matchCount,
     fouls: playerResults.fouls / matchCount,
     minutes: playerResults.minutes / matchCount,
+  };
+};
+
+export const getPlayerResultsByPlays = (plays: PlayByPlayType[]): PlayerResultsType => {
+  const stats = plays.reduce((acc, cur) => {
+    switch (cur.statType) {
+      case 'offensiveRebound':
+        return {
+          ...acc,
+          oRebounds: acc.oRebounds + 1,
+          positions: acc.positions - 1,
+        };
+      case 'defensiveRebound':
+        return {
+          ...acc,
+          dRebounds: acc.dRebounds + 1,
+        };
+      case 'offensiveFoul':
+      case 'defensiveFoul':
+        return {
+          ...acc,
+          fouls: acc.fouls + 1,
+        };
+      case 'assists':
+        return {
+          ...acc,
+          assists: acc.assists + 1,
+        };
+      case 'turnovers':
+        return {
+          ...acc,
+          turnovers: acc.turnovers + 1,
+          positions: acc.positions + 1,
+        };
+      case 'twoPointsMade':
+        return {
+          ...acc,
+          twoMades: acc.twoMades + 1,
+          twoAttempts: acc.twoAttempts + 1,
+          points: acc.points + 2,
+          positions: acc.positions + 1,
+        };
+      case 'threePointsMade':
+        return {
+          ...acc,
+          threeMades: acc.threeMades + 1,
+          threeAttempts: acc.threeAttempts + 1,
+          points: acc.points + 3,
+          positions: acc.positions + 1,
+        };
+      case 'freeThrowMade':
+        return {
+          ...acc,
+          ftMades: acc.ftMades + 1,
+          ftAttempts: acc.ftAttempts + 1,
+          points: acc.points + 1,
+        };
+      case 'twoPointsMiss':
+        return {
+          ...acc,
+          twoAttempts: acc.twoAttempts + 1,
+          positions: acc.positions + 1,
+        };
+      case 'threePointsMiss':
+        return {
+          ...acc,
+          threeAttempts: acc.threeAttempts + 1,
+          positions: acc.positions + 1,
+        };
+      case 'freeThrowMiss':
+        return {
+          ...acc,
+          ftAttempts: acc.ftAttempts + 1,
+        };
+      case 'block': {
+        return {
+          ...acc,
+          blocks: acc.blocks + 1,
+        };
+      }
+      case 'steal': {
+        return {
+          ...acc,
+          steals: acc.steals + 1,
+        };
+      }
+      default:
+        throw new Error(`Unknown statType: ${cur.statType}`);
+    }
+  }, defaultStats);
+
+  return {
+    ...stats,
+    _id: '',
+    matchId: plays[0].matchId,
+    playerId: plays[0].playerId,
+    teamId: plays[0].teamId,
+    opponentTeamId: plays[0].opponentTeamId,
+    player: plays[0].player,
+    minutes: 0,
   };
 };
 
