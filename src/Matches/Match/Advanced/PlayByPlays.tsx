@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import { usePlayByPlays } from '../../hooks/useAPI';
+import usePlayerResultsByPlays from '../../hooks/usePlayerResultsByPlays';
 import { PlayByPlayType, PlayerType } from '../../types';
 import { quarterNames } from '../../constants';
 import EditPlay from './EditPlay';
@@ -46,6 +47,7 @@ const PlayByPlays: React.FC<{ playByPlays: PlayByPlayType[]; players: PlayerType
 }) => {
   const [selectedQuarter, setSelectedQuarter] = useState('first');
   const resolvedPlayByPlays = playByPlays.filter((play) => play.quarter === selectedQuarter);
+  const { playsWithDesc } = usePlayerResultsByPlays(playByPlays);
 
   const handleSelectQuarter = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) =>
     setSelectedQuarter(event.currentTarget.value);
@@ -74,8 +76,13 @@ const PlayByPlays: React.FC<{ playByPlays: PlayByPlayType[]; players: PlayerType
           </tr>
         </thead>
         <tbody>
-          {resolvedPlayByPlays.map((play) => (
-            <EditPlay key={`play-by-play-${play._id}-view`} play={play} players={players} />
+          {resolvedPlayByPlays.reverse().map((play) => (
+            <EditPlay
+              key={`play-by-play-${play._id}-view`}
+              play={play}
+              players={players}
+              playsWithDesc={playsWithDesc}
+            />
           ))}
         </tbody>
       </StyledTable>

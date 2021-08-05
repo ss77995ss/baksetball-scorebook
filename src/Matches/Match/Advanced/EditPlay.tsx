@@ -7,6 +7,11 @@ import DeleteButton from './DeleteButton';
 interface Props {
   play: PlayByPlayType;
   players: PlayerType[];
+  playsWithDesc: {
+    playId: string;
+    team: string;
+    desc: string;
+  }[];
 }
 
 const getStat = (statType: string) => {
@@ -51,7 +56,7 @@ const getStatType = (main: string, sub: string) => {
   return main === 'assists' || main === 'turnovers' ? main : sub;
 };
 
-const EditPlay: React.FC<Props> = ({ play, players }: Props) => {
+const EditPlay: React.FC<Props> = ({ play, players, playsWithDesc }: Props) => {
   const { main, sub } = getStat(play.statType);
   const queryClient = useQueryClient();
   const [isEditPlay, setIsEditPlay] = useState(false);
@@ -122,7 +127,7 @@ const EditPlay: React.FC<Props> = ({ play, players }: Props) => {
       <tr>
         <td>{play.team.name}</td>
         <td>{play.player.name}</td>
-        <td>{statsNames[play.statType]}</td>
+        <td>{playsWithDesc.filter((item) => item.playId === play._id)[0].desc}</td>
         <td>
           <button onClick={handeModeChange(true)}>更新數據</button>
           <DeleteButton play={play} />
