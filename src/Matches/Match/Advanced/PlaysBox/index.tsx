@@ -1,12 +1,12 @@
 import { groupBy } from 'ramda';
 import { usePlayByPlays } from '../../../hooks/useAPI';
+import usePlayerResultsByPlays from '../../../hooks/usePlayerResultsByPlays';
 import { PlayByPlayType, MatchInfoType } from '../../../types';
-import { getPlayerResultsByPlays, getBoxScore } from '../../../utils';
+import { getBoxScore } from '../../../utils';
 import { BoxScore } from '../../View/BoxScore';
+import CompleteButton from './CompleteButton';
 
 const groupPlaysByTeams = groupBy((play: PlayByPlayType) => play.teamId);
-
-const groupPlaysByPlayers = groupBy((play: PlayByPlayType) => play.playerId);
 
 interface Props {
   matchInfo: MatchInfoType;
@@ -26,19 +26,28 @@ const PlaysBoxWrapper: React.FC<Props> = ({ matchInfo, selectedTeam }: Props) =>
 
   return (
     <div>
-      {resolvedPlays[selectedTeam] ? <PlaysBox playByPlays={resolvedPlays[selectedTeam]} /> : <div>尚無資料</div>}
+      {resolvedPlays[selectedTeam] ? (
+        <PlaysBox matchId={matchInfo._id} playByPlays={resolvedPlays[selectedTeam]} />
+      ) : (
+        <div>尚無資料</div>
+      )}
     </div>
   );
 };
 
-const PlaysBox: React.FC<{ playByPlays: PlayByPlayType[] }> = ({ playByPlays }: { playByPlays: PlayByPlayType[] }) => {
-  const playerResults = Object.values(groupPlaysByPlayers(playByPlays)).map((value) => {
-    return getPlayerResultsByPlays(value);
-  });
+const PlaysBox: React.FC<{ matchId: string; playByPlays: PlayByPlayType[] }> = ({
+  matchId,
+  playByPlays,
+}: {
+  matchId: string;
+  playByPlays: PlayByPlayType[];
+}) => {
+  const { playerResults } = usePlayerResultsByPlays(playByPlays);
   const boxScore = getBoxScore(playerResults);
 
   return (
     <div>
+      <CompleteButton matchId={matchId} playerResults={playerResults} />
       <BoxScore boxScore={boxScore} />
     </div>
   );

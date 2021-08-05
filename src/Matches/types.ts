@@ -4,7 +4,7 @@ export type MatchInfoType = {
   name: string | null;
   homeTeam: TeamType;
   awayTeam: TeamType;
-  mode: 'basic' | 'advanced' | null;
+  mode: 'basic' | 'advanced' | 'completed' | null;
   date: Date;
 };
 

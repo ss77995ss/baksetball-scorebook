@@ -4,6 +4,7 @@ import { useMatchInfo } from '../hooks/useAPI';
 import View from './View';
 import Edit from './Edit';
 import Advanced from './Advanced';
+import Completed from './Completed';
 
 const Match: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -22,6 +23,9 @@ const Match: React.FC = () => {
   if (!matchInfo) return <div>有些問題</div>;
 
   if (matchInfo.mode === 'advanced') return <Advanced matchInfo={matchInfo} />;
+
+  if (matchInfo.mode === 'completed')
+    return <Completed id={id} selectedTeam={selectedTeam} matchInfo={matchInfo} handleSwitchTeam={handleSwitchTeam} />;
 
   return (
     <div>
