@@ -1,8 +1,16 @@
-import { useState, Fragment } from 'react';
+import { useState } from 'react';
+import styled from 'styled-components';
 import { useMutation, useQueryClient } from 'react-query';
 import { PlayByPlayType, PlayerType } from '../../types';
 import { API_DOMAIN, statsCategories, statsNames } from '../../constants';
 import DeleteButton from './DeleteButton';
+
+const StyledRow = styled.tr`
+  td:first-child,
+  td:last-child {
+    width: 40%;
+  }
+`;
 
 interface Props {
   play: PlayByPlayType;
@@ -12,6 +20,7 @@ interface Props {
     team: string;
     desc: string;
   }[];
+  teamSide: 'home' | 'away';
 }
 
 const getStat = (statType: string) => {
@@ -56,7 +65,7 @@ const getStatType = (main: string, sub: string) => {
   return main === 'assists' || main === 'turnovers' ? main : sub;
 };
 
-const EditPlay: React.FC<Props> = ({ play, players, playsWithDesc }: Props) => {
+const EditPlay: React.FC<Props> = ({ play, players, playsWithDesc, teamSide }: Props) => {
   const { main, sub } = getStat(play.statType);
   const queryClient = useQueryClient();
   const [isEditPlay, setIsEditPlay] = useState(false);
@@ -86,7 +95,7 @@ const EditPlay: React.FC<Props> = ({ play, players, playsWithDesc }: Props) => {
     setSelectedPlay(event.target.value);
   };
 
-  const handleSelectMainStat = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSelectMainStat = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedMainStat(event.target.value);
 
     if (statsCategories[event.target.value].subStats) {
@@ -96,7 +105,7 @@ const EditPlay: React.FC<Props> = ({ play, players, playsWithDesc }: Props) => {
     }
   };
 
-  const handleSelectSubStat = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSelectSubStat = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedSubStat(event.target.value);
   };
 
@@ -124,69 +133,51 @@ const EditPlay: React.FC<Props> = ({ play, players, playsWithDesc }: Props) => {
 
   if (!isEditPlay)
     return (
-      <tr>
-        <td>{play.team.name}</td>
-        <td>{play.player.name}</td>
-        <td>{playsWithDesc.filter((item) => item.playId === play._id)[0].desc}</td>
+      <StyledRow>
+        <td>{teamSide === 'home' && playsWithDesc.filter((item) => item.playId === play._id)[0].desc}</td>
         <td>
           <button onClick={handeModeChange(true)}>更新數據</button>
           <DeleteButton play={play} />
         </td>
-      </tr>
+        <td>{teamSide === 'away' && playsWithDesc.filter((item) => item.playId === play._id)[0].desc}</td>
+      </StyledRow>
     );
 
   return (
-    <tr>
-      <td>{play.team.name}</td>
-      <td>
-        <select value={selectedPlayer} onChange={handleSelectedPlayer}>
-          {players
-            .filter((player) => player.teamId === play.team._id)
-            .map((player) => (
-              <option key={`update-play-player-${player._id}`} value={player._id}>
-                {player.name}
-              </option>
-            ))}
-        </select>
-      </td>
-      <td>
-        {Object.keys(statsCategories).map((stat, index) => {
-          return (
-            <>
-              <input
-                key={`update-play-stat-${stat}-${index}-${play._id}`}
-                type="radio"
-                id={`#update-play-stat-${stat}-radio-${index}-${play._id}`}
-                value={stat}
-                checked={selectedMainStat === stat}
-                onChange={handleSelectMainStat}
-              />
-              <label htmlFor={`#update-play-stat-${stat}-radio-${index}-${play._id}`}>
-                {statsCategories[stat].name}
-              </label>
-            </>
-          );
-        })}
-        <div>
-          {statsCategories[selectedMainStat].subStats &&
-            Object.keys(statsCategories[selectedMainStat].subStats).map((stat, index) => {
+    <StyledRow>
+      {teamSide === 'home' && (
+        <td>
+          <select value={selectedPlayer} onChange={handleSelectedPlayer}>
+            {players
+              .filter((player) => player.teamId === play.team._id)
+              .map((player) => (
+                <option key={`update-play-player-${player._id}`} value={player._id}>
+                  {player.name}
+                </option>
+              ))}
+          </select>
+          <select value={selectedMainStat} onChange={handleSelectMainStat}>
+            {Object.keys(statsCategories).map((stat, index) => {
               return (
-                <Fragment key={`update-play-${selectedSubStat}-${stat}-${index}-${play._id}`}>
-                  <input
-                    id={`update-play-${selectedSubStat}-${stat}-${index}-${play._id}`}
-                    type="radio"
-                    value={stat}
-                    checked={selectedSubStat === stat}
-                    onChange={handleSelectSubStat}
-                  />
-                  <label htmlFor={`update-play-${selectedSubStat}-${stat}-${index}-${play._id}`}>
-                    {statsCategories[selectedMainStat].subStats[stat]}
-                  </label>
-                </Fragment>
+                <option key={`${teamSide}-${stat}-${play._id}-${index}`} value={stat}>
+                  {statsCategories[stat].name}
+                </option>
               );
             })}
-        </div>
-      </td>
+          </select>
+          {statsCategories[selectedMainStat].subStats && (
+            <select value={selectedSubStat} onChange={handleSelectSubStat}>
+              {Object.keys(statsCategories[selectedMainStat].subStats).map((stat, index) => {
+                return (
+                  <option key={`update-play-${selectedSubStat}-${stat}-${index}-${play._id}`} value={stat}>
+                    {statsCategories[selectedMainStat].subStats[stat]}
+                  </option>
+                );
+              })}
+            </select>
+          )}
+        </td>
+      )}
       <td>
         <button onClick={handleUpdate} disabled={isLoading}>
           確認修改
@@ -196,7 +187,20 @@ const EditPlay: React.FC<Props> = ({ play, players, playsWithDesc }: Props) => {
         </button>
         {isError && <div>Something went wrong</div>}
       </td>
-    </tr>
+      {teamSide === 'away' && (
+        <td>
+          <select value={selectedPlayer} onChange={handleSelectedPlayer}>
+            {players
+              .filter((player) => player.teamId === play.team._id)
+              .map((player) => (
+                <option key={`update-play-player-${player._id}`} value={player._id}>
+                  {player.name}
+                </option>
+              ))}
+          </select>
+        </td>
+      )}
+    </StyledRow>
   );
 };
 

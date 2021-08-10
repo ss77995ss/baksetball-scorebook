@@ -95,7 +95,7 @@ const Edit: React.FC<Props> = ({ matchInfo, setMode }: Props) => {
         <button onClick={() => setMode('view')}>Box</button>
         <DeleteMatchButton matchId={matchInfo._id} />
         <Form matchId={matchInfo._id} selectedTeam={selectedTeam} opponentTeam={opponentTeam} players={players} />
-        <PlayByPlays players={players} matchId={matchInfo._id} />
+        <PlayByPlays players={players} matchInfo={matchInfo} />
       </StyledCenter>
     </div>
   );

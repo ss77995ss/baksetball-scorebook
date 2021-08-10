@@ -2,7 +2,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import { usePlayByPlays } from '../../hooks/useAPI';
 import usePlayerResultsByPlays from '../../hooks/usePlayerResultsByPlays';
-import { PlayByPlayType, PlayerType } from '../../types';
+import { PlayByPlayType, PlayerType, MatchInfoType } from '../../types';
 import { quarterNames } from '../../constants';
 import EditPlay from './EditPlay';
 
@@ -22,12 +22,12 @@ const StyledButton = styled.button<{ active: boolean }>`
 `;
 
 interface Props {
-  matchId: string;
+  matchInfo: MatchInfoType;
   players: PlayerType[];
 }
 
-const PlayByPlaysWrapper: React.FC<Props> = ({ matchId, players }: Props) => {
-  const { isLoading, error, playByPlays } = usePlayByPlays(matchId);
+const PlayByPlaysWrapper: React.FC<Props> = ({ matchInfo, players }: Props) => {
+  const { isLoading, error, playByPlays } = usePlayByPlays(matchInfo._id);
 
   if (isLoading) return <div>Loading...</div>;
 
@@ -35,13 +35,15 @@ const PlayByPlaysWrapper: React.FC<Props> = ({ matchId, players }: Props) => {
 
   if (!playByPlays) return <div>目前無資料</div>;
 
-  return <PlayByPlays playByPlays={playByPlays} players={players} />;
+  return <PlayByPlays matchInfo={matchInfo} playByPlays={playByPlays} players={players} />;
 };
 
-const PlayByPlays: React.FC<{ playByPlays: PlayByPlayType[]; players: PlayerType[] }> = ({
+const PlayByPlays: React.FC<{ matchInfo: MatchInfoType; playByPlays: PlayByPlayType[]; players: PlayerType[] }> = ({
+  matchInfo,
   playByPlays,
   players,
 }: {
+  matchInfo: MatchInfoType;
   playByPlays: PlayByPlayType[];
   players: PlayerType[];
 }) => {
@@ -69,10 +71,9 @@ const PlayByPlays: React.FC<{ playByPlays: PlayByPlayType[]; players: PlayerType
       <StyledTable>
         <thead>
           <tr>
-            <th>隊伍</th>
-            <th>球員</th>
-            <th>數據</th>
+            <th>{`${matchInfo.homeTeam.name}`}</th>
             <th>更新/刪除</th>
+            <th>{`${matchInfo.awayTeam.name}`}</th>
           </tr>
         </thead>
         <tbody>
@@ -82,6 +83,7 @@ const PlayByPlays: React.FC<{ playByPlays: PlayByPlayType[]; players: PlayerType
               play={play}
               players={players}
               playsWithDesc={playsWithDesc}
+              teamSide={play.teamId === matchInfo.homeTeam._id ? 'home' : 'away'}
             />
           ))}
         </tbody>
