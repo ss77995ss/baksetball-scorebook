@@ -22,32 +22,29 @@ const PlaysBoxWrapper: React.FC<Props> = ({ matchInfo, selectedTeam }: Props) =>
 
   if (!playByPlays) return <div>無資料</div>;
 
-  const resolvedPlays = groupPlaysByTeams(playByPlays);
-
   return (
     <div>
-      {resolvedPlays[selectedTeam] ? (
-        <PlaysBox matchId={matchInfo._id} playByPlays={resolvedPlays[selectedTeam]} />
-      ) : (
-        <div>尚無資料</div>
-      )}
+      <PlaysBox matchId={matchInfo._id} selectedTeam={selectedTeam} playByPlays={playByPlays} />
     </div>
   );
 };
 
-const PlaysBox: React.FC<{ matchId: string; playByPlays: PlayByPlayType[] }> = ({
+const PlaysBox: React.FC<{ matchId: string; selectedTeam: string; playByPlays: PlayByPlayType[] }> = ({
   matchId,
+  selectedTeam,
   playByPlays,
 }: {
   matchId: string;
+  selectedTeam: string;
   playByPlays: PlayByPlayType[];
 }) => {
-  const { playerResults } = usePlayerResultsByPlays(playByPlays);
+  const resolvedPlays = groupPlaysByTeams(playByPlays);
+  const { playerResults } = usePlayerResultsByPlays(resolvedPlays[selectedTeam]);
   const boxScore = getBoxScore(playerResults);
 
   return (
     <div>
-      <CompleteButton matchId={matchId} playerResults={playerResults} />
+      <CompleteButton matchId={matchId} playByPlays={playByPlays} />
       <BoxScore boxScore={boxScore} />
     </div>
   );

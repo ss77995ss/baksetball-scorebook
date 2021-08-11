@@ -1,14 +1,16 @@
 import { useMutation } from 'react-query';
 import { useHistory } from 'react-router-dom';
-import { PlayerResultsType } from '../../../types';
+import { PlayerResultsType, PlayByPlayType } from '../../../types';
 import { API_DOMAIN } from '../../../constants';
+import usePlayerResultsByPlays from '../../../hooks/usePlayerResultsByPlays';
 
 interface Props {
   matchId: string;
-  playerResults: PlayerResultsType[];
+  playByPlays: PlayByPlayType[];
 }
 
-const CompleteButton: React.FC<Props> = ({ matchId, playerResults }: Props) => {
+const CompleteButton: React.FC<Props> = ({ matchId, playByPlays }: Props) => {
+  const { playerResults } = usePlayerResultsByPlays(playByPlays);
   const history = useHistory();
   const { isLoading, isError, mutate } = useMutation(
     (formData: { matchId: string; results: PlayerResultsType[] }) =>
