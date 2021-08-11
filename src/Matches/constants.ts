@@ -4,6 +4,84 @@ import { BoxType, SinglePlayerBoxType } from './types';
 export const API_DOMAIN =
   process.env.NODE_ENV !== 'production' ? 'http://localhost:8080/api' : 'https://ntu-bt-api.vercel.app/api';
 
+export const statsNames: {
+  [key: string]: string;
+} = {
+  twoPointsMade: '兩分進',
+  twoPointsMiss: '兩分不進',
+  threePointsMade: '三分進',
+  threePointsMiss: '三分不進',
+  freeThrowMade: '罰球進',
+  freeThrowMiss: '罰球不進',
+  offensiveRebound: '進攻',
+  defensiveRebound: '防守',
+  assists: '助攻',
+  turnovers: '失誤',
+  steal: '抄截',
+  block: '阻攻',
+  offensiveFoul: '進攻犯規',
+  defensiveFoul: '防守犯規',
+};
+
+export const statsCategories: {
+  [key: string]: {
+    name: string;
+    subStats: {
+      [key: string]: string;
+    };
+  };
+} = {
+  shot: {
+    name: '投籃',
+    subStats: {
+      twoPointsMade: '兩分進',
+      twoPointsMiss: '兩分不進',
+      threePointsMade: '三分進',
+      threePointsMiss: '三分不進',
+      freeThrowMade: '罰球進',
+      freeThrowMiss: '罰球不進',
+    },
+  },
+  rebounds: {
+    name: '籃板',
+    subStats: {
+      offensiveRebound: '進攻',
+      defensiveRebound: '防守',
+    },
+  },
+  assists: {
+    name: '助攻',
+    subStats: {},
+  },
+  defenses: {
+    name: '防守',
+    subStats: {
+      steal: '抄截',
+      block: '阻攻',
+    },
+  },
+  fouls: {
+    name: '犯規',
+    subStats: {
+      offensiveFoul: '進攻',
+      defensiveFoul: '防守',
+    },
+  },
+  turnovers: {
+    name: '失誤',
+    subStats: {},
+  },
+};
+
+export const quarterNames: {
+  [key: string]: string;
+} = {
+  first: '第一節',
+  second: '第二節',
+  third: '第三節',
+  fourth: '第四節',
+};
+
 export const boxScoreHeaderName = {
   assists: '助攻',
   blocks: '阻攻',

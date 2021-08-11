@@ -84,7 +84,7 @@ const NewMatch: React.FC = () => {
           <label htmlFor="matchModeBA">基本紀錄</label>
           <input {...register('mode')} id="matchModeBA" type="radio" value="basic" checked />
           <label htmlFor="matchModeAD">進階紀錄</label>
-          <input {...register('mode')} id="matchModeAD" type="radio" value="advanced" disabled />
+          <input {...register('mode')} id="matchModeAD" type="radio" value="advanced" />
         </div>
         <button type="submit">送出</button>
       </form>

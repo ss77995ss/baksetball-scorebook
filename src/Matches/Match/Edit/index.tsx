@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { PlayerResultsType, MatchInfoType } from '../../types';
 import { API_DOMAIN } from '../../constants';
 import { defaultStats } from '../../constants';
+import MatchInfo from '../View/MatchInfo';
 import PlayerSelector from './PlayerSelector';
 import TeamSelector from './TeamSelector';
 import StatsForm from './StatsForm';
@@ -88,8 +89,6 @@ const Edit: React.FC<Props> = ({ matchInfo, selectedTeam, setSelectedTeam, setMo
   const onSubmit = (data: Record<string, string>) => {
     if (!selectedPlayer) return alert('請選取球員');
 
-    console.log(data);
-
     mutate({
       playerId: selectedPlayer,
       teamId: selectedTeam,
@@ -118,7 +117,7 @@ const Edit: React.FC<Props> = ({ matchInfo, selectedTeam, setSelectedTeam, setMo
 
   return (
     <div>
-      <UpdateForm matchInfo={matchInfo} setMode={setMode} hasPlayerResults={hasPlayerResults} />
+      {hasPlayerResults ? <MatchInfo matchInfo={matchInfo} /> : <UpdateForm matchInfo={matchInfo} setMode={setMode} />}
       <StyledLinks>
         <DeleteMatchButton matchId={matchInfo._id} />
         <button onClick={() => setMode('view')}>返回</button>

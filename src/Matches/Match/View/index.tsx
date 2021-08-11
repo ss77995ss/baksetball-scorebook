@@ -2,20 +2,13 @@ import styled from 'styled-components';
 import { MatchInfoType } from '../../types';
 import MatchInfo from './MatchInfo';
 import BoxScore from './BoxScore';
+import TeamButtons from './TeamButtons';
 
 const StyledLinks = styled.section`
   text-align: center;
 
   button {
     margin: 8px 4px;
-  }
-`;
-
-const StyledButtons = styled.section`
-  text-align: center;
-
-  button {
-    margin: 4px;
   }
 `;
 interface Props {
@@ -33,14 +26,7 @@ const View: React.FC<Props> = ({ id, selectedTeam, matchInfo, handleSwitchTeam, 
       <StyledLinks>
         <button onClick={() => setMode('edit')}>編輯</button>
       </StyledLinks>
-      <StyledButtons>
-        <button value={matchInfo.homeTeam._id} onClick={handleSwitchTeam}>
-          {matchInfo.homeTeam.name}
-        </button>
-        <button value={matchInfo.awayTeam._id} onClick={handleSwitchTeam}>
-          {matchInfo.awayTeam.name}
-        </button>
-      </StyledButtons>
+      <TeamButtons matchInfo={matchInfo} handleSwitchTeam={handleSwitchTeam} />
       <BoxScore id={id} selectedTeam={selectedTeam} />
     </div>
   );

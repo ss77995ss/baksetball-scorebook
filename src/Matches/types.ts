@@ -4,7 +4,7 @@ export type MatchInfoType = {
   name: string | null;
   homeTeam: TeamType;
   awayTeam: TeamType;
-  mode: 'basic' | 'advanced' | null;
+  mode: 'basic' | 'advanced' | 'completed' | null;
   date: Date;
 };
 
@@ -138,10 +138,28 @@ export type PlayerType = {
   _id: string;
   name: string;
   number: string;
+  teamId: string;
 };
 
 export type MatchCategoryType = {
   _id: string;
   name: string;
   type: string;
+};
+
+export type PlayByPlayType = {
+  _id: string;
+  quarter: string;
+  timestamp: string | undefined;
+  priority: string | undefined;
+  range: string | undefined;
+  position: string | undefined;
+  statType: string;
+  advancedType: string;
+  matchId: string;
+  playerId: string;
+  teamId: string;
+  opponentTeamId: string;
+  player: PlayerType;
+  team: TeamType;
 };

@@ -1,5 +1,5 @@
-import { PlayerResultsType, BoxType, SinglePlayerResultsType, SinglePlayerBoxType } from './types';
-import { defaultPlayerResults } from './constants';
+import { PlayerResultsType, BoxType, SinglePlayerResultsType, SinglePlayerBoxType, PlayByPlayType } from './types';
+import { defaultPlayerResults, defaultStats, statsNames } from './constants';
 import { append } from 'ramda';
 
 export const getSinglePlayerBoxScore = (playerResults: SinglePlayerResultsType[]): SinglePlayerBoxType[] => {
@@ -254,6 +254,194 @@ export const getAverage = (playerResults: SinglePlayerResultsType, matchCount: n
     turnovers: playerResults.turnovers / matchCount,
     fouls: playerResults.fouls / matchCount,
     minutes: playerResults.minutes / matchCount,
+  };
+};
+
+export const getPlayerResultsByPlays = (
+  plays: PlayByPlayType[],
+  newPBP: { playId: string; team: string; desc: string }[],
+): PlayerResultsType => {
+  const stats = plays.reduce((acc, cur) => {
+    switch (cur.statType) {
+      case 'offensiveRebound':
+        newPBP.push({
+          playId: cur._id,
+          team: cur.team.name,
+          desc: `${cur.player.name} ${statsNames[cur.statType]}: (off: ${acc.oRebounds + 1}, def:${acc.dRebounds})`,
+        });
+        return {
+          ...acc,
+          oRebounds: acc.oRebounds + 1,
+          positions: acc.positions - 1,
+        };
+      case 'defensiveRebound':
+        newPBP.push({
+          playId: cur._id,
+          team: cur.team.name,
+          desc: `${cur.player.name} ${statsNames[cur.statType]}: (off: ${acc.oRebounds}, def:${acc.dRebounds + 1})`,
+        });
+        return {
+          ...acc,
+          dRebounds: acc.dRebounds + 1,
+        };
+      case 'offensiveFoul':
+        newPBP.push({
+          playId: cur._id,
+          team: cur.team.name,
+          desc: `${cur.player.name} ${statsNames[cur.statType]}: (fouls: ${acc.fouls + 1}, turnovers: ${
+            acc.turnovers + 1
+          })`,
+        });
+        return {
+          ...acc,
+          fouls: acc.fouls + 1,
+          turnovers: acc.turnovers + 1,
+        };
+      case 'defensiveFoul':
+        newPBP.push({
+          playId: cur._id,
+          team: cur.team.name,
+          desc: `${cur.player.name} ${statsNames[cur.statType]}: ${acc.fouls + 1}`,
+        });
+        return {
+          ...acc,
+          fouls: acc.fouls + 1,
+        };
+      case 'assists':
+        newPBP.push({
+          playId: cur._id,
+          team: cur.team.name,
+          desc: `${cur.player.name} ${statsNames[cur.statType]}: ${acc.assists + 1}`,
+        });
+        return {
+          ...acc,
+          assists: acc.assists + 1,
+        };
+      case 'turnovers':
+        newPBP.push({
+          playId: cur._id,
+          team: cur.team.name,
+          desc: `${cur.player.name} ${statsNames[cur.statType]}: ${acc.turnovers + 1}`,
+        });
+        return {
+          ...acc,
+          turnovers: acc.turnovers + 1,
+          positions: acc.positions + 1,
+        };
+      case 'twoPointsMade':
+        newPBP.push({
+          playId: cur._id,
+          team: cur.team.name,
+          desc: `${cur.player.name} ${statsNames[cur.statType]}: (FG: ${acc.twoMades + acc.threeMades + 1} / ${
+            acc.twoAttempts + acc.threeAttempts + 1
+          } Points: ${acc.points + 2})`,
+        });
+        return {
+          ...acc,
+          twoMades: acc.twoMades + 1,
+          twoAttempts: acc.twoAttempts + 1,
+          points: acc.points + 2,
+          positions: acc.positions + 1,
+        };
+      case 'threePointsMade':
+        newPBP.push({
+          playId: cur._id,
+          team: cur.team.name,
+          desc: `${cur.player.name} ${statsNames[cur.statType]}: (3PT: ${acc.threeMades + 1} / ${
+            acc.threeAttempts + 1
+          } Points: ${acc.points + 3})`,
+        });
+        return {
+          ...acc,
+          threeMades: acc.threeMades + 1,
+          threeAttempts: acc.threeAttempts + 1,
+          points: acc.points + 3,
+          positions: acc.positions + 1,
+        };
+      case 'freeThrowMade':
+        newPBP.push({
+          playId: cur._id,
+          team: cur.team.name,
+          desc: `${cur.player.name} ${statsNames[cur.statType]}: (FT: ${acc.ftMades + 1} / ${
+            acc.ftAttempts + 1
+          } Points: ${acc.points + 1})`,
+        });
+        return {
+          ...acc,
+          ftMades: acc.ftMades + 1,
+          ftAttempts: acc.ftAttempts + 1,
+          points: acc.points + 1,
+        };
+      case 'twoPointsMiss':
+        newPBP.push({
+          playId: cur._id,
+          team: cur.team.name,
+          desc: `${cur.player.name} ${statsNames[cur.statType]}: (FG: ${acc.twoMades + acc.threeMades} / ${
+            acc.twoAttempts + acc.threeAttempts + 1
+          })`,
+        });
+        return {
+          ...acc,
+          twoAttempts: acc.twoAttempts + 1,
+          positions: acc.positions + 1,
+        };
+      case 'threePointsMiss':
+        newPBP.push({
+          playId: cur._id,
+          team: cur.team.name,
+          desc: `${cur.player.name} ${statsNames[cur.statType]}: (3PT: ${acc.threeMades} / ${acc.threeAttempts + 1})`,
+        });
+        return {
+          ...acc,
+          threeAttempts: acc.threeAttempts + 1,
+          positions: acc.positions + 1,
+        };
+      case 'freeThrowMiss':
+        newPBP.push({
+          playId: cur._id,
+          team: cur.team.name,
+          desc: `${cur.player.name} ${statsNames[cur.statType]}: (FT: ${acc.ftMades} / ${acc.ftAttempts + 1})`,
+        });
+        return {
+          ...acc,
+          ftAttempts: acc.ftAttempts + 1,
+        };
+      case 'block': {
+        newPBP.push({
+          playId: cur._id,
+          team: cur.team.name,
+          desc: `${cur.player.name} ${statsNames[cur.statType]}: ${acc.blocks + 1}`,
+        });
+        return {
+          ...acc,
+          blocks: acc.blocks + 1,
+        };
+      }
+      case 'steal': {
+        newPBP.push({
+          playId: cur._id,
+          team: cur.team.name,
+          desc: `${cur.player.name} ${statsNames[cur.statType]}: ${acc.steals + 1}`,
+        });
+        return {
+          ...acc,
+          steals: acc.steals + 1,
+        };
+      }
+      default:
+        throw new Error(`Unknown statType: ${cur.statType}`);
+    }
+  }, defaultStats);
+
+  return {
+    ...stats,
+    _id: '',
+    matchId: plays[0].matchId,
+    playerId: plays[0].playerId,
+    teamId: plays[0].teamId,
+    opponentTeamId: plays[0].opponentTeamId,
+    player: plays[0].player,
+    minutes: 0,
   };
 };
 
