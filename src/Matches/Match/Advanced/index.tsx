@@ -8,6 +8,7 @@ import { API_DOMAIN } from '../../constants';
 import MatchInfo from '../View/MatchInfo';
 import TeamButtons from '../View/TeamButtons';
 import DeleteMatchButton from '../Edit/DeleteMatchButton';
+import NewPlayer from '../../Players/NewPlayer';
 import QuarterSelector from './QuarterSelector';
 import OnCourt from './OnCourt';
 import StatsSelector from './StatsSelector';
@@ -94,6 +95,10 @@ const Edit: React.FC<Props> = ({ matchInfo, setMode }: Props) => {
       <StyledCenter>
         <button onClick={() => setMode('view')}>Box</button>
         <DeleteMatchButton matchId={matchInfo._id} />
+        <div>
+          <label>新增球員</label>
+          <NewPlayer teamId={selectedTeam} />
+        </div>
         <Form matchId={matchInfo._id} selectedTeam={selectedTeam} opponentTeam={opponentTeam} players={players} />
         <PlayByPlays players={players} matchInfo={matchInfo} />
       </StyledCenter>

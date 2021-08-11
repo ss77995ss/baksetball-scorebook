@@ -3,12 +3,6 @@ import { UseFormRegisterReturn } from 'react-hook-form';
 import { PlayerType } from '../../types';
 import PlayerSelector from './PlayerSelector';
 
-// interface WrapperProps {
-//   teamId: string;
-//   register: UseFormRegisterReturn;
-//   setValue: UseFormSetValue<FieldValues>;
-// }
-
 interface Props {
   players: PlayerType[];
   register: UseFormRegisterReturn;
