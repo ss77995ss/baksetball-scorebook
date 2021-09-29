@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import { Cell } from 'react-table';
 import { useSwipeable } from 'react-swipeable';
+import { isMobile } from 'react-device-detect';
 import { StyledCell } from '../styles';
 import { useStatsDispatch } from './hooks/statData';
 import { StatType } from './types';
@@ -18,7 +19,6 @@ const StatCellWithCount: React.FC<Props> = ({ cell, team, isSwipeable }: Props) 
     column: { id = '' },
   } = cell;
   const { count, points } = value;
-
   const pointsClickTimeout = useRef<number>();
   const countClickTimeout = useRef<number>();
   const pointsClickCount = useRef<number>(0);
@@ -31,7 +31,7 @@ const StatCellWithCount: React.FC<Props> = ({ cell, team, isSwipeable }: Props) 
       | { count: number; points: number }
       | number
       | { name: string; title: string | { points: string; count: string } },
-  ) => void = value => {
+  ) => void = (value) => {
     statsDispatch({
       type: 'UPDATE_CELL',
       params: {
@@ -44,17 +44,20 @@ const StatCellWithCount: React.FC<Props> = ({ cell, team, isSwipeable }: Props) 
   };
 
   const handlers = useSwipeable({
-    onSwipedDown: ({ event }) => {
-      event.stopPropagation();
+    onSwipedDown: () => {
       if (points - 3 >= 0) updateStats({ points: points - 3, count: count - 1 >= 0 ? count - 1 : count });
     },
-    onSwipedUp: () => updateStats({ points: points + 3, count: count + 1 }),
+    onSwipedUp: () => {
+      updateStats({ points: points + 3, count: count + 1 });
+    },
     onSwipedLeft: () => {
       if (points - 2 >= 0) updateStats({ points: points - 2, count: count - 1 >= 0 ? count - 1 : count });
     },
-    onSwipedRight: () => updateStats({ points: points + 2, count: count + 1 }),
+    onSwipedRight: () => {
+      updateStats({ points: points + 2, count: count + 1 });
+    },
     preventDefaultTouchmoveEvent: true,
-    trackMouse: true,
+    trackMouse: isMobile ? false : true,
   });
 
   const handlePointsClick = (): void => {

@@ -9413,6 +9413,13 @@ react-dev-utils@^11.0.3:
     strip-ansi "6.0.0"
     text-table "0.2.0"
 
+react-device-detect@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/react-device-detect/-/react-device-detect-2.0.0.tgz#768a30eb3e871829c891bde85e25aadc408ecd2c"
+  integrity sha512-tXHRYaPGSOPU+gcbmFHnkZdZqC4Cn/VcnGrQEcjem+qjEg4lfKtCoBAIA+MmbPtoHXcxrny4+hJIOD9AnEowYQ==
+  dependencies:
+    ua-parser-js "^0.7.28"
+
 react-dom@^17.0.1:
   version "17.0.1"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-17.0.1.tgz#1de2560474ec9f0e334285662ede52dbc5426fc6"
@@ -11337,6 +11344,11 @@ typescript@4.2.3:
   version "4.2.3"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.2.3.tgz#39062d8019912d43726298f09493d598048c1ce3"
   integrity sha512-qOcYwxaByStAWrBf4x0fibwZvMRG+r4cQoTjbPtUlrWjBHbmCAww1i448U0GJ+3cNNEtebDteo/cHOR3xJ4wEw==
+
+ua-parser-js@^0.7.28:
+  version "0.7.28"
+  resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.28.tgz#8ba04e653f35ce210239c64661685bf9121dec31"
+  integrity sha512-6Gurc1n//gjp9eQNXjD9O3M/sMwVtN5S8Lv9bvOYBfKfDNiIIhqiyi01vMBO45u4zkDE420w/e0se7Vs+sIg+g==
 
 unbox-primitive@^1.0.0:
   version "1.0.0"
