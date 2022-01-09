@@ -8,6 +8,7 @@ export const STAT_TYPE = {
 
 export const DEFAULT_TITLE = {
   POINTS: '得分',
+  LOST_POINTS: '失分',
   COUNT: '次數',
 };
 
@@ -201,15 +202,33 @@ export const initialData: Array<StatType> = [
   },
   {
     statInfo: {
-      type: STAT_TYPE.COUNT_ONLY,
+      type: STAT_TYPE.POINTS_AND_COUNT,
       name: '失誤',
-      title: DEFAULT_TITLE.COUNT,
-      isSwipeable: false,
+      title: {
+        points: DEFAULT_TITLE.LOST_POINTS,
+        count: DEFAULT_TITLE.COUNT,
+      },
+      isSwipeable: true,
     },
-    q1: 0,
-    q2: 0,
-    q3: 0,
-    q4: 0,
-    total: 0,
+    q1: {
+      count: 0,
+      points: 0,
+    },
+    q2: {
+      count: 0,
+      points: 0,
+    },
+    q3: {
+      count: 0,
+      points: 0,
+    },
+    q4: {
+      count: 0,
+      points: 0,
+    },
+    total: {
+      count: 0,
+      points: 0,
+    },
   },
 ];
