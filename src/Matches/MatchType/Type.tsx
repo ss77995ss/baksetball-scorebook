@@ -14,10 +14,10 @@ const Type: React.FC<{ matchType: MatchCategoryType }> = ({ matchType }: { match
       },
     }),
   );
-  const { register, handleSubmit } = useForm({ defaultValues: { name: matchType.name, type: matchType.type } });
+  const { register, handleSubmit } = useForm<MatchCategoryType>({ defaultValues: { name: matchType.name, type: matchType.type } });
 
   const onSubmit = (newType: MatchCategoryType): void => {
-    if (window.confirm(`修改隊名為： ${newType.name}？`)) {
+    if (window.confirm(`修改隊名為： ${newType.name}?`)) {
       mutate({
         _id: matchType._id,
         name: newType.name,

@@ -18,7 +18,7 @@ const StyledMainHeader = styled.section`
 `;
 
 interface Props {
-  shootingType: Record<string, never> | 'FG' | '3PT' | 'FT';
+  shootingType: React.ReactFragment | 'FG' | '3PT' | 'FT';
 }
 
 const ShootingHeader: React.FC<Props> = ({ shootingType }: Props) => {

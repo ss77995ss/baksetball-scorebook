@@ -47,14 +47,14 @@ const NewMatch: React.FC = () => {
       },
     },
   );
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit } = useForm<MatchType>();
 
   if (isLoading) return <div>Loading...</div>;
 
   if (isError) return <div>Something went wrong</div>;
 
   const onSubmit = (newMatch: MatchType): void => {
-    if (window.confirm(`新增新比賽： ${newMatch.name}？`)) {
+    if (window.confirm(`新增新比賽： ${newMatch.name}?`)) {
       mutate({
         ...newMatch,
         date: startDate,
@@ -82,9 +82,9 @@ const NewMatch: React.FC = () => {
         </div>
         <div>
           <label htmlFor="matchModeBA">基本紀錄</label>
-          <input {...register('mode')} id="matchModeBA" type="radio" value="basic" checked />
+          <input id="matchModeBA" type="radio" value="basic" checked />
           <label htmlFor="matchModeAD">進階紀錄</label>
-          <input {...register('mode')} id="matchModeAD" type="radio" value="advanced" />
+          <input id="matchModeAD" type="radio" value="advanced" />
         </div>
         <button type="submit">送出</button>
       </form>

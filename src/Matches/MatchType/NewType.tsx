@@ -17,13 +17,13 @@ const NewTeam: React.FC<Props> = ({ matchTypes }: Props) => {
       },
     }),
   );
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit } = useForm<{ name: string; type: string }>();
 
   const onSubmit = (newType: { name: string; type: string }): void => {
     if (matchTypes.find((type) => type.name === newType.name)) {
       return alert('重複名稱');
     }
-    if (window.confirm(`新增賽事類型： ${newType.name}？`)) {
+    if (window.confirm(`新增賽事類型： ${newType.name}?`)) {
       mutate({
         name: newType.name,
         type: newType.type,
