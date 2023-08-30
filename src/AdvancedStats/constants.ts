@@ -82,7 +82,38 @@ export const initialData: Array<StatType> = [
       name: '禁區',
       title: {
         points: DEFAULT_TITLE.POINTS,
-        count: '接球次數',
+        count: '禁區接球',
+      },
+      isSwipeable: true,
+    },
+    q1: {
+      count: 0,
+      points: 0,
+    },
+    q2: {
+      count: 0,
+      points: 0,
+    },
+    q3: {
+      count: 0,
+      points: 0,
+    },
+    q4: {
+      count: 0,
+      points: 0,
+    },
+    total: {
+      count: 0,
+      points: 0,
+    },
+  },
+  {
+    statInfo: {
+      type: STAT_TYPE.POINTS_AND_COUNT,
+      name: '禁區',
+      title: {
+        points: DEFAULT_TITLE.POINTS,
+        count: '切入禁區',
       },
       isSwipeable: true,
     },
