@@ -11,7 +11,7 @@ const PlayerSelector: React.FC<Props> = ({ playerList }: Props) => {
 
   const [selectedPlayer, setSelectedPlayer] = useState(onCourt[0]);
   const [selectorStatus, setSelectorStatus] = useState<'更換場上五人' | '確認更換'>('更換場上五人');
-  const excludedOnCourt = reject((n) => onCourt.includes(n), playerList);
+  const excludedOnCourt = reject((n: string) => onCourt.includes(n), playerList);
 
   const handleCheck = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setSelectedPlayer(event.target.value);

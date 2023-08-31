@@ -17,10 +17,10 @@ const NewTeam: React.FC = () => {
       onSuccess: () => queryClient.invalidateQueries('teams'),
     },
   );
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit } = useForm<{ name: string }>();
 
   const onSubmit = (newName: { name: string }): void => {
-    if (window.confirm(`新增隊伍： ${newName.name}？`)) {
+    if (window.confirm(`新增隊伍： ${newName.name}?`)) {
       mutate({
         name: newName.name,
       });

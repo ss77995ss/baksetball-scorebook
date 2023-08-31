@@ -69,7 +69,7 @@ export const BoxScore: React.FC<Props> = ({ boxScore }: Props) => {
                     case 'FG':
                     case '3PT':
                     case 'FT':
-                      return <ShootingHeader shootingType={column.Header} />;
+                      return <ShootingHeader shootingType={column.Header } />;
                     case '助攻':
                     case '抄截':
                       return <StyledHeader>{column.render('Header')}</StyledHeader>;

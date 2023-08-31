@@ -13,7 +13,7 @@ interface Props {
 const PlayerSelector: React.FC<Props> = ({ players, onCourt, setOnCourt, register }: Props) => {
   const [selectedPlayer, setSelectedPlayer] = useState(onCourt[0]._id);
   const [selectorStatus, setSelectorStatus] = useState<'更換場上五人' | '確認更換'>('更換場上五人');
-  const excludedOnCourt = reject((n) => onCourt.includes(n), players);
+  const excludedOnCourt = reject((n: PlayerType) => onCourt.includes(n), players);
 
   const handleCheck = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setSelectedPlayer(event.target.value);

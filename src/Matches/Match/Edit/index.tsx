@@ -86,28 +86,28 @@ const Edit: React.FC<Props> = ({ matchInfo, selectedTeam, setSelectedTeam, setMo
     },
   );
 
-  const onSubmit = (data: Record<string, string>) => {
+  const onSubmit = (data: PlayerResultsType) => {
     if (!selectedPlayer) return alert('請選取球員');
 
     mutate({
       playerId: selectedPlayer,
       teamId: selectedTeam,
-      points: parseInt(data.points, 10),
-      assists: parseInt(data.assists, 10),
-      blocks: parseInt(data.blocks, 10),
-      dRebounds: parseInt(data.dRebounds, 10),
-      fouls: parseInt(data.fouls, 10),
-      ftAttempts: parseInt(data.ftAttempts, 10),
-      ftMades: parseInt(data.ftMades, 10),
-      oRebounds: parseInt(data.oRebounds, 10),
-      positions: parseInt(data.positions, 10),
-      steals: parseInt(data.steals, 10),
-      threeAttempts: parseInt(data.threeAttempts, 10),
-      threeMades: parseInt(data.threeMades, 10),
-      turnovers: parseInt(data.turnovers, 10),
-      twoAttempts: parseInt(data.twoAttempts, 10),
-      twoMades: parseInt(data.twoMades, 10),
-      minutes: parseFloat(data.minutes),
+      points: data.points,
+      assists: data.assists,
+      blocks: data.blocks,
+      dRebounds: data.dRebounds,
+      fouls: data.fouls,
+      ftAttempts: data.ftAttempts,
+      ftMades: data.ftMades,
+      oRebounds: data.oRebounds,
+      positions: data.positions,
+      steals: data.steals,
+      threeAttempts: data.threeAttempts,
+      threeMades: data.threeMades,
+      turnovers: data.turnovers,
+      twoAttempts: data.twoAttempts,
+      twoMades: data.twoMades,
+      minutes: data.minutes,
       opponentTeamId: data.teamId === awayTeam._id ? homeTeam._id : awayTeam._id,
       matchId: _id,
     });
