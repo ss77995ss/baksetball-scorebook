@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import StatsTable from './StatsTable';
+import { TableNavigations } from './TableNavigations';
 
 const StyledEditModeRoot = styled.div`
   text-align: center;
@@ -62,6 +63,7 @@ const EditMode: React.FC<Props> = ({ teamName, setTeamName }: Props) => {
       <StyledChangeTeamNameButton>
         <button onClick={handleClick}>變更選取隊伍名稱</button>
       </StyledChangeTeamNameButton>
+      <TableNavigations />
       <StatsTable team={team === 'HOME' ? 'home' : 'away'} />
     </StyledEditModeRoot>
   );

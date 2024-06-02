@@ -14,7 +14,7 @@ const StatTitleCell: React.FC<Props> = ({ cell }: Props) => {
     row: { index },
     column: { id },
   } = cell;
-  const { name, title } = value;
+  const { name, linkName, title } = value;
 
   const statsDispatch = useStatsDispatch();
 
@@ -23,7 +23,7 @@ const StatTitleCell: React.FC<Props> = ({ cell }: Props) => {
       | { count: number; points: number }
       | number
       | { name: string; title: string | { points: string; count: string } },
-  ) => void = value => {
+  ) => void = (value) => {
     statsDispatch({
       type: 'UPDATE_STATS_NAME',
       params: {
@@ -46,7 +46,7 @@ const StatTitleCell: React.FC<Props> = ({ cell }: Props) => {
   };
 
   return (
-    <StyledTitleCell>
+    <StyledTitleCell id={linkName}>
       <div onClick={handleOnClick('name')}>{name}</div>
       {typeof title === 'string' ? (
         <div onClick={handleOnClick('title')}>{title}</div>

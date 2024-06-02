@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@types/babel__generator": "^7.6.8",
     "@types/jest": "26.0.20",
     "@types/node": "14.14.32",
     "@types/ramda": "^0.27.14",

@@ -27,7 +27,7 @@ interface Props {
 const ViewMode: React.FC<Props> = ({ teamName }: Props) => {
   const [filterValue, setFilterValue] = useState('');
   const { home } = useStatsState();
-  const statNames = home.map(stat => stat.statInfo.name);
+  const statNames = home.map((stat) => stat.statInfo.name);
 
   const handleFilterChange = (event: React.ChangeEvent<HTMLSelectElement>): void => setFilterValue(event.target.value);
 
