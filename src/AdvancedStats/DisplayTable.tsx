@@ -7,12 +7,12 @@ import { getTotal, getTotalWithCount } from './utils';
 import { StyledDisplayCell } from '../styles';
 import { StatType } from './types';
 
-const renderCell: (cell: Cell<StatType>) => React.ElementType | null | undefined = cell => {
+const renderCell: (cell: Cell<StatType>) => React.ElementType | null | undefined = (cell) => {
   switch (cell.column.Header) {
     case '項目':
       return (
         <>
-          <div>{cell.value.name}</div>
+          <div id={cell.value.linkName}>{cell.value.name}</div>
           <div>
             {typeof cell.value.title === 'object'
               ? `${cell.value.title.points}/${cell.value.title.count}`
@@ -38,7 +38,7 @@ interface Props {
 const DisplayTable: React.FC<Props> = ({ team, teamName, filterValue }: Props) => {
   const { columns, home, away } = useStatsState();
   const data = team === 'home' ? home : away;
-  const resolvedData = data.filter(stat => stat.statInfo.name === filterValue);
+  const resolvedData = data.filter((stat) => stat.statInfo.name === filterValue);
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({
     columns,
     data: filterValue ? resolvedData : data,
@@ -49,45 +49,55 @@ const DisplayTable: React.FC<Props> = ({ team, teamName, filterValue }: Props) =
       <p>{`紀錄球隊：${teamName}`}</p>
       <table {...getTableProps()}>
         <thead>
-          {// Loop over the header rows
-          headerGroups.map(headerGroup => (
-            // Apply the header row props
-            <tr {...headerGroup.getHeaderGroupProps()}>
-              {// Loop over the headers in each row
-              headerGroup.headers.map(column => (
-                // Apply the header cell props
-                <th {...column.getHeaderProps()}>
-                  {// Render the header
-                  column.render('Header')}
-                </th>
-              ))}
-            </tr>
-          ))}
+          {
+            // Loop over the header rows
+            headerGroups.map((headerGroup) => (
+              // Apply the header row props
+              <tr {...headerGroup.getHeaderGroupProps()}>
+                {
+                  // Loop over the headers in each row
+                  headerGroup.headers.map((column) => (
+                    // Apply the header cell props
+                    <th {...column.getHeaderProps()}>
+                      {
+                        // Render the header
+                        column.render('Header')
+                      }
+                    </th>
+                  ))
+                }
+              </tr>
+            ))
+          }
         </thead>
         {/* Apply the table body props */}
         <tbody {...getTableBodyProps()}>
-          {// Loop over the table rows
-          rows.map(row => {
-            // Prepare the row for display
-            prepareRow(row);
-            return (
-              // Apply the row props
-              <tr {...row.getRowProps()}>
-                {// Loop over the rows cells
-                row.cells.map(cell => {
-                  // Apply the cell props
-                  return (
-                    <td {...cell.getCellProps()}>
-                      {
-                        // Render the cell contents
-                        <StyledDisplayCell>{renderCell(cell)}</StyledDisplayCell>
-                      }
-                    </td>
-                  );
-                })}
-              </tr>
-            );
-          })}
+          {
+            // Loop over the table rows
+            rows.map((row) => {
+              // Prepare the row for display
+              prepareRow(row);
+              return (
+                // Apply the row props
+                <tr {...row.getRowProps()}>
+                  {
+                    // Loop over the rows cells
+                    row.cells.map((cell) => {
+                      // Apply the cell props
+                      return (
+                        <td {...cell.getCellProps()}>
+                          {
+                            // Render the cell contents
+                            <StyledDisplayCell>{renderCell(cell)}</StyledDisplayCell>
+                          }
+                        </td>
+                      );
+                    })
+                  }
+                </tr>
+              );
+            })
+          }
         </tbody>
       </table>
     </StyledTable>

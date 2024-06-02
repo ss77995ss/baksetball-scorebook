@@ -2,6 +2,7 @@ export type StatType = {
   statInfo: {
     type: string;
     name: string;
+    linkName: string;
     isSwipeable: boolean;
     title:
       | {

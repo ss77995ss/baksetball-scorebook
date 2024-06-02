@@ -56,53 +56,65 @@ const StatTable: React.FC<Props> = ({ team }: Props) => {
       <h3>+/- by direction Up: +3, Down: -3, Left: -2, Right: +2, Click: +1, DoubleClick: -1</h3>
       <table {...getTableProps()}>
         <thead>
-          {// Loop over the header rows
-          headerGroups.map(headerGroup => (
-            // Apply the header row props
-            <tr {...headerGroup.getHeaderGroupProps()}>
-              {// Loop over the headers in each row
-              headerGroup.headers.map(column => {
-                const headerProps =
-                  column.Header !== '項目' && column.Header !== '總計'
-                    ? {
-                        ...column.getHeaderProps(),
-                        style: { cursor: 'pointer' },
-                        onClick: (): void => setQuarter(column.id),
-                      }
-                    : column.getHeaderProps();
-                // Apply the header cell props
-                return (
-                  <th {...headerProps}>
-                    {// Render the header
-                    column.render('Header')}
-                  </th>
-                );
-              })}
-            </tr>
-          ))}
+          {
+            // Loop over the header rows
+            headerGroups.map((headerGroup) => (
+              // Apply the header row props
+              <tr {...headerGroup.getHeaderGroupProps()}>
+                {
+                  // Loop over the headers in each row
+                  headerGroup.headers.map((column) => {
+                    const headerProps =
+                      column.Header !== '項目' && column.Header !== '總計'
+                        ? {
+                            ...column.getHeaderProps(),
+                            style: { cursor: 'pointer' },
+                            onClick: (): void => setQuarter(column.id),
+                          }
+                        : column.getHeaderProps();
+                    // Apply the header cell props
+                    return (
+                      <th {...headerProps}>
+                        {
+                          // Render the header
+                          column.render('Header')
+                        }
+                      </th>
+                    );
+                  })
+                }
+              </tr>
+            ))
+          }
         </thead>
         {/* Apply the table body props */}
         <tbody {...getTableBodyProps()}>
-          {// Loop over the table rows
-          rows.map(row => {
-            // Prepare the row for display
-            prepareRow(row);
-            return (
-              // Apply the row props
-              <tr {...row.getRowProps()}>
-                {// Loop over the rows cells
-                row.cells.map(cell => {
-                  // Apply the cell props
-                  return (
-                    <td {...cell.getCellProps()}>
-                      {// Render the cell contents
-                      renderCell(quarter, team, cell)}
-                    </td>
-                  );
-                })}
-              </tr>
-            );
-          })}
+          {
+            // Loop over the table rows
+            rows.map((row) => {
+              // Prepare the row for display
+              prepareRow(row);
+              return (
+                // Apply the row props
+                <tr {...row.getRowProps()}>
+                  {
+                    // Loop over the rows cells
+                    row.cells.map((cell) => {
+                      // Apply the cell props
+                      return (
+                        <td {...cell.getCellProps()}>
+                          {
+                            // Render the cell contents
+                            renderCell(quarter, team, cell)
+                          }
+                        </td>
+                      );
+                    })
+                  }
+                </tr>
+              );
+            })
+          }
         </tbody>
       </table>
     </StyledTable>
